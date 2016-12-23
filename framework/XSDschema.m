@@ -127,7 +127,7 @@
                 }
                 return nil;
             }
-            XSDschema *xsd = [[self.class alloc] initWithUrl:url targetNamespacePrefix:prefix targetNamespacePostfix:postfix error:error];
+            XSDschema *xsd = [[self.class alloc] initWithUrl:url targetNamespacePrefix:prefix error:error];
             if(!xsd) {
                 return nil;
             }
