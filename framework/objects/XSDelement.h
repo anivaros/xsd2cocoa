@@ -14,6 +14,7 @@
 
 @property (readonly, nonatomic) id<XSType> localType;
 @property (readonly, nonatomic) NSString* name;
+@property (readonly, nonatomic) NSString* ref;
 @property (readonly, nonatomic) NSString* type;
 @property (readonly, nonatomic) NSString* substitutionGroup;
 @property (readonly, nonatomic) NSString* defaultValue;

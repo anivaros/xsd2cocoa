@@ -21,6 +21,7 @@
 @interface XSDelement ()
 @property (strong, nonatomic) id<XSType> localType;
 @property (strong, nonatomic) NSString* name;
+@property (strong, nonatomic) NSString* ref;
 @property (strong, nonatomic) NSString* type;
 @property (strong, nonatomic) NSString* substitutionGroup;
 @property (strong, nonatomic) NSString* defaultValue;
@@ -40,6 +41,7 @@
     self = [super initWithNode:node schema:schema];
     if(self) {
         self.type = [XMLUtils node: node stringAttribute: @"type"];
+		self.ref = [XMLUtils node: node stringAttribute: @"ref"];
         self.name = [XMLUtils node: node stringAttribute: @"name"];
         self.substitutionGroup = [XMLUtils node: node stringAttribute: @"substitutionGroup"];
         self.defaultValue = [XMLUtils node: node stringAttribute:  @"default"];
@@ -49,7 +51,18 @@
         self.final = [XMLUtils node: node stringAttribute: @"final"];
         self.block = [XMLUtils node: node stringAttribute: @"block"];
         self.form = [XMLUtils node: node stringAttribute: @"form"];
-
+        
+        if (self.ref) {
+            for (XSDcomplexType *innerCt in schema.complexTypes) {
+                for (XSDelement *el in innerCt.globalElements) {
+                    if ([el.name isEqualToString:[NSXMLNode localNameForName:self.ref]]) {
+                        self.name = el.name;
+                        self.type = el.type;
+                    }
+                }
+            }
+        }
+        
         NSNumberFormatter* numFormatter = [[NSNumberFormatter alloc] init];
         numFormatter.numberStyle = NSNumberFormatterDecimalStyle;
         

@@ -69,6 +69,11 @@
 - (id) initWithNode:(NSXMLElement*)node targetNamespacePrefix:(NSString*)prefix error:(NSError**)error  {
 	self = [super initWithNode:node schema:nil];
     if(self) {
+        _knownSimpleTypeDict = [NSMutableDictionary dictionary];
+        self.simpleTypes = [NSMutableArray array];
+        _knownComplexTypeDict = [NSMutableDictionary dictionary];
+        self.complexTypes = [NSMutableArray array];
+        
         /* Get namespaces and set derived class prefix */
         self.targetNamespace = [[node attributeForName: @"targetNamespace"] stringValue];
         self.allNamespaces = [node namespaces];
@@ -98,15 +103,56 @@
             self.xmlSchemaNamespace = @"";
         }
         
+        //handle includes & imports
+        NSArray* iNodes = [node nodesForXPath: self.XPathForSchemaIncludes error: error];
+        NSArray* iNodes2 = [node nodesForXPath: self.XPathForSchemaImports error: error];
+        if(iNodes2.count) {
+            NSMutableArray *newNodes = [iNodes2 mutableCopy];
+            if(iNodes.count) {
+                [newNodes addObjectsFromArray:iNodes];
+            }
+            iNodes = newNodes;
+        }
+        
+        /* For the imported schemas, grab their complex and simple types of their elements */
+        self.includedSchemas = [NSMutableArray array];
+        for (NSXMLElement* aChild in iNodes) {
+            
+            id schemaLocation = [aChild attributeForName:@"schemaLocation"].stringValue;
+            NSURL *url = [NSURL URLWithString:schemaLocation relativeToURL:self.schemaUrl];
+            if(![[NSFileManager defaultManager] isReadableFileAtPath:url.path]) {
+                if(error) {
+                    *error = [NSError errorWithDomain:@"XSDschema" code:50 userInfo:@{@"url":url, NSLocalizedRecoverySuggestionErrorKey: [NSString stringWithFormat:@"Cant open included xsd file at %@.", url]}];
+                    
+                }
+                return nil;
+            }
+            XSDschema *xsd = [[self.class alloc] initWithUrl:url targetNamespacePrefix:prefix targetNamespacePostfix:postfix error:error];
+            if(!xsd) {
+                return nil;
+            }
+            
+            xsd.parentSchema = self;
+            [((NSMutableArray*)self.includedSchemas) addObject: xsd];
+            
+            //also add their types to ours, because we fricking know them now :D
+            for (XSDcomplexType *ct in xsd.complexTypes) {
+                [(NSMutableDictionary*)_knownComplexTypeDict setObject:ct forKey:ct.name];
+                [(NSMutableArray*)self.complexTypes addObject:ct];
+            }
+            //also add their types to ours, because we fricking know them now :D
+            for (XSSimpleType *ct in xsd.simpleTypes) {
+                [(NSMutableDictionary*)_knownSimpleTypeDict setObject:ct forKey:ct.name];
+                [(NSMutableArray*)self.simpleTypes addObject:ct];
+            }
+        }
+        
         /* Add basic simple types known in the built-in types */
-        _knownSimpleTypeDict = [NSMutableDictionary dictionary];
         for(XSSimpleType *aSimpleType in [XSSimpleType knownSimpleTypesForSchema:self]) {
             [_knownSimpleTypeDict setValue: aSimpleType forKey: aSimpleType.name];
         }
         
         /* Add custom simple types */
-        self.simpleTypes = [NSMutableArray array];
-        
         /* Grab all elements that are in the schema base with the simpleType element tag */
         NSArray* stNodes = [node nodesForXPath: self.XPathForSchemaSimpleTypes error: error];
 
@@ -118,8 +164,6 @@
         }
 
         /* Add complex types */
-        _knownComplexTypeDict = [NSMutableDictionary dictionary];
-        self.complexTypes = [NSMutableArray array];
         NSArray* ctNodes = [node nodesForXPath: self.XPathForSchemaComplexTypes error: error];
         /* Iterate through the complex types found and create node elements for them */
         for (NSXMLElement* aChild in ctNodes) {
@@ -165,56 +209,14 @@
         return nil;
     }
     
+    /* The location of where our schema is located */
+    self.schemaUrl = schemaUrl;
+    
     /* From the root element, grab the complex, simple, and elements into their respective arrays */
     self = [self initWithNode: [doc rootElement] targetNamespacePrefix: prefix error: error];
     /* Continue to setup the schema */
-    if(self) {
-        /* The location of where our schema is located */
-        self.schemaUrl = schemaUrl;
+    if (self) {
         
-        //handle includes & imports
-        NSArray* iNodes = [[doc rootElement] nodesForXPath: self.XPathForSchemaIncludes error: error];
-        NSArray* iNodes2 = [[doc rootElement] nodesForXPath: self.XPathForSchemaImports error: error];
-        if(iNodes2.count) {
-            NSMutableArray *newNodes = [iNodes2 mutableCopy];
-            if(iNodes.count) {
-                [newNodes addObjectsFromArray:iNodes];
-            }
-            iNodes = newNodes;
-        }
-        
-        /* For the imported schemas, grab their complex and simple types of their elements */
-        self.includedSchemas = [NSMutableArray array];
-        for (NSXMLElement* aChild in iNodes) {
-
-            id schemaLocation = [aChild attributeForName:@"schemaLocation"].stringValue;
-            NSURL *url = [NSURL URLWithString:schemaLocation relativeToURL:schemaUrl];
-            if(![[NSFileManager defaultManager] isReadableFileAtPath:url.path]) {
-                if(error) {
-                    *error = [NSError errorWithDomain:@"XSDschema" code:50 userInfo:@{@"url":url, NSLocalizedRecoverySuggestionErrorKey: [NSString stringWithFormat:@"Cant open included xsd file at %@.", url]}];
-                    
-                }
-                return nil;
-            }
-            XSDschema *xsd = [[self.class alloc] initWithUrl:url targetNamespacePrefix:prefix error:error];
-            if(!xsd) {
-                return nil;
-            }
-            
-            xsd.parentSchema = self;
-            [((NSMutableArray*)self.includedSchemas) addObject: xsd];
-            
-            //also add their types to ours, because we fricking know them now :D
-            for (XSDcomplexType *ct in xsd.complexTypes) {
-                [(NSMutableDictionary*)_knownComplexTypeDict setObject:ct forKey:ct.name];
-                [(NSMutableArray*)self.complexTypes addObject:ct];
-            }
-            //also add their types to ours, because we fricking know them now :D
-            for (XSSimpleType *ct in xsd.simpleTypes) {
-                [(NSMutableDictionary*)_knownSimpleTypeDict setObject:ct forKey:ct.name];
-                [(NSMutableArray*)self.simpleTypes addObject:ct];
-            }
-        }
     }
     
     return self;
