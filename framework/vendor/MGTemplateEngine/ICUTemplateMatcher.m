@@ -76,7 +76,7 @@
 		[markerInfo setObject:matchType forKey:MARKER_TYPE_KEY];
 		
 		// Split marker string into marker-name and arguments.
-        NSRange markerRange;
+		NSRange markerRange = NSMakeRange(0, [matchString length]);
 		markerRange = [localResult rangeAtIndex:(NSUInteger)(2 + offset)];
 		
 		if (markerRange.length > 0) {
