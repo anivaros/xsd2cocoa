@@ -173,7 +173,8 @@
         }
     }
     
-    return [simpleTypes allObjects];
+    NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+    return [simpleTypes sortedArrayUsingDescriptors:@[sd]];
 }
 
 - (NSArray*) complexTypesInUse {
@@ -194,8 +195,8 @@
             }
         }
     }
-    
-    return [complexTypes allObjects];
+    NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+    return [complexTypes sortedArrayUsingDescriptors:@[sd]];
 }
 
 - (NSArray*) enumTypesInUse {
