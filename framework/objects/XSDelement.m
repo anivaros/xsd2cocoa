@@ -43,6 +43,10 @@
         self.type = [XMLUtils node: node stringAttribute: @"type"];
 		self.ref = [XMLUtils node: node stringAttribute: @"ref"];
         self.name = [XMLUtils node: node stringAttribute: @"name"];
+        if (!self.name && [node.localName isEqualToString:@"any"]) {
+            self.name = @"Any";
+            self.type = @"any";
+        }
         self.substitutionGroup = [XMLUtils node: node stringAttribute: @"substitutionGroup"];
         self.defaultValue = [XMLUtils node: node stringAttribute:  @"default"];
         self.fixed = [XMLUtils node: node stringAttribute: @"fixed"];
@@ -172,6 +176,10 @@
     
     /* Return BOOL if we have enumerations */
     return isEnumeration;
+}
+
+- (BOOL) hasAny {
+    return [self.type isEqual:@"any"];
 }
 
 - (NSString*) nameWithCapital {

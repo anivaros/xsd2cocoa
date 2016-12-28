@@ -41,7 +41,8 @@
         
         /* Grab the elements that are contained within this object and append them to the current object's element list */
         NSMutableArray* newElements = [NSMutableArray array];
-        NSArray* elementTags = [XMLUtils node:node descendantsWithName: @"element"];
+        NSMutableArray* elementTags = [[XMLUtils node:node descendantsWithName: @"element"] mutableCopy];
+        [elementTags addObjectsFromArray:[XMLUtils node:node descendantsWithName: @"any"]];
         for(NSXMLElement* anElement in elementTags) {
             /* Create a standard element type and append it to the list of elements */
             [newElements addObject:[[XSDelement alloc] initWithNode:anElement schema:schema]];
