@@ -24,6 +24,7 @@
 @property (readonly, nonatomic) NSString* readPrefixCode;
 @property (readonly, nonatomic) NSArray* includes;
 @property (strong, nonatomic) NSArray* enumerations;
+@property (readonly, nonatomic) NSArray* globalElements;
 
 - (BOOL)supplyTemplates:(NSXMLElement *)element enumTypeNode:(NSXMLNode*)enumTypeNode error:(NSError *__autoreleasing *)error;
 - (NSDictionary*) substitutionDict;

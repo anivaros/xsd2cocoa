@@ -150,6 +150,7 @@
         /* Add basic simple types known in the built-in types */
         for(XSSimpleType *aSimpleType in [XSSimpleType knownSimpleTypesForSchema:self]) {
             [_knownSimpleTypeDict setValue: aSimpleType forKey: aSimpleType.name];
+            [((NSMutableArray*)self.simpleTypes) addObject:aSimpleType];
         }
         
         /* Add custom simple types */
@@ -184,9 +185,9 @@
         for (XSDelement* anElement in globalElements) {
             id<XSType> aType = [anElement schemaType];
             /* For the type check if it is in our found complex types */
-            if( [aType isMemberOfClass: [XSDcomplexType class]]) {
+//            if( [aType isMemberOfClass: [XSDcomplexType class]]) {
                 ((XSDcomplexType*)aType).globalElements = [((XSDcomplexType*)aType).globalElements arrayByAddingObject: anElement];
-            }
+//            }
         }
 	}
     

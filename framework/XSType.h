@@ -16,6 +16,7 @@
 - (NSString*) name;
 - (NSString*) baseType;
 - (NSArray*) attributes;
+- (NSArray*) globalElements;
 
 //parsing
 
