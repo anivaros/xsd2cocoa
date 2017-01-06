@@ -40,31 +40,24 @@
 - (id) initWithNode:(NSXMLElement*)node schema: (XSDschema*)schema minOccurs:(NSNumber *)minOccurs maxOccurs:(NSNumber *)maxOccurs {
     self = [super initWithNode:node schema:schema];
     if(self) {
-        self.type = [XMLUtils node: node stringAttribute: @"type"];
-		self.ref = [XMLUtils node: node stringAttribute: @"ref"];
-        self.name = [XMLUtils node: node stringAttribute: @"name"];
-        if (!self.name && [node.localName isEqualToString:@"any"]) {
-            self.name = @"Any";
-            self.type = @"any";
+        _type = [XMLUtils node: node stringAttribute: @"type"];
+		_ref = [XMLUtils node: node stringAttribute: @"ref"];
+        _name = [XMLUtils node: node stringAttribute: @"name"];
+        if (!_name && [node.localName isEqualToString:@"any"]) {
+            _name = @"Any";
+            _type = @"any";
         }
-        self.substitutionGroup = [XMLUtils node: node stringAttribute: @"substitutionGroup"];
-        self.defaultValue = [XMLUtils node: node stringAttribute:  @"default"];
-        self.fixed = [XMLUtils node: node stringAttribute: @"fixed"];
-        self.nillable = [XMLUtils node: node stringAttribute: @"nillable"];
-        self.abstractValue = [XMLUtils node: node stringAttribute: @"abstract"];
-        self.final = [XMLUtils node: node stringAttribute: @"final"];
-        self.block = [XMLUtils node: node stringAttribute: @"block"];
-        self.form = [XMLUtils node: node stringAttribute: @"form"];
+        _substitutionGroup = [XMLUtils node: node stringAttribute: @"substitutionGroup"];
+        _defaultValue = [XMLUtils node: node stringAttribute:  @"default"];
+        _fixed = [XMLUtils node: node stringAttribute: @"fixed"];
+        _nillable = [XMLUtils node: node stringAttribute: @"nillable"];
+        _abstractValue = [XMLUtils node: node stringAttribute: @"abstract"];
+        _final = [XMLUtils node: node stringAttribute: @"final"];
+        _block = [XMLUtils node: node stringAttribute: @"block"];
+        _form = [XMLUtils node: node stringAttribute: @"form"];
         
-        if (self.ref) {
-            for (XSDcomplexType *innerCt in schema.complexTypes) {
-                for (XSDelement *el in innerCt.globalElements) {
-                    if ([el.name isEqualToString:[NSXMLNode localNameForName:self.ref]]) {
-                        self.name = el.name;
-                        self.type = el.type;
-                    }
-                }
-            }
+        if (_ref) {
+            [self updateNameAndTypeFromRef:_ref];
         }
         
         NSNumberFormatter* numFormatter = [[NSNumberFormatter alloc] init];
@@ -89,30 +82,30 @@
         }
         
         /* If we do not have a type defined yet */
-        if(self.type == nil) {
+        if(_type == nil) {
             /* Check if we have a complex type defined for the given element */
             NSXMLElement* complexTypeNode = [XMLUtils node:node childWithName:@"complexType"];
             if(complexTypeNode != nil) {
-                self.localType = [[XSDcomplexType alloc] initWithNode:complexTypeNode schema:schema];
-                ((XSDcomplexType*)self.localType).name = [self.name stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[self.name substringToIndex:1] uppercaseString]];
-                [schema addType: self.localType];
+                _localType = [[XSDcomplexType alloc] initWithNode:complexTypeNode schema:schema];
+                ((XSDcomplexType*)_localType).name = [_name stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[_name substringToIndex:1] uppercaseString]];
+                [schema addType: _localType];
             }
             else {
                 NSXMLElement* simpleTypeNode = [XMLUtils node:node childWithName:@"simpleType"];
                 if(simpleTypeNode != nil) {
-                    self.localType = [[XSSimpleType alloc] initWithNode:simpleTypeNode schema:schema];
-                    ((XSSimpleType*)self.localType).name = [self.name stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[self.name substringToIndex:1] uppercaseString]];
-                    [schema addType: self.localType];
+                    _localType = [[XSSimpleType alloc] initWithNode:simpleTypeNode schema:schema];
+                    ((XSSimpleType*)_localType).name = [_name stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[_name substringToIndex:1] uppercaseString]];
+                    [schema addType: _localType];
                 }
             }
         }
 
-        NSAssert(self.name, @"no name");
+        NSAssert(_name || _ref, @"no name or ref");
         
         //specify string as default value
-        if(!self.type && !self.localType) {
-            NSLog(@"assign default tye xs:string to element %@", self.name);
-            self.type = @"xs:string";
+        if(!_ref && !_type && !_localType) {
+            NSLog(@"assign default type xs:string to element %@", _name);
+            _type = @"xs:string";
         }
     }
     return self;
@@ -120,6 +113,39 @@
 
 - (id) initWithNode:(NSXMLElement*)node schema: (XSDschema*)schema {
     return [self initWithNode:node schema:schema minOccurs:nil maxOccurs:nil];
+}
+
+- (NSString *)name {
+    if (_name) {
+        return _name;
+    }
+    else if (self.ref) {
+        [self updateNameAndTypeFromRef:self.ref];
+    }
+    NSAssert(_name, @"no name");
+    return _name;
+}
+
+- (NSString *)type {
+    if (_type) {
+        return _type;
+    }
+    else if (self.ref) {
+        [self updateNameAndTypeFromRef:self.ref];
+    }
+    return _type;
+}
+
+- (void)updateNameAndTypeFromRef:(NSString *)ref {
+    NSArray *allTypes = [self.schema.simpleTypes arrayByAddingObjectsFromArray:self.schema.complexTypes];
+    for (XSDcomplexType *innerCt in allTypes) {
+        for (XSDelement *el in innerCt.globalElements) {
+            if ([el.name isEqualToString:[NSXMLNode localNameForName:ref]]) {
+                self.name = el.name;
+                self.type = el.type ? el.type : @"xs:string";
+            }
+        }
+    }
 }
 
 - (BOOL) hasComplexType {

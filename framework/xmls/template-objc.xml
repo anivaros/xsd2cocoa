@@ -405,7 +405,7 @@ this will be used to generate the class files for the complex types.
                             {{ type.readSimpleContent }}
                         }
                     } else {% /if %} {
-                      {% for element in type.elements %}{% if element.hasAny %}if (!self.{{element.name}} && _currentElementName) {
+                      {% for element in type.elements %}{% if element.hasAny %}if (!self.{{element.variableName}} && _currentElementName) {
                             _currentNodeType = xmlTextReaderNodeType(reader);
                             if (_currentNodeType != XML_READER_TYPE_END_ELEMENT) {
                                 const char *{{element.name}}ElementValue = (const char*) xmlTextReaderReadOuterXml(reader);
