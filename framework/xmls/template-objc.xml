@@ -248,7 +248,7 @@ this will be used to generate the class header files for the complex types.
         {% if type.hasAnnotations %}/**
         {{ type.comment }}
         */{% /if %}
-        @interface {{ type.targetClassName }} : {% if type.hasComplexBaseClass %}{{ type.baseClass.targetClassName }}{% else %}NSObject{% /if %}
+        @interface {{ type.targetClassName }} : {% if type.hasComplexBaseClass %}{{ type.baseClass.targetClassName }}{% else %}NSObject <NSCopying>{% /if %}
 
         {% for attribute in type.attributes %}{% if attribute.hasAnnotations %}/**
         {{ attribute.comment }}
@@ -450,6 +450,34 @@ this will be used to generate the class files for the complex types.
                 
                 return dict;
             }
+			
+			- (id)copyWithZone:(nullable NSZone *)zone {
+				{{ type.targetClassFileName }} *copy = [[{{ type.targetClassFileName }} allocWithZone:zone] init];
+				if (copy) {
+					{% for attribute in type.attributes %}
+					{% if attribute.hasEnumeration %}copy.{{ attribute.variableName }} = self.{{ attribute.variableName }};
+					{% else %}copy.{{ attribute.variableName }} = [self.{{ attribute.variableName }} copy];{% /if %}
+					{% /for %}
+					{% for element in type.elements %}
+					{% if element.isSingleValue %}
+					{% if element.hasComplexType %}
+					copy.{{ element.variableName }} = [self.{{ element.variableName }} copy];
+					{% else %}
+					{% if element.hasEnumeration %}copy.{{ element.variableName }} = self.{{ element.variableName }};
+					{% else %}copy.{{ element.variableName }} = [self.{{ element.variableName }} copy];{% /if %}
+					{% /if %}
+					{% else %}
+					copy.{{ element.variableName }} = [[NSArray alloc] initWithArray:self.{{ element.variableName }} copyItems:YES];
+					{% /if %}
+					{% /for %}
+					{% if type.hasSimpleBaseClass %}
+					{% if type.baseClass.hasEnumeration %}copy.value = self.value;
+					{% else %}copy.value = [self.value copy];{% /if %}
+					{% /if %}
+				}
+				return copy;
+			}
+			
             @end
             ]]>
         </class>
