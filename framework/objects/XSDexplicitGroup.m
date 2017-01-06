@@ -13,6 +13,8 @@
 @property (strong, nonatomic) NSString* name;
 @property (strong, nonatomic) NSString* ref;
 @property (strong, nonatomic) NSArray* elements;
+@property (strong, nonatomic) NSNumber* minOccurs;
+@property (strong, nonatomic) NSNumber* maxOccurs;
 
 @end
 
@@ -39,13 +41,34 @@
         if(!self.name)
             self.name = @"XS";
         
+        NSNumberFormatter* numFormatter = [[NSNumberFormatter alloc] init];
+        numFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+        
+        NSString* minOccursValue = [XMLUtils node: node stringAttribute: @"minOccurs"];
+        if(minOccursValue == nil) {
+//            _minOccurs = [NSNumber numberWithInt: 1];
+        } else if([minOccursValue isEqual: @"unbounded"]) {
+            _minOccurs = [NSNumber numberWithInt: -1];
+        } else {
+            _minOccurs = [numFormatter numberFromString: minOccursValue];
+        }
+        
+        NSString* maxOccursValue = [XMLUtils node: node stringAttribute: @"maxOccurs"];
+        if(maxOccursValue == nil) {
+//            _maxOccurs = [NSNumber numberWithInt: 1];
+        } else if([maxOccursValue isEqual: @"unbounded"]) {
+            _maxOccurs = [NSNumber numberWithInt: -1];
+        } else {
+            _maxOccurs = [numFormatter numberFromString: maxOccursValue];
+        }
+        
         /* Grab the elements that are contained within this object and append them to the current object's element list */
         NSMutableArray* newElements = [NSMutableArray array];
         NSMutableArray* elementTags = [[XMLUtils node:node descendantsWithName: @"element"] mutableCopy];
         [elementTags addObjectsFromArray:[XMLUtils node:node descendantsWithName: @"any"]];
         for(NSXMLElement* anElement in elementTags) {
             /* Create a standard element type and append it to the list of elements */
-            [newElements addObject:[[XSDelement alloc] initWithNode:anElement schema:schema]];
+            [newElements addObject:[[XSDelement alloc] initWithNode:anElement schema:schema minOccurs:_minOccurs maxOccurs:_maxOccurs]];
         }
         /* Assign the new list to the object's list */
         self.elements = newElements;

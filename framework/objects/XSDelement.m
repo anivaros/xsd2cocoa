@@ -37,7 +37,7 @@
 
 @implementation XSDelement
 
-- (id) initWithNode:(NSXMLElement*)node schema: (XSDschema*)schema {
+- (id) initWithNode:(NSXMLElement*)node schema: (XSDschema*)schema minOccurs:(NSNumber *)minOccurs maxOccurs:(NSNumber *)maxOccurs {
     self = [super initWithNode:node schema:schema];
     if(self) {
         self.type = [XMLUtils node: node stringAttribute: @"type"];
@@ -72,20 +72,20 @@
         
         NSString* minOccursValue = [XMLUtils node: node stringAttribute: @"minOccurs"];
         if(minOccursValue == nil) {
-            self.minOccurs = [NSNumber numberWithInt: 1];
+            _minOccurs = minOccurs ? minOccurs : [NSNumber numberWithInt: 1];
         } else if([minOccursValue isEqual: @"unbounded"]) {
-            self.minOccurs = [NSNumber numberWithInt: -1];
+            _minOccurs = [NSNumber numberWithInt: -1];
         } else {
-            self.minOccurs = [numFormatter numberFromString: minOccursValue];
+            _minOccurs = [numFormatter numberFromString: minOccursValue];
         }
         
         NSString* maxOccursValue = [XMLUtils node: node stringAttribute: @"maxOccurs"];
         if(maxOccursValue == nil) {
-            self.maxOccurs = [NSNumber numberWithInt: 1];
+            _maxOccurs = maxOccurs ? maxOccurs : [NSNumber numberWithInt: 1];
         } else if([maxOccursValue isEqual: @"unbounded"]) {
-            self.maxOccurs = [NSNumber numberWithInt: -1];
+            _maxOccurs = [NSNumber numberWithInt: -1];
         } else {
-            self.maxOccurs = [numFormatter numberFromString: maxOccursValue];
+            _maxOccurs = [numFormatter numberFromString: maxOccursValue];
         }
         
         /* If we do not have a type defined yet */
@@ -116,6 +116,10 @@
         }
     }
     return self;
+}
+
+- (id) initWithNode:(NSXMLElement*)node schema: (XSDschema*)schema {
+    return [self initWithNode:node schema:schema minOccurs:nil maxOccurs:nil];
 }
 
 - (BOOL) hasComplexType {
