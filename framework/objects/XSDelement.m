@@ -138,9 +138,11 @@
         }
     } else {
         if(self.type != nil) {
-            rtn = [[self.schema typeForName:self.type] arrayType];
+            id<XSType> type = [self.schema typeForName:self.type];
+            rtn = [[type arrayType] stringByAppendingFormat:@" <%@ *>", [type targetClassName]];
         } else {
-            rtn = self.localType.arrayType;
+            id<XSType> type = self.localType;
+            rtn = [type.arrayType stringByAppendingFormat:@" <%@ *>", [type targetClassName]];
         }
     }
     
