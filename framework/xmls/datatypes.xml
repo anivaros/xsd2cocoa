@@ -56,7 +56,7 @@
 <type base="time" name="time"/>
 
 <!-- base64Binary -->
-<!--<type base="base64Binary" name="base64Binary"/>-->
+<type base="base64Binary" name="base64Binary"/>
 
 <!-- hexBinary: doesnt work -->
 <!--<type base="hexBinary" name="hexBinary"/>-->

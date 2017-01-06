@@ -213,6 +213,24 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
               [timeFormatter dateFromString:value];</value>
       </read>
   </simpletype>
+    <simpletype name="base64Binary" objType="NSData" arrayType="NSArray">
+      <read>
+          <prefix>
+          </prefix>
+          <attribute>self.{{ attribute.variableName }} = [[NSData alloc] initWithBase64EncodedString:[NSString stringWithCString:{{ attribute.name
+      }}AttrValue encoding:NSUTF8StringEncoding] options:kNilOptions];</attribute>
+      <element>
+        <![CDATA[
+        {% if element.isSingleValue %}self.{{ element.variableName }} = [[NSData alloc] initWithBase64EncodedString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding] options:kNilOptions];{% else %}[{{ element.variableName }}Array addObject:[[NSData alloc] initWithBase64EncodedString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding] options:kNilOptions]];
+        {% /if %}
+        ]]>
+        </element>
+          <value>NSString *value = [NSString stringWithCString:
+      contentValue encoding: NSUTF8StringEncoding]; value = [value
+      stringByTrimmingCharactersInSet:[NSCharacterSet
+      whitespaceAndNewlineCharacterSet]]; self.value = [[NSData alloc] initWithBase64EncodedString:string options:kNilOptions];</value>
+      </read>
+  </simpletype>
   <!--complex type-->
   <complextype objType="NSObject-Subclass" arrayType="NSArray">
     <read>
