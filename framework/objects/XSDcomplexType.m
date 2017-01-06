@@ -91,7 +91,10 @@
         if(!child) {
             child = [XMLUtils node:node childWithName:@"choice"];
         }
-        /* 
+        if(!child) {
+            child = [XMLUtils node:node childWithName:@"all"];
+        }
+        /*
          * Create an explicit group, meaning they all will be clearly defined and required
          * This will contain child elements (<XSDelement>) in the elements list
          */
@@ -123,7 +126,10 @@
             child = [XMLUtils node:anElement childWithName:@"sequence"];
             if(!child) {
                 child = [XMLUtils node:anElement childWithName:@"choice"];
-            }            
+            }
+            if(!child) {
+                child = [XMLUtils node:anElement childWithName:@"all"];
+            }
             /* We have children within the node, define them */
             if(child) {
                 self.sequenceOrChoice = [[XSDexplicitGroup alloc] initWithNode:child schema:schema];
