@@ -88,6 +88,14 @@
             if(complexTypeNode != nil) {
                 _localType = [[XSDcomplexType alloc] initWithNode:complexTypeNode schema:schema];
                 ((XSDcomplexType*)_localType).name = [_name stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[_name substringToIndex:1] uppercaseString]];
+                NSXMLNode *n = node.parent;
+                while (n != nil) {
+                    if ([XMLUtils node: (NSXMLElement*)n stringAttribute: @"name"]) {
+                        ((XSDcomplexType*)_localType).name = [NSString stringWithFormat:@"%@%@",[XMLUtils node: (NSXMLElement*)n stringAttribute: @"name"],((XSDcomplexType*)_localType).name];
+                        break;
+                    }
+                    n = n.parent;
+                };
                 [schema addType: _localType];
             }
             else {
@@ -95,6 +103,14 @@
                 if(simpleTypeNode != nil) {
                     _localType = [[XSSimpleType alloc] initWithNode:simpleTypeNode schema:schema];
                     ((XSSimpleType*)_localType).name = [_name stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[_name substringToIndex:1] uppercaseString]];
+                    NSXMLNode *n = node.parent;
+                    while (n != nil) {
+                        if ([XMLUtils node: (NSXMLElement*)n stringAttribute: @"name"]) {
+                            ((XSDcomplexType*)_localType).name = [NSString stringWithFormat:@"%@%@",[XMLUtils node: (NSXMLElement*)n stringAttribute: @"name"],((XSDcomplexType*)_localType).name];
+                            break;
+                        }
+                        n = n.parent;
+                    };
                     [schema addType: _localType];
                 }
             }
