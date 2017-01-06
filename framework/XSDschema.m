@@ -27,6 +27,7 @@
 
 @interface XSDschema ()
 
+@property (strong, nonatomic) NSString* schemaId;
 @property (strong, nonatomic) NSURL* schemaUrl;
 @property (strong, nonatomic) NSString* targetNamespace;
 @property (strong, nonatomic) NSArray* allNamespaces;
@@ -73,6 +74,8 @@
         self.simpleTypes = [NSMutableArray array];
         _knownComplexTypeDict = [NSMutableDictionary dictionary];
         self.complexTypes = [NSMutableArray array];
+        
+        self.schemaId = [[node attributeForName: @"id"] stringValue];
         
         /* Get namespaces and set derived class prefix */
         self.targetNamespace = [[node attributeForName: @"targetNamespace"] stringValue];
@@ -605,6 +608,7 @@
     }
     
     assert(vName.length); //EVERYTHING has a name
+    
     return vName;
 }
 
@@ -649,12 +653,12 @@
     NSParameterAssert(error);
     
     /* SOURCE CODE - If we want to write source code */
-    if (options & XSDschemaGeneratorOptionSourceCode) {
+    if (options & (XSDschemaGeneratorOptionSourceCode | XSDschemaGeneratorOptionSourceCodeWithSubfolders)) {
         /* Create the path that will contain all the code */
         NSURL *srcFolderUrl = [destinationFolder URLByAppendingPathComponent:@"Sources" isDirectory:YES];
         
         /* Create the actual directory at the location defined above */
-        if(![[NSFileManager defaultManager] createDirectoryAtURL:srcFolderUrl withIntermediateDirectories:NO attributes:nil error:error]) {
+        if(![[NSFileManager defaultManager] createDirectoryAtURL:srcFolderUrl withIntermediateDirectories:YES attributes:nil error:error]) {
             BOOL isDir;
             /* Ensure that the item was created */
             if(![[NSFileManager defaultManager] fileExistsAtPath:srcFolderUrl.path isDirectory:&isDir] || !isDir) {
@@ -662,7 +666,7 @@
             }
         }
         /* If all is well, start writing the code into the directory we created */
-        if(![self writeCodeInto:srcFolderUrl error:error]) {
+        if(![self writeCodeInto:srcFolderUrl createSubfolders:options & XSDschemaGeneratorOptionSourceCodeWithSubfolders error:error]) {
             return NO;
         }
         if(![self formatFilesInFolder:srcFolderUrl error:nil])  {
@@ -682,6 +686,7 @@
  *
  */
 - (BOOL) writeCodeInto: (NSURL*) destinationFolder
+      createSubfolders: (BOOL) createSubfolders
                  error: (NSError**) error {
     /* If there is no template, return that is failed */
     if(!self.complexTypeArrayType) {
@@ -708,7 +713,7 @@
                                          withVariables:type.substitutionDict];
             
             NSString* headerFileName = [NSString stringWithFormat: @"%@.%@", type.targetClassFileName, self.headerTemplateExtension];
-            NSURL* headerFilePath = [destinationFolder URLByAppendingPathComponent: headerFileName];
+            NSURL* headerFilePath = [createSubfolders ? [self subfolderForURL:destinationFolder schema:type.schema] : destinationFolder URLByAppendingPathComponent: headerFileName];
             BOOL br = [result writeToURL: headerFilePath atomically:YES encoding: NSUTF8StringEncoding error: error];
 
             /* Ensure that there was no errors for writing */
@@ -724,7 +729,7 @@
                                          withVariables: type.substitutionDict];
             
             NSString* classFileName = [NSString stringWithFormat: @"%@.%@", type.targetClassFileName, self.classTemplateExtension];
-            NSURL* classFilePath = [destinationFolder URLByAppendingPathComponent: classFileName];
+            NSURL* classFilePath = [createSubfolders ? [self subfolderForURL:destinationFolder schema:type.schema] : destinationFolder URLByAppendingPathComponent: classFileName];
             BOOL br = [result writeToURL:classFilePath atomically:YES encoding: NSUTF8StringEncoding error: error];
             
             /* Ensure that there was no errors for writing */
@@ -740,7 +745,7 @@
                                              withVariables: type.substitutionDict];
                 
                 NSString* headerFileName = [NSString stringWithFormat: @"%@+File.%@", type.targetClassFileName, self.readerHeaderTemplateExtension];
-                NSURL* headerFilePath = [destinationFolder URLByAppendingPathComponent: headerFileName];
+                NSURL* headerFilePath = [createSubfolders ? [self subfolderForURL:destinationFolder schema:type.schema] : destinationFolder URLByAppendingPathComponent: headerFileName];
                 BOOL br = [result writeToURL: headerFilePath atomically:YES encoding: NSUTF8StringEncoding error: error];
 
                 /* Ensure that there was no errors for writing */
@@ -754,7 +759,7 @@
                                              withVariables: type.substitutionDict];
                 
                 NSString* classFileName = [NSString stringWithFormat: @"%@+File.%@", type.targetClassFileName, self.readerClassTemplateExtension];
-                NSURL* classFilePath = [destinationFolder URLByAppendingPathComponent: classFileName];
+                NSURL* classFilePath = [createSubfolders ? [self subfolderForURL:destinationFolder schema:type.schema] : destinationFolder URLByAppendingPathComponent: classFileName];
                 BOOL br = [result writeToURL: classFilePath atomically:YES encoding: NSUTF8StringEncoding error: error];
                 
                 /* Ensure that there was no errors for writing */
@@ -780,7 +785,7 @@
                                          withVariables:type.substitutionDict];
             
             NSString* headerFileName = [NSString stringWithFormat: @"%@.%@", type.enumerationFileName, self.enumHeaderTemplateExtension];
-            NSURL* headerFilePath = [destinationFolder URLByAppendingPathComponent: headerFileName];
+            NSURL* headerFilePath = [createSubfolders ? [self subfolderForURL:destinationFolder schema:type.schema] : destinationFolder URLByAppendingPathComponent: headerFileName];
             BOOL br = [result writeToURL: headerFilePath atomically:YES encoding: NSUTF8StringEncoding error: error];
             
             /* Ensure that there was no errors for writing */
@@ -796,7 +801,7 @@
                                          withVariables: type.substitutionDict];
             
             NSString* classFileName = [NSString stringWithFormat: @"%@.%@", type.enumerationFileName, self.enumClassTemplateExtension];
-            NSURL* classFilePath = [destinationFolder URLByAppendingPathComponent: classFileName];
+            NSURL* classFilePath = [createSubfolders ? [self subfolderForURL:destinationFolder schema:type.schema] : destinationFolder URLByAppendingPathComponent: classFileName];
             BOOL br = [result writeToURL:classFilePath atomically:YES encoding: NSUTF8StringEncoding error: error];
             
             /* Ensure that there was no errors for writing */
@@ -825,6 +830,24 @@
     }
     
     return YES;
+}
+
+- (NSURL *)subfolderForURL:(NSURL *)url schema:(XSDschema *)schema {
+    NSURL *destinationSubfolder = [url copy];
+    if (schema.schemaId) {
+        destinationSubfolder = [destinationSubfolder URLByAppendingPathComponent:schema.schemaId isDirectory:YES];
+    }
+    else {
+        destinationSubfolder = [destinationSubfolder URLByAppendingPathComponent:schema.schemaUrl.lastPathComponent.stringByDeletingPathExtension isDirectory:YES];
+    }
+    if(![[NSFileManager defaultManager] createDirectoryAtURL:destinationSubfolder withIntermediateDirectories:YES attributes:nil error:nil]) {
+        BOOL isDir;
+        /* Ensure that the item was created */
+        if(![[NSFileManager defaultManager] fileExistsAtPath:destinationSubfolder.path isDirectory:&isDir] || !isDir) {
+            return NO;
+        }
+    }
+    return destinationSubfolder;
 }
 
 - (NSString*)contentOfObjcUmbrellaHeaderForFolder:(NSURL*)destinationFolder {

@@ -11,12 +11,14 @@
 @protocol FileFormatter;
 @class XSDcomplexType;
 
-typedef enum : NSUInteger {
-    XSDschemaGeneratorOptionSourceCode=8,
-} XSDschemaGeneratorOptions;
+typedef NS_OPTIONS(NSUInteger, XSDschemaGeneratorOptions) {
+    XSDschemaGeneratorOptionSourceCode = 1 << 0,
+    XSDschemaGeneratorOptionSourceCodeWithSubfolders= 1 << 1
+};
 
 @interface XSDschema : XSSchemaNode
 
+@property (readonly, nonatomic) NSString* schemaId;
 @property (readonly, nonatomic) NSURL* schemaUrl;
 @property (readonly, nonatomic) NSString* targetNamespace;
 @property (readonly, nonatomic) NSArray* allNamespaces;

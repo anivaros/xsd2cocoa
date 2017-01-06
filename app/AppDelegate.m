@@ -214,7 +214,12 @@
 //        productTypes |= XSDschemaGeneratorOptionStaticFramework;
 //    }
     if(self.productTypeSourceCode.state==NSOnState) {
-        productTypes |= XSDschemaGeneratorOptionSourceCode;
+        if (self.createSubfoldersCheckbox.state == NSOnState) {
+            productTypes |= XSDschemaGeneratorOptionSourceCodeWithSubfolders;
+        }
+        else {
+            productTypes |= XSDschemaGeneratorOptionSourceCode;
+        }
     }
     
     /*  

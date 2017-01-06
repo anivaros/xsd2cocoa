@@ -23,6 +23,8 @@
 //@property (weak) IBOutlet NSTextField *additionalTypes;
 @property (weak) IBOutlet NSTextField *customPrefix;
 
+@property (weak) IBOutlet NSButton *createSubfoldersCheckbox;
+
 //@property (weak) IBOutlet NSButton *productTypeDynamicFramework;
 //@property (weak) IBOutlet NSButton *productTypeStaticFramework;
 @property (weak) IBOutlet NSButton *productTypeSourceCode;
