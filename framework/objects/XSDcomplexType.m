@@ -255,6 +255,15 @@
     return NO;
 }
 
+- (BOOL) hasAnyElement {
+    for (XSDelement* anElement in self.elements) {
+        if (anElement.hasAny) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 #pragma mark parsing
 
 - (NSString*) targetClassFileName {

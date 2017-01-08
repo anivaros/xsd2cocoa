@@ -138,7 +138,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
       }}AttrValue encoding:NSUTF8StringEncoding]];
           if(!self.{{ attribute.variableName }}) {
               self.{{ attribute.variableName }} = [sRFC3339DateFormatterSubSeconds
-          dateFromString:[NSString stringWithCString:{{ attribute.name
+      dateFromString:[NSString stringWithCString:{{ attribute.name
           }}AttrValue encoding:NSUTF8StringEncoding]];
           }</attribute>
       <element>
@@ -319,7 +319,7 @@ this will be used to generate the class files for the complex types.
         @interface {{ type.targetClassName }} ()
         {% for attribute in type.attributes %}@property (nonatomic, readwrite) {% if attribute.hasEnumeration %}{{ attribute.schemaType.enumerationName }} {% else %}{{ attribute.codeType }}* {% /if %}{{ attribute.variableName }};
         {% /for %}
-
+        
         {% for element in type.elements %}@property (nonatomic, readwrite) {% if element.hasEnumeration %}{{ element.schemaType.enumerationName }} {% else %}{{ element.codeType }}* {% /if %}{{ element.variableName }};
         {% /for %}
         {% if type.hasSimpleBaseClass %}
@@ -346,7 +346,7 @@ this will be used to generate the class files for the complex types.
              _locale = locale;
         }
         {% /if %}
-        
+
         /**
         * Name:        readAttributes
         * Parameters:  (void *) - the Libxml's xmlTextReader pointer
@@ -391,12 +391,12 @@ this will be used to generate the class files for the complex types.
                         _readerOk = xmlTextReaderRead(reader);
                         _currentNodeType = xmlTextReaderNodeType(reader);
                         if (_currentNodeType != XML_READER_TYPE_END_ELEMENT) {
-                            const char *{{element.name}}ElementValue = (const char*) xmlTextReaderConstValue(reader);
-                            if({{element.name}}ElementValue) {
-                                {{ element.readCodeForContent }}
-                            }
-                            _readerOk = xmlTextReaderRead(reader);
-                            _currentNodeType = xmlTextReaderNodeType(reader);
+                        const char *{{element.name}}ElementValue = (const char*) xmlTextReaderConstValue(reader);
+                        if({{element.name}}ElementValue) {
+                            {{ element.readCodeForContent }}
+                        }
+                        _readerOk = xmlTextReaderRead(reader);
+                        _currentNodeType = xmlTextReaderNodeType(reader);
                         }
                         {% /if %}
                     } else {% /if %}{% /for %}{% if type.hasSimpleBaseClass %}if([@"#text" isEqualToString: _currentElementName]){
@@ -405,7 +405,7 @@ this will be used to generate the class files for the complex types.
                             {{ type.readSimpleContent }}
                         }
                     } else {% /if %} {
-                      {% for element in type.elements %}{% if element.hasAny %}if (!self.{{element.variableName}} && _currentElementName) {
+						{% if type.hasAnyElement %}{% for element in type.elements %}{% if element.hasAny %}if (!self.{{element.variableName}} && _currentElementName) {
                             _currentNodeType = xmlTextReaderNodeType(reader);
                             if (_currentNodeType != XML_READER_TYPE_END_ELEMENT) {
                                 const char *{{element.name}}ElementValue = (const char*) xmlTextReaderReadOuterXml(reader);
@@ -415,10 +415,20 @@ this will be used to generate the class files for the complex types.
                                 _readerOk = strlen({{element.name}}ElementValue) ? xmlTextReaderNext(reader) : xmlTextReaderRead(reader);
                                 _currentNodeType = xmlTextReaderNodeType(reader);
                                 handledInChild = YES;
-                            }
-  					              }
+                    }
+                }
+								  else if (self.{{element.variableName}}) {
+								  NSLog(@"Unexpected: %@", _currentElementName);
+								  _readerOk = xmlTextReaderNext(reader);
+								  _currentNodeType = xmlTextReaderNodeType(reader);
+								  handledInChild = YES;
+								  }
                       {% /if %}{% /for %}
-                      NSLog(@"Unexpected or any: %@", _currentElementName);
+					  {% else %}NSLog(@"Unexpected: %@", _currentElementName);
+					  _readerOk = xmlTextReaderNext(reader);
+					  _currentNodeType = xmlTextReaderNodeType(reader);
+					  handledInChild = YES;
+					  {% /if %}
                     }
                 }
                 
@@ -564,15 +574,15 @@ this will be used to generate the class files for the complex types.
                     //find the correct root
                     do {
                         ret = xmlTextReaderRead(reader);
-                        if(ret == XML_READER_TYPE_ELEMENT) {
+                    if(ret == XML_READER_TYPE_ELEMENT) {
                             NSString* elementName = [NSString stringWithCString: (const char*) xmlTextReaderConstLocalName(reader) encoding:NSUTF8StringEncoding];
                             id array = kGlobalElementNamesArray;
                             NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF IN %@", array];
                             if([predicate evaluateWithObject:elementName]) {
-                                obj = [[{{ type.targetClassName }} alloc] initWithReader: reader];
+                        obj = [[{{ type.targetClassName }} alloc] initWithReader: reader];
                                 break;
                             }
-                        }
+                    }
                     } while(ret);
                     xmlFreeTextReader(reader);
                 }

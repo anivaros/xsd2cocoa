@@ -37,5 +37,6 @@
 - (id<XSType>) schemaType;
 - (BOOL) hasEnumeration;
 - (NSString*) codeType;
+- (BOOL) hasAny;
 
 @end
