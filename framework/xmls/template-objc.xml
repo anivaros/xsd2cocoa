@@ -384,10 +384,9 @@ this will be used to generate the class files for the complex types.
                 if(_currentNodeType == XML_READER_TYPE_ELEMENT || _currentNodeType == XML_READER_TYPE_TEXT) {
                     NSString* _currentElementName = [NSString stringWithCString: (const char*) xmlTextReaderConstLocalName(reader) encoding:NSUTF8StringEncoding];
                     {% for element in type.elements %}{% if not element.hasAny %}if([@"{{element.name}}" isEqualToString: _currentElementName]) {
-                        {% if element.hasComplexType %}
-                        {{ element.readCodeForContent }}
+                        {% if element.hasComplexType %}{{ element.readCodeForContent }}
                         handledInChild = YES;
-                        {% else %}
+                        {% else %}if (!xmlTextReaderIsEmptyElement(reader)) {
                         _readerOk = xmlTextReaderRead(reader);
                         _currentNodeType = xmlTextReaderNodeType(reader);
                         if (_currentNodeType != XML_READER_TYPE_END_ELEMENT) {
@@ -398,13 +397,15 @@ this will be used to generate the class files for the complex types.
                         _readerOk = xmlTextReaderRead(reader);
                         _currentNodeType = xmlTextReaderNodeType(reader);
                         }
-                        {% /if %}
-                    } else {% /if %}{% /for %}{% if type.hasSimpleBaseClass %}if([@"#text" isEqualToString: _currentElementName]){
+                        }{% /if %}
+                    }
+                    else {% /if %}{% /for %}{% if type.hasSimpleBaseClass %}if([@"#text" isEqualToString: _currentElementName]){
                         const char* contentValue = (const char*) xmlTextReaderConstValue(reader);
                         if(contentValue) {
                             {{ type.readSimpleContent }}
                         }
-                    } else {% /if %} {
+                    }
+                    else {% /if %}{
 						{% if type.hasAnyElement %}{% for element in type.elements %}{% if element.hasAny %}if (!self.{{element.variableName}} && _currentElementName) {
                             _currentNodeType = xmlTextReaderNodeType(reader);
                             if (_currentNodeType != XML_READER_TYPE_END_ELEMENT) {
