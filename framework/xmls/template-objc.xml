@@ -359,7 +359,11 @@ this will be used to generate the class files for the complex types.
         if({{ attribute.name }}AttrValue) {
             {{ attribute.readCodeForAttribute }}
             xmlFree({{ attribute.name }}AttrValue);
-        }
+        }{% if attribute.defaultValue %}
+        else {
+            {{ attribute.name }}AttrValue = (char*) "{{ attribute.defaultValue }}";
+            {{ attribute.readCodeForAttribute }}
+        }{% /if %}
         {% /for %}}
 
         /**
@@ -375,7 +379,12 @@ this will be used to generate the class files for the complex types.
             /* Customize the object */
             if(self) { {{ type.combinedReadPrefixCode }}
             {% if type.hasComplexBaseClass %}{% else %}[self readAttributes: reader];{% /if %}
-            {% for element in type.elements %}{% if element.isSingleValue %}{% else %}NSMutableArray *{{ element.variableName }}Array = [NSMutableArray array];{% /if %}
+            {% for element in type.elements %}{% if element.isSingleValue %}{% if element.defaultValue %}
+            const char *{{element.name}}ElementValue = (const char *) "{{ element.defaultValue }}";
+            if({{element.name}}ElementValue) {
+                {{ element.readCodeForContent }}
+            }
+            {% /if %}{% else %}NSMutableArray *{{ element.variableName }}Array = [NSMutableArray array];{% /if %}
             {% /for %}{% if type.hasComplexBaseClass %}int _readerOk __attribute__ ((unused)) = 1;{% else %}int _readerOk __attribute__ ((unused)) = xmlTextReaderRead(reader);{% /if %}
             int _currentNodeType __attribute__ ((unused)) = xmlTextReaderNodeType(reader);
             int _currentXmlDept = xmlTextReaderDepth(reader);
@@ -390,7 +399,7 @@ this will be used to generate the class files for the complex types.
                         _readerOk = xmlTextReaderRead(reader);
                         _currentNodeType = xmlTextReaderNodeType(reader);
                         if (_currentNodeType != XML_READER_TYPE_END_ELEMENT) {
-                        const char *{{element.name}}ElementValue = (const char*) xmlTextReaderConstValue(reader);
+                                {% if not element.defaultValue %}const char *{% /if %}{{element.name}}ElementValue = (const char*) xmlTextReaderConstValue(reader);
                         if({{element.name}}ElementValue) {
                             {{ element.readCodeForContent }}
                         }
