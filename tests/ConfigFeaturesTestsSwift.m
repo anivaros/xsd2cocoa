@@ -24,13 +24,13 @@
     self.xmlFileName = @"configFeatures";
     self.expectedFiles = @[@"libxml-bridging-header.h",
                            @"CONFIGConfig.swift",
-                           @"CONFIGAdvanced.swift",
+                           @"CONFIGConfigAdvanced.swift",
                            @"CONFIGConfig+File.swift",
                            @"CONFIGEnumeratedStringEnum.swift",
                            @"CONFIGFeature.swift",
                            @"CONFIGFeatureNameEnum.swift",
                            @"CONFIGFeatures.swift",
-                           @"CONFIGUserRightsEnum.swift"];
+                           @"CONFIGConfigUserRightsEnum.swift"];
     self.rootClassName = @"parser.CONFIGConfig";
     self.parseMethodName = @"ConfigFromURL:";
     
@@ -43,13 +43,13 @@
     self.schemaName = @"configFeaturesNamespaced";
     self.expectedFiles = @[@"libxml-bridging-header.h",
                            @"CONFIGConfig.swift",
-                           @"CONFIGAdvanced.swift",
+                           @"CONFIGConfigAdvanced.swift",
                            @"CONFIGConfig+File.swift",
                            @"CONFIGEnumeratedStringEnum.swift",
                            @"CONFIGFeature.swift",
                            @"CONFIGFeatureNameEnum.swift",
                            @"CONFIGFeatures.swift",
-                           @"CONFIGUserRightsEnum.swift"];
+                           @"CONFIGConfigUserRightsEnum.swift"];
     [self helpSetUp];
 }
 
@@ -58,13 +58,13 @@
     self.prefixOverride = @"TEST";
     self.expectedFiles = @[@"libxml-bridging-header.h",
                            @"TESTConfig.swift",
-                           @"TESTAdvanced.swift",
+                           @"TESTConfigAdvanced.swift",
                            @"TESTConfig+File.swift",
                            @"TESTEnumeratedStringEnum.swift",
                            @"TESTFeature.swift",
                            @"TESTFeatureNameEnum.swift",
                            @"TESTFeatures.swift",
-                           @"TESTUserRightsEnum.swift"];
+                           @"TESTConfigUserRightsEnum.swift"];
     self.rootClassName = @"parser.TESTConfig";
     [self helpSetUp];
 }
@@ -97,7 +97,7 @@
     
     //---
     
-    XSSimpleType *st = [schema typeForName:@"UserRights"];
+    XSSimpleType *st = [schema typeForName:@"ConfigUserRights"];
     XCTAssert(st);
     XCTAssert([st hasEnumeration]);
     

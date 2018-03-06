@@ -4,4 +4,5 @@
     <nameChange from="copy" to="textCopy"/>
     <nameChange from="class" to="typeClass"/>
     <nameChange from="description" to="elementDescription"/>
+    <nameChange from="default" to="defaultValue"/>
 </nameChanges>

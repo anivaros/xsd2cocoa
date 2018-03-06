@@ -11,7 +11,7 @@
 #define stringsToIndent @[@"{"]
 #define stringsToOutdent @[@"}"]
 #define stringsToIgnore @[@"{{", @"}}", @"{%", @"%}"]
-#define stringForIndentation @"    "
+#define stringForIndentation @"	"
 
 @implementation DDSimpleFormatter
 

@@ -31,10 +31,10 @@
                            @"MYCOMPANYStreetInfo.m",
                            @"MYCOMPANYUnitInfo.h",
                            @"MYCOMPANYUnitInfo.m",
-                           @"MYCOMPANYProperties.h",
-                           @"MYCOMPANYProperties.m",
-                           @"MYCOMPANYEntry.h",
-                           @"MYCOMPANYEntry.m"];
+                           @"MYCOMPANYAddressProperties.h",
+                           @"MYCOMPANYAddressProperties.m",
+                           @"MYCOMPANYPropertiesEntry.h",
+                           @"MYCOMPANYPropertiesEntry.m"];
     self.rootClassName = @"MYCOMPANYAddress";
     self.parseMethodName = @"addressFromURL:";
     
@@ -85,13 +85,13 @@
     XCTAssert([elementNames containsObject:@"number"]);
     XCTAssert([elementNames containsObject:@"type"]);
 
-    ct = [schema typeForName:@"Properties"];
+    ct = [schema typeForName:@"addressProperties"];
     XCTAssert(ct);
     
     elementNames = [ct.sequenceOrChoice.elements valueForKeyPath:@"name"];
     XCTAssert([elementNames containsObject:@"entry"]);
 
-    ct = [schema typeForName:@"Entry"];
+    ct = [schema typeForName:@"propertiesEntry"];
     XCTAssert(ct);
     
     elementNames = [ct.sequenceOrChoice.elements valueForKeyPath:@"name"];

@@ -24,6 +24,7 @@
 @property (weak) IBOutlet NSTextField *customPrefix;
 
 @property (weak) IBOutlet NSButton *createSubfoldersCheckbox;
+@property (weak) IBOutlet NSButton *lowercasePropertiesCheckbox;
 
 //@property (weak) IBOutlet NSButton *productTypeDynamicFramework;
 //@property (weak) IBOutlet NSButton *productTypeStaticFramework;

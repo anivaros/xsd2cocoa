@@ -27,8 +27,8 @@
                            @"MYCOMPANYAddress+File.swift",
                            @"MYCOMPANYStreetInfo.swift",
                            @"MYCOMPANYUnitInfo.swift",
-                           @"MYCOMPANYProperties.swift",
-                           @"MYCOMPANYEntry.swift"];
+                           @"MYCOMPANYAddressProperties.swift",
+                           @"MYCOMPANYPropertiesEntry.swift"];
     self.rootClassName = @"parser.MYCOMPANYAddress";
     self.parseMethodName = @"addressFromURL:";
     
@@ -79,13 +79,13 @@
     XCTAssert([elementNames containsObject:@"number"]);
     XCTAssert([elementNames containsObject:@"type"]);
 
-    ct = [schema typeForName:@"Properties"];
+    ct = [schema typeForName:@"addressProperties"];
     XCTAssert(ct);
     
     elementNames = [ct.sequenceOrChoice.elements valueForKeyPath:@"name"];
     XCTAssert([elementNames containsObject:@"entry"]);
 
-    ct = [schema typeForName:@"Entry"];
+    ct = [schema typeForName:@"propertiesEntry"];
     XCTAssert(ct);
     
     elementNames = [ct.sequenceOrChoice.elements valueForKeyPath:@"name"];

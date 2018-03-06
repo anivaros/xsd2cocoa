@@ -24,8 +24,8 @@
     self.xmlFileName = @"configFeatures";
     self.expectedFiles = @[@"CONFIGConfig.h",
                            @"CONFIGConfig.m",
-                           @"CONFIGAdvanced.h",
-                           @"CONFIGAdvanced.m",
+                           @"CONFIGConfigAdvanced.h",
+                           @"CONFIGConfigAdvanced.m",
                            @"CONFIGConfig+File.h",
                            @"CONFIGConfig+File.m",
                            @"CONFIGEnumeratedStringEnum.h",
@@ -37,8 +37,8 @@
                            @"CONFIGFeatures.h",
                            @"CONFIGFeatures.m",
                            @"configFeaturesHeaders.h",
-                           @"CONFIGUserRightsEnum.h",
-                           @"CONFIGUserRightsEnum.m"];
+                           @"CONFIGConfigUserRightsEnum.h",
+                           @"CONFIGConfigUserRightsEnum.m"];
     self.rootClassName = @"CONFIGConfig";
     self.parseMethodName = @"ConfigFromURL:";
     
@@ -51,8 +51,8 @@
     self.schemaName = @"configFeaturesNamespaced";
     self.expectedFiles = @[@"CONFIGConfig.h",
                            @"CONFIGConfig.m",
-                           @"CONFIGAdvanced.h",
-                           @"CONFIGAdvanced.m",
+                           @"CONFIGConfigAdvanced.h",
+                           @"CONFIGConfigAdvanced.m",
                            @"CONFIGConfig+File.h",
                            @"CONFIGConfig+File.m",
                            @"CONFIGEnumeratedStringEnum.h",
@@ -64,8 +64,8 @@
                            @"CONFIGFeatures.h",
                            @"CONFIGFeatures.m",
                            @"configFeaturesNamespaced.h",
-                           @"CONFIGUserRightsEnum.h",
-                           @"CONFIGUserRightsEnum.m"];
+                           @"CONFIGConfigUserRightsEnum.h",
+                           @"CONFIGConfigUserRightsEnum.m"];
     [self helpSetUp];
 }
 
@@ -74,8 +74,8 @@
     self.prefixOverride = @"TEST";
     self.expectedFiles = @[@"TESTConfig.h",
                            @"TESTConfig.m",
-                           @"TESTAdvanced.h",
-                           @"TESTAdvanced.m",
+                           @"TESTConfigAdvanced.h",
+                           @"TESTConfigAdvanced.m",
                            @"TESTConfig+File.h",
                            @"TESTConfig+File.m",
                            @"TESTEnumeratedStringEnum.h",
@@ -87,8 +87,8 @@
                            @"TESTFeatures.h",
                            @"TESTFeatures.m",
                            @"configFeatures.h",
-                           @"TESTUserRightsEnum.h",
-                           @"TESTUserRightsEnum.m"];
+                           @"TESTConfigUserRightsEnum.h",
+                           @"TESTConfigUserRightsEnum.m"];
     self.rootClassName = @"TESTConfig";
     [self helpSetUp];
 }
@@ -121,7 +121,7 @@
     
     //---
     
-    XSSimpleType *st = [schema typeForName:@"UserRights"];
+    XSSimpleType *st = [schema typeForName:@"ConfigUserRights"];
     XCTAssert(st);
     XCTAssert([st hasEnumeration]);
     

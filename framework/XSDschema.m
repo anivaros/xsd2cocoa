@@ -258,12 +258,12 @@
         self.targetNamespacePrefix = @"";
     }
     else {
-        if([[NSCharacterSet uppercaseLetterCharacterSet] characterIsMember:[self.targetNamespacePrefix characterAtIndex:0]]) {
-            self.targetNamespacePrefix = self.targetNamespacePrefix;// uppercaseString];
-        }
-        else {
+//        if([[NSCharacterSet uppercaseLetterCharacterSet] characterIsMember:[self.targetNamespacePrefix characterAtIndex:0]]) {
+//            self.targetNamespacePrefix = self.targetNamespacePrefix;// uppercaseString];
+//        }
+//        else {
             self.targetNamespacePrefix = [self.targetNamespacePrefix uppercaseString];
-        }
+//        }
     }
 }
 
@@ -602,6 +602,9 @@
     }
     
     //name fixes
+    NSRange firstCharacterRange = NSMakeRange(0, 1);
+    vName = [vName stringByReplacingCharactersInRange:firstCharacterRange withString:[vName substringWithRange: firstCharacterRange].lowercaseString];
+    
     id newName = [[self.class knownNameChanges] objectForKey:vName];
     if(newName) {
         vName = newName;
