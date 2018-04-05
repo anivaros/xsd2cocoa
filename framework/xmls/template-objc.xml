@@ -521,7 +521,6 @@ this will be used to generate the class files for the complex types.
             {% else %}
             if(self.{{ element.variableName }}){
                 {% if element.hasEnumeration %}[dict setObject:{{ element.schemaType.enumerationName }}ToString(self.{{ element.variableName }}) forKey:@"{{ element.variableName }}"];{% else %}[dict setObject:self.{{ element.variableName }} forKey:@"{{ element.variableName }}"];{% /if %}
-                
             }
             {% /if %}
             {% /for %}{% if type.hasSimpleBaseClass %}
