@@ -861,21 +861,18 @@
                                                                                    options:NSDirectoryEnumerationSkipsPackageDescendants| NSDirectoryEnumerationSkipsHiddenFiles
                                                                               errorHandler:nil];
 
-    NSMutableString *includes = [NSMutableString string];
+    NSMutableArray <NSString *> *includes = [NSMutableArray array];
     for (NSURL *theURL in dirEnumerator) {
         NSNumber *isDirectory;
         [theURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:NULL];
         if (![isDirectory boolValue]) {
             if([theURL.pathExtension isEqualTo:@"h"]) {
-                if(includes.length) {
-                    [includes appendString:@"\n"];
-                }
-                [includes appendFormat:@"#import \"%@\"", theURL.lastPathComponent];
+                [includes addObject:[NSString stringWithFormat:@"#import \"%@\"", theURL.lastPathComponent]];
             }
         }
     }
-    
-    return includes;
+    [includes sortUsingSelector:@selector(compare:)];
+    return [includes componentsJoinedByString:@"\n"];
 }
 
 - (BOOL) formatFilesInFolder: (NSURL*) destinationFolder
