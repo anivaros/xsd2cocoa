@@ -472,13 +472,13 @@ this will be used to generate the class files for the complex types.
                     }
                 }
 								  else if (self.{{element.variableName}}) {
-								  DDLogError(@"Unexpected: %@", _currentElementName);
+                                  NSAssert(NO, @"Unexpected: %@", _currentElementName);
 								  _readerOk = xmlTextReaderNext(reader);
 								  _currentNodeType = xmlTextReaderNodeType(reader);
 								  handledInChild = YES;
 								  }
                       {% /if %}{% /for %}
-					  {% else %}DDLogError(@"Unexpected: %@", _currentElementName);
+					  {% else %}NSAssert(NO, @"Unexpected: %@", _currentElementName);
 					  _readerOk = xmlTextReaderNext(reader);
 					  _currentNodeType = xmlTextReaderNodeType(reader);
 					  handledInChild = YES;
