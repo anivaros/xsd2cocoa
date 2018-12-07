@@ -15,7 +15,7 @@
 @property (readonly, nonatomic) NSXMLElement* node;
 @property (readonly, weak, nonatomic) XSDschema* schema;
 
-- (id) initWithNode:(NSXMLElement*)node schema:(XSDschema*)schema;
+- (instancetype) initWithNode:(NSXMLElement*)node schema:(XSDschema*)schema;
 
 - (BOOL)hasAnnotations;
 - (NSArray*)annotations;

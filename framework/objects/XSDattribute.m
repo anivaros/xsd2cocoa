@@ -24,7 +24,7 @@
 
 @implementation XSDattribute
 
-- (id) init
+- (instancetype) init
 {
     if(self = [super init]) {
         self.name = nil;
@@ -39,7 +39,7 @@
 }
 
 
-- (id) initWithNode: (NSXMLElement*) node schema: (XSDschema*) schema{
+- (instancetype) initWithNode: (NSXMLElement*) node schema: (XSDschema*) schema{
     if(self = [super initWithNode:node schema:schema]) {
         self.name = [XMLUtils node:node stringAttribute:@"name"];
         self.simpleType = [XMLUtils node:node stringAttribute:@"simpleType"];
@@ -68,7 +68,7 @@
 }
 
 - (NSString*) variableName {
-    return [XSDschema variableNameFromName:self.name multiple:NO];
+    return [self.schema variableNameFromName:self.name multiple:NO];
 }
 
 - (id<XSType>)schemaType {

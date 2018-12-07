@@ -125,12 +125,33 @@
         classPrefix = self.customPrefix.stringValue;
     }
     
+    /* Select the type of code that we want to generate (Framework, Library, or Source Code -- Default for us is source code) */
+    XSDschemaGeneratorOptions productTypes = 0;
+    //    if(self.productTypeDynamicFramework.state==NSOnState) {
+    //        productTypes |= XSDschemaGeneratorOptionDynamicFramework;
+    //    }
+    //    if(self.productTypeStaticFramework.state==NSOnState) {
+    //        productTypes |= XSDschemaGeneratorOptionStaticFramework;
+    //    }
+    if(self.productTypeSourceCode.state==NSOnState) {
+        productTypes |= XSDschemaGeneratorOptionSourceCode;
+        
+        if (self.createSubfoldersCheckbox.state == NSOnState) {
+            productTypes |= XSDschemaGeneratorOptionSourceCodeWithSubfolders;
+        }
+    }
+    if(self.lowercasePropertiesCheckbox.state==NSOnState) {
+        productTypes |= XSDschemaGeneratorOptionLowercaseProperties;
+    }
+    if(self.indentWithTabsCheckbox.state==NSOnState) {
+        productTypes |= XSDschemaGeneratorOptionIndentWithTabs;
+    }
 
     /* Open the schema specified by the user */
     NSError* error = nil;
     
     /* Build the schemea with simple types, complex types, and elements with imported schemas */
-    XSDschema* schema = [[XSDschema alloc] initWithUrl: schemaURL targetNamespacePrefix: classPrefix error: &error];
+    XSDschema* schema = [[XSDschema alloc] initWithUrl: schemaURL targetNamespacePrefix: classPrefix options: productTypes error: &error];
     if(error != nil) {
         if(error.code == 50) {
             __weak typeof(self) wself = self;
@@ -205,28 +226,11 @@
         return;
     }
     
-    /* Select the type of code that we want to generate (Framework, Library, or Source Code -- Default for us is source code) */
-    XSDschemaGeneratorOptions productTypes = 0;
-//    if(self.productTypeDynamicFramework.state==NSOnState) {
-//        productTypes |= XSDschemaGeneratorOptionDynamicFramework;
-//    }
-//    if(self.productTypeStaticFramework.state==NSOnState) {
-//        productTypes |= XSDschemaGeneratorOptionStaticFramework;
-//    }
-    if(self.productTypeSourceCode.state==NSOnState) {
-        if (self.createSubfoldersCheckbox.state == NSOnState) {
-            productTypes |= XSDschemaGeneratorOptionSourceCodeWithSubfolders;
-        }
-        else {
-            productTypes |= XSDschemaGeneratorOptionSourceCode;
-        }
-    }
-    
     /*  
      *  Write the code for the types that are currently in use... All the simple types
      *  that are used in the template and generated for our code will be used here
      */
-    [schema generateInto:outFolder products:productTypes error:&error];
+    [schema generateInto:outFolder error:&error];
     if(error != nil) {
         NSString *errorString = ([error localizedDescription] != nil) ? [error localizedDescription] : @"Unknown Error";
         NSRunAlertPanel(@"Error", @"Error while generating code. %@", @"OK", nil, nil, errorString);

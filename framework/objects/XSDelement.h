@@ -27,7 +27,7 @@
 @property (readonly, nonatomic) NSNumber* minOccurs;
 @property (readonly, nonatomic) NSNumber* maxOccurs;
 
-- (id) initWithNode:(NSXMLElement*)node schema:(XSDschema*)schema minOccurs:(NSNumber *)minOccurs maxOccurs:(NSNumber *)maxOccurs;
+- (instancetype) initWithNode:(NSXMLElement*)node schema:(XSDschema*)schema minOccurs:(NSNumber *)minOccurs maxOccurs:(NSNumber *)maxOccurs;
 
 - (NSString*) readCodeForContent;
 - (NSString*) variableName; //in generated code

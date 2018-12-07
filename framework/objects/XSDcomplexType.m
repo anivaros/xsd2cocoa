@@ -36,7 +36,7 @@
     MGTemplateEngine *engine2; //we need this because else we would recurse and recursion within a single engine is bad
 }
 
-- (id) init{
+- (instancetype) init{
     self = [super init];
     if(self)
     {
@@ -60,7 +60,7 @@
  *              and generate the complexType object. This will become the Object-C header/class
  *              file.
  */
-- (id) initWithNode:(NSXMLElement*)node schema:(XSDschema*)schema {
+- (instancetype) initWithNode:(NSXMLElement*)node schema:(XSDschema*)schema {
     /* Ensure that we have a node defined */
     if(node == nil || schema == nil) {
         return nil;

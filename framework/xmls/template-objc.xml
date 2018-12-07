@@ -125,88 +125,69 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
   </simpletype>
   <simpletype name="dateTime" objType="NSDate" arrayType="NSArray">
     <read>
-        <prefix>id sRFC3339DateFormatterSubSeconds = [[NSDateFormatter alloc] init];
-            [sRFC3339DateFormatterSubSeconds setLocale:self.locale];
-            [sRFC3339DateFormatterSubSeconds setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSSSSSXXXXX"];
-            [sRFC3339DateFormatterSubSeconds setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-            id sRFC3339DateFormatterSeconds = [[NSDateFormatter alloc] init];
-            [sRFC3339DateFormatterSeconds setLocale:self.locale];
-            [sRFC3339DateFormatterSeconds setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ssXXXXX"];
-            [sRFC3339DateFormatterSeconds setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-            id sRFC3339DateFormatter = [[NSDateFormatter alloc] init];
-            [sRFC3339DateFormatter setLocale:self.locale];
-            [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss"];</prefix>
-      <attribute>self.{{ attribute.variableName }} = [sRFC3339DateFormatter
-      dateFromString:[NSString stringWithCString:{{ attribute.name
-      }}AttrValue encoding:NSUTF8StringEncoding]];
-      if(!self.{{ attribute.variableName }}) {
-      self.{{ attribute.variableName }} = [sRFC3339DateFormatterSeconds
-      dateFromString:[NSString stringWithCString:{{ attribute.name
-      }}AttrValue encoding:NSUTF8StringEncoding]];
-      }
-          if(!self.{{ attribute.variableName }}) {
-              self.{{ attribute.variableName }} = [sRFC3339DateFormatterSubSeconds
-      dateFromString:[NSString stringWithCString:{{ attribute.name
-          }}AttrValue encoding:NSUTF8StringEncoding]];
-          }</attribute>
+        <prefix>NSDate *(^dateFromStringBlock)(NSString *dateString) = ^NSDate *(NSString *dateString) {
+                NSDateFormatter *sRFC3339DateFormatter = [[NSDateFormatter alloc] init];
+                [sRFC3339DateFormatter setLocale:self.locale];
+                [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSSSSSXXXXX"];
+                NSDate *date = [sRFC3339DateFormatter dateFromString:dateString];
+                if(!date) {
+                     [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ssXXXXX"];
+                     date = [sRFC3339DateFormatter dateFromString:dateString];
+                }
+                if(!date) {
+                     [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ssZ"];
+                     date = [sRFC3339DateFormatter dateFromString:dateString];
+                }
+                if(!date) {
+                    [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss"];
+                    date = [sRFC3339DateFormatter dateFromString:dateString];
+                }
+                return date;
+            };</prefix>
+      <attribute>
+          self.{{ attribute.variableName }} = dateFromStringBlock([NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding]);</attribute>
       <element>
         <![CDATA[
-        {% if element.isSingleValue %}self.{{ element.variableName }} = [sRFC3339DateFormatter dateFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];
-        if(!self.{{ element.variableName }}) {
-            self.{{ element.variableName }} = [sRFC3339DateFormatterSubSeconds dateFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];
-        }
-        {% else %}id {{ element.variableName }}Temp = [sRFC3339DateFormatter dateFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];
-        if(!{{ element.variableName }}) {
-            {{ element.variableName }}Temp = [sRFC3339DateFormatterSubSeconds dateFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];
-        }
+        {% if element.isSingleValue %}self.{{ element.variableName }} = dateFromStringBlock([NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]);
+        {% else %}id {{ element.variableName }}Temp = dateFromStringBlock([NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]);
         [{{ element.variableName }}Array addObject:{{ element.variableName }}Temp];
         {% /if %}
         ]]>
         </element>
       <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
       value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-      self.value = [sRFC3339DateFormatter dateFromString:value];
-          if(!self.value) {
-              self.value = [sRFC3339DateFormatterSubSeconds dateFromString:value];
-          }</value>
+      self.value = dateFromStringBlock(value);</value>
     </read>
   </simpletype>
   <simpletype name="date" objType="NSDate" arrayType="NSArray">
       <read>
-          <prefix>NSDateFormatter* dateOnlyFormatter = [[NSDateFormatter
-              alloc] init];
+          <prefix>NSDateFormatter* dateOnlyFormatter = [[NSDateFormatter alloc] init];
               dateOnlyFormatter.dateFormat = @"yyyy-MM-dd";
               dateOnlyFormatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
               dateOnlyFormatter.locale = self.locale;
           </prefix>
-          <attribute>self.{{ attribute.variableName }} = [dateOnlyFormatter
-              dateFromString:[NSString stringWithCString:{{ attribute.name
-              }}AttrValue encoding:NSUTF8StringEncoding]];</attribute>
+          <attribute>self.{{ attribute.variableName }} = [dateOnlyFormatter dateFromString:[NSString stringWithCString:{{ attribute.name }}AttrValue
+                                                                                                     encoding:NSUTF8StringEncoding]];</attribute>
           <element>
               <![CDATA[
                   {% if element.isSingleValue %}self.{{ element.variableName }} = [dateOnlyFormatter dateFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];{% else %}[{{ element.variableName }}Array addObject:[dateOnlyFormatter dateFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]]];
                   {% /if %}
               ]]>
           </element>
-          <value>NSString *value = [NSString
-              stringWithCString:contentValue
-              encoding:NSUTF8StringEncoding]; value = [value
-              stringByTrimmingCharactersInSet:[NSCharacterSet
-              whitespaceAndNewlineCharacterSet]]; self.value =
-              [dateOnlyFormatter dateFromString:value];</value>
+          <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
+              value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+              self.value = [dateOnlyFormatter dateFromString:value];</value>
       </read>
   </simpletype>
   <simpletype name="time" objType="NSDate" arrayType="NSArray">
       <read>
-          <prefix>NSDateFormatter* timeFormatter = [[NSDateFormatter
-              alloc] init];
+          <prefix>NSDateFormatter* timeFormatter = [[NSDateFormatter alloc] init];
               timeFormatter.dateFormat = @"HH:mm:ss";
               timeFormatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
               timeFormatter.locale = self.locale;
           </prefix>
-          <attribute>self.{{ attribute.variableName }} = [timeFormatter
-              dateFromString:[NSString stringWithCString:{{ attribute.name
-              }}AttrValue encoding:NSUTF8StringEncoding]];</attribute>
+          <attribute>self.{{ attribute.variableName }} = [timeFormatter dateFromString:[NSString stringWithCString:{{ attribute.name }}AttrValue
+                                                                                                 encoding:NSUTF8StringEncoding]];</attribute>
           <element>
               <![CDATA[
                   {% if element.isSingleValue %}self.{{ element.variableName }} = [timeFormatter dateFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];{% else %}[{{ element.variableName }}Array addObject:[timeFormatter dateFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]]];
@@ -311,7 +292,7 @@ this will be used to generate the class header files for the complex types.
         {% if type.hasSimpleBaseClass %}/**
         the type's underlying value
         */
-        @property (nonatomic, strong) {% if type.baseClass.hasEnumeration %}{{ type.baseClass.enumerationName }} {% else %}{{ type.baseClass.targetClassName }}* {% /if %}value;
+        @property (nonatomic{% if type.baseClass.hasEnumeration %}) {{ type.baseClass.enumerationName }} {% else %}, strong) {{ type.baseClass.targetClassName }}* {% /if %}value;
         {% /if %}
 
         /** Returns a dictionary representation of this class (recursivly making dictionaries of properties) */
@@ -322,7 +303,7 @@ this will be used to generate the class header files for the complex types.
         @interface {{ type.targetClassName }} (Reading)
 
         /** The class's initializer used by the reader to build the object structure during parsing (xmlTextReaderPtr at the moment) */
-        - (id) initWithReader: (void*) reader;
+        - (instancetype) initWithReader: (void*) reader;
 
         /** Method that is overidden by subclasses that want to extend the base type (xmlTextReaderPtr at the moment) */
         - (void) readAttributes: (void*) reader;
@@ -413,7 +394,7 @@ this will be used to generate the class files for the complex types.
         * Returns:     returns the classes created object
         * Description: Iterate through the XML and create the {{ type.targetClassFileName }} object
         */
-        - (id) initWithReader:(void *) reader {
+        - (instancetype) initWithReader:(void *) reader {
             int _complexTypeXmlDept = xmlTextReaderDepth(reader);
             {% if type.hasComplexBaseClass %}self = [super initWithReader: reader];{% else %}self = [super init];{% /if %}
             
@@ -472,10 +453,10 @@ this will be used to generate the class files for the complex types.
                     }
                 }
 								  else if (self.{{element.variableName}}) {
-                                  NSAssert(NO, @"Unexpected: %@", _currentElementName);
-								  _readerOk = xmlTextReaderNext(reader);
-								  _currentNodeType = xmlTextReaderNodeType(reader);
-								  handledInChild = YES;
+                                      NSAssert(NO, @"Unexpected: %@", _currentElementName);
+                                      _readerOk = xmlTextReaderNext(reader);
+                                      _currentNodeType = xmlTextReaderNodeType(reader);
+                                      handledInChild = YES;
 								  }
                       {% /if %}{% /for %}
 					  {% else %}NSAssert(NO, @"Unexpected: %@", _currentElementName);

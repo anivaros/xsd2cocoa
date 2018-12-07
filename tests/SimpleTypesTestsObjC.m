@@ -177,7 +177,7 @@
 }
 
 - (void)testTargetClassesOfSimpleTypes {
-    XSDschema *schema = [[XSDschema alloc] initWithUrl:self.schemaUrl targetNamespacePrefix:nil error:nil];
+    XSDschema *schema = [[XSDschema alloc] initWithUrl:self.schemaUrl targetNamespacePrefix:nil options:XSDschemaGeneratorOptionSourceCode error:nil];
     XSDcomplexType *ct = [schema typeForName:@"SimpleTypesType"];
 
     //the classes are only valid after loading a template
@@ -196,7 +196,7 @@
 }
 
 - (void)testExistenceOfReadCodeOfSimpleTypes {
-    XSDschema *schema = [[XSDschema alloc] initWithUrl:self.schemaUrl targetNamespacePrefix:nil error:nil];
+    XSDschema *schema = [[XSDschema alloc] initWithUrl:self.schemaUrl targetNamespacePrefix:nil options:XSDschemaGeneratorOptionSourceCode error:nil];
     XSDcomplexType *ct = [schema typeForName:@"SimpleTypesType"];
     
     //the classes are only valid after loading a template

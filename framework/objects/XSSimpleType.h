@@ -29,8 +29,8 @@
 - (BOOL)supplyTemplates:(NSXMLElement *)element enumTypeNode:(NSXMLNode*)enumTypeNode error:(NSError *__autoreleasing *)error;
 - (NSDictionary*) substitutionDict;
 
-- (id) initWithNode: (NSXMLElement*) node schema: (XSDschema*) schema;
-- (id) initWithName: (NSString*) name baseType: (NSString*)baseType schema: (XSDschema*) schema;
+- (instancetype) initWithNode: (NSXMLElement*) node schema: (XSDschema*) schema;
+- (instancetype) initWithName: (NSString*) name baseType: (NSString*)baseType schema: (XSDschema*) schema;
 
 //enum support
 - (BOOL) hasEnumeration;

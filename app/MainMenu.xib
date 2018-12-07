@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13770" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13770"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
         <capability name="box content view" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -454,6 +454,7 @@ DQ
                 <outlet property="advancedOptionsButton" destination="NrG-Eb-ed4" id="oV6-aN-UbZ"/>
                 <outlet property="createSubfoldersCheckbox" destination="ZxG-Mr-JCF" id="h2w-WN-BD4"/>
                 <outlet property="customPrefix" destination="tkt-Dk-vOf" id="CH2-2L-7Jk"/>
+                <outlet property="indentWithTabsCheckbox" destination="gQK-b0-KW8" id="fTb-Jj-L8V"/>
                 <outlet property="lowercasePropertiesCheckbox" destination="AS1-VK-mgQ" id="WvA-L3-5Vi"/>
                 <outlet property="outputFolderPathTextfield" destination="bXB-tP-aWJ" id="zOA-Ry-c3l"/>
                 <outlet property="productTypeSourceCode" destination="ppY-Ga-rGD" id="2z8-br-e8I"/>
@@ -465,14 +466,14 @@ DQ
             </connections>
         </customObject>
         <box hidden="YES" autoresizesSubviews="NO" misplaced="YES" borderType="line" title="Box" titlePosition="noTitle" id="ovF-HT-zwy">
-            <rect key="frame" x="0.0" y="0.0" width="376" height="236"/>
+            <rect key="frame" x="0.0" y="0.0" width="376" height="253"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" id="fH3-jN-NuC">
-                <rect key="frame" x="1" y="1" width="374" height="234"/>
+                <rect key="frame" x="3" y="3" width="370" height="247"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="YES" id="H60-8D-EWM">
-                        <rect key="frame" x="17" y="205" width="119" height="17"/>
+                        <rect key="frame" x="17" y="218" width="119" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Parser Template:" id="r4t-LP-FZS">
                             <font key="font" metaFont="system"/>
@@ -484,7 +485,7 @@ DQ
                         </connections>
                     </textField>
                     <textField verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="YES" id="shM-H9-Sro">
-                        <rect key="frame" x="38" y="113" width="240" height="22"/>
+                        <rect key="frame" x="38" y="126" width="236" height="22"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="file path to custom template xml" drawsBackground="YES" id="eIH-a1-P24">
                             <font key="font" metaFont="system"/>
@@ -497,7 +498,7 @@ DQ
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="YES" id="U1d-l3-I8J">
-                        <rect key="frame" x="18" y="77" width="133" height="17"/>
+                        <rect key="frame" x="18" y="90" width="133" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Custom Class Prefix:" id="oiu-Up-vJg">
                             <font key="font" metaFont="system"/>
@@ -509,7 +510,7 @@ DQ
                         </connections>
                     </textField>
                     <textField verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="YES" id="tkt-Dk-vOf">
-                        <rect key="frame" x="155" y="75" width="171" height="22"/>
+                        <rect key="frame" x="155" y="88" width="167" height="22"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Custom class prefix" drawsBackground="YES" id="TN1-Zv-4NQ">
                             <font key="font" metaFont="system"/>
@@ -522,7 +523,7 @@ DQ
                         </connections>
                     </textField>
                     <button horizontalHuggingPriority="750" verticalHuggingPriority="750" id="K4n-lo-vD4">
-                        <rect key="frame" x="332" y="72" width="25" height="25"/>
+                        <rect key="frame" x="328" y="85" width="25" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="63F-Sn-IZe">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -533,7 +534,7 @@ DQ
                         </connections>
                     </button>
                     <button horizontalHuggingPriority="750" verticalHuggingPriority="750" id="WsS-jm-SMN">
-                        <rect key="frame" x="332" y="111" width="25" height="25"/>
+                        <rect key="frame" x="328" y="124" width="25" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="plS-ht-NOZ">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -544,7 +545,7 @@ DQ
                         </connections>
                     </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="YES" id="fUe-t3-9mS">
-                        <rect key="frame" x="18" y="-22" width="119" height="17"/>
+                        <rect key="frame" x="18" y="-21" width="119" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Products" id="OAp-et-Wha">
                             <font key="font" metaFont="system"/>
@@ -553,7 +554,7 @@ DQ
                         </textFieldCell>
                     </textField>
                     <button misplaced="YES" id="fZa-gc-oL6">
-                        <rect key="frame" x="17" y="-86" width="251" height="18"/>
+                        <rect key="frame" x="17" y="-85" width="251" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Dynamic frameworks (OSX and iOS8)" bezelStyle="regularSquare" imagePosition="left" enabled="NO" inset="2" id="Ilx-JD-e5b">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -561,7 +562,7 @@ DQ
                         </buttonCell>
                     </button>
                     <button misplaced="YES" id="ZxG-Mr-JCF">
-                        <rect key="frame" x="17" y="39" width="251" height="18"/>
+                        <rect key="frame" x="17" y="52" width="251" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Create subfolder for every schema" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="jZ5-bW-dgA">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -569,15 +570,23 @@ DQ
                         </buttonCell>
                     </button>
                     <button misplaced="YES" id="AS1-VK-mgQ">
-                        <rect key="frame" x="17" y="14" width="253" height="18"/>
+                        <rect key="frame" x="17" y="27" width="253" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Start properies names from lowercase" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="zke-ZQ-3Th">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                     </button>
+                    <button misplaced="YES" id="gQK-b0-KW8">
+                        <rect key="frame" x="17" y="2" width="214" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="check" title="Indent with tabs instead spaces" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="x2P-fy-aSF">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                    </button>
                     <button misplaced="YES" id="ppY-Ga-rGD">
-                        <rect key="frame" x="17" y="-46" width="286" height="18"/>
+                        <rect key="frame" x="17" y="-45" width="286" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Source code (for copying into your project)" bezelStyle="regularSquare" imagePosition="left" enabled="NO" state="on" inset="2" id="Q3e-km-m3D">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -585,7 +594,7 @@ DQ
                         </buttonCell>
                     </button>
                     <button misplaced="YES" id="VYC-yf-F02">
-                        <rect key="frame" x="17" y="-66" width="295" height="18"/>
+                        <rect key="frame" x="17" y="-65" width="295" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Static framework (OSX and IOS7(and below)" bezelStyle="regularSquare" imagePosition="left" enabled="NO" inset="2" id="z6F-OL-Tw7">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -593,7 +602,7 @@ DQ
                         </buttonCell>
                     </button>
                     <matrix verticalHuggingPriority="750" allowsEmptySelection="NO" autorecalculatesCellSize="YES" id="BGQ-MM-U13">
-                        <rect key="frame" x="18" y="137" width="308" height="58"/>
+                        <rect key="frame" x="18" y="150" width="308" height="58"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         <size key="cellSize" width="185" height="18"/>
@@ -624,7 +633,7 @@ DQ
                         </connections>
                     </matrix>
                     <button verticalHuggingPriority="750" misplaced="YES" id="vmk-9i-A0X">
-                        <rect key="frame" x="280" y="-55" width="52" height="32"/>
+                        <rect key="frame" x="277" y="-55" width="52" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <buttonCell key="cell" type="push" title="..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="IyW-SH-rhd">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -636,7 +645,7 @@ DQ
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" misplaced="YES" id="CeK-B0-j6O">
-                        <rect key="frame" x="280" y="107" width="52" height="32"/>
+                        <rect key="frame" x="276" y="120" width="52" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0ML-By-SW3">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -648,7 +657,7 @@ DQ
                     </button>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="147" y="355"/>
+            <point key="canvasLocation" x="147" y="363.5"/>
         </box>
     </objects>
 </document>

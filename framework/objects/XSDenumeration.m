@@ -20,7 +20,7 @@
 
 @implementation XSDenumeration
 
-- (id) init
+- (instancetype) init
 {
     if(self = [super init]) {
         self.value = nil;
@@ -29,7 +29,7 @@
 }
 
 
-- (id) initWithNode: (NSXMLElement*) node schema: (XSDschema*) schema{
+- (instancetype) initWithNode: (NSXMLElement*) node schema: (XSDschema*) schema{
     if(self = [super initWithNode:node schema:schema]) {
         self.value = [XMLUtils node:node stringAttribute:@"value"];
     }

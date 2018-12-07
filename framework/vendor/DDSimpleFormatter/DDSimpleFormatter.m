@@ -11,7 +11,8 @@
 #define stringsToIndent @[@"{"]
 #define stringsToOutdent @[@"}"]
 #define stringsToIgnore @[@"{{", @"}}", @"{%", @"%}"]
-#define stringForIndentation @"	"
+#define stringForIndentationTab @"	"
+#define stringForIndentationSpace @"    "
 
 @implementation DDSimpleFormatter
 
@@ -61,7 +62,7 @@
         
         //assemble line
         for(int i=0; i<indent; i++) {
-            [newLines appendString:stringForIndentation];
+            [newLines appendString:self.indentWithTabs ? stringForIndentationTab : stringForIndentationSpace];
         }
         [newLines appendString:trimmed];
         [newLines appendString:@"\n"];

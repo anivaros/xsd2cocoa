@@ -19,7 +19,7 @@
 
 @implementation XSDAnnotation
 
-- (id) initWithNode:(NSXMLElement*)node schema:(XSDschema*)schema {
+- (instancetype) initWithNode:(NSXMLElement*)node schema:(XSDschema*)schema {
     self = [super initWithNode:node schema:schema];
     if(self) {
         self.identifier = [[XMLUtils node:node stringAttribute:@"id"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];

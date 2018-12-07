@@ -49,7 +49,7 @@
     return self;
 }
 
-- (id) initWithNode:(NSXMLElement*)node schema:(XSDschema*)schema {
+- (instancetype) initWithNode:(NSXMLElement*)node schema:(XSDschema*)schema {
     self = [super initWithNode:node schema:schema];
     /* Continute to add items to the extended XSSchemaNode class */
     if (self) {
@@ -96,7 +96,7 @@
     return self;
 } 
 
-- (id) initWithName: (NSString*) name baseType: (NSString*)baseType schema: (XSDschema*) schema {
+- (instancetype) initWithName: (NSString*) name baseType: (NSString*)baseType schema: (XSDschema*) schema {
     self = [super initWithNode:nil schema:schema];
     if (self) {
         engine = [MGTemplateEngine templateEngine];

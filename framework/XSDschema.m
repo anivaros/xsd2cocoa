@@ -67,15 +67,20 @@
 }
 
 // Called when initializing the object from a node
-- (id) initWithNode:(NSXMLElement*)node targetNamespacePrefix:(NSString*)prefix error:(NSError**)error  {
+- (instancetype) initWithUrl: (NSURL*) schemaUrl node:(NSXMLElement*)node targetNamespacePrefix:(NSString*)prefix options: (XSDschemaGeneratorOptions)options error:(NSError**)error  {
 	self = [super initWithNode:node schema:nil];
     if(self) {
         _knownSimpleTypeDict = [NSMutableDictionary dictionary];
-        self.simpleTypes = [NSMutableArray array];
+        _simpleTypes = [NSMutableArray array];
         _knownComplexTypeDict = [NSMutableDictionary dictionary];
-        self.complexTypes = [NSMutableArray array];
+        _complexTypes = [NSMutableArray array];
         
-        self.schemaId = [[node attributeForName: @"id"] stringValue];
+        /* The location of where our schema is located */
+        _schemaUrl = schemaUrl;
+        
+        _schemaId = [[node attributeForName: @"id"] stringValue];
+        
+        _options = options;
         
         /* Get namespaces and set derived class prefix */
         self.targetNamespace = [[node attributeForName: @"targetNamespace"] stringValue];
@@ -130,7 +135,7 @@
                 }
                 return nil;
             }
-            XSDschema *xsd = [[self.class alloc] initWithUrl:url targetNamespacePrefix:prefix error:error];
+            XSDschema *xsd = [[self.class alloc] initWithUrl:url targetNamespacePrefix:prefix options:self.options error:error];
             if(!xsd) {
                 return nil;
             }
@@ -198,7 +203,7 @@
 	return self;
 }
 
-- (id) initWithUrl: (NSURL*) schemaUrl targetNamespacePrefix: (NSString*) prefix error: (NSError**) error {
+- (instancetype) initWithUrl: (NSURL*) schemaUrl targetNamespacePrefix: (NSString*) prefix options: (XSDschemaGeneratorOptions)options error: (NSError**) error {
     NSData* data = [NSData dataWithContentsOfURL: schemaUrl];
     /* If we do not have data present an instance error that we cannot open the xsd file at the given location */
     if(!data) {
@@ -213,17 +218,8 @@
         return nil;
     }
     
-    /* The location of where our schema is located */
-    self.schemaUrl = schemaUrl;
-    
     /* From the root element, grab the complex, simple, and elements into their respective arrays */
-    self = [self initWithNode: [doc rootElement] targetNamespacePrefix: prefix error: error];
-    /* Continue to setup the schema */
-    if (self) {
-        
-    }
-    
-    return self;
+    return [self initWithUrl: schemaUrl node: [doc rootElement] targetNamespacePrefix: prefix options:options error: error];
 }
 
 - (NSString*)nameSpacedSchemaNodeNameForNodeName:(NSString*)nodeName {
@@ -353,6 +349,7 @@
         NSString *attr = [[styleNode attributeForName:@"type"] stringValue];
         if([attr isEqualToString:@"builtin"]) {
             self.formatter = [DDSimpleFormatter sharedInstance];
+            self.formatter.indentWithTabs = self.options & XSDschemaGeneratorOptionIndentWithTabs;
         }
         else {
             NSLog(@"Unknown formatter type: %@", attr);
@@ -574,7 +571,7 @@
     }
 }
 
-+ (NSString*) variableNameFromName:(NSString*)vName multiple:(BOOL)multiple {
+- (NSString*) variableNameFromName:(NSString*)vName multiple:(BOOL)multiple {
     NSParameterAssert(vName.length);
     
     NSCharacterSet* illegalChars = [NSCharacterSet characterSetWithCharactersInString: @"-"];
@@ -602,8 +599,10 @@
     }
     
     //name fixes
-    NSRange firstCharacterRange = NSMakeRange(0, 1);
-    vName = [vName stringByReplacingCharactersInRange:firstCharacterRange withString:[vName substringWithRange: firstCharacterRange].lowercaseString];
+    if (self.options & XSDschemaGeneratorOptionLowercaseProperties) {
+        NSRange firstCharacterRange = NSMakeRange(0, 1);
+        vName = [vName stringByReplacingCharactersInRange:firstCharacterRange withString:[vName substringWithRange: firstCharacterRange].lowercaseString];
+    }
     
     id newName = [[self.class knownNameChanges] objectForKey:vName];
     if(newName) {
@@ -611,7 +610,6 @@
     }
     
     assert(vName.length); //EVERYTHING has a name
-    
     return vName;
 }
 
@@ -641,8 +639,7 @@
 #pragma mark - generator
 /**
  * Name:        generateInto (NSURL*)(XSDschemaGeneratorOptions)(NSError**)
- * Parameters:  (NSURL*)destinationFolder - the location where we will be writing the documents to
- *              (XSDschemaGeneratorOptions) - the options that the user selected and the type of code to write
+ * Options:     (NSURL*)destinationFolder - the location where we will be writing the documents to
  *              (NSError**) - error pointing object
  * Return:      BOOL - YES or NO if there was an error
  * Description: Will generate the code for the complex types that are used within the schema into objective-c
@@ -650,13 +647,12 @@
  *              and insert the proper values into the template space. Will return if there is an error
  */
 - (BOOL) generateInto:(NSURL*)destinationFolder
-             products:(XSDschemaGeneratorOptions)options
                 error:(NSError**)error {
     NSParameterAssert(destinationFolder);
     NSParameterAssert(error);
     
     /* SOURCE CODE - If we want to write source code */
-    if (options & (XSDschemaGeneratorOptionSourceCode | XSDschemaGeneratorOptionSourceCodeWithSubfolders)) {
+    if (self.options & XSDschemaGeneratorOptionSourceCode) {
         /* Create the path that will contain all the code */
         NSURL *srcFolderUrl = [destinationFolder URLByAppendingPathComponent:@"Sources" isDirectory:YES];
         
@@ -669,7 +665,7 @@
             }
         }
         /* If all is well, start writing the code into the directory we created */
-        if(![self writeCodeInto:srcFolderUrl createSubfolders:options & XSDschemaGeneratorOptionSourceCodeWithSubfolders error:error]) {
+        if(![self writeCodeInto:srcFolderUrl createSubfolders:self.options & XSDschemaGeneratorOptionSourceCodeWithSubfolders error:error]) {
             return NO;
         }
         if(![self formatFilesInFolder:srcFolderUrl error:nil])  {

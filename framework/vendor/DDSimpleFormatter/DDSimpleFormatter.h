@@ -12,6 +12,8 @@
 
 + (instancetype)sharedInstance;
 
+@property (nonatomic) BOOL indentWithTabs;
+
 - (NSString*)formatString:(NSString*)string;
 
 - (BOOL)formatFile:(NSString *)file error:(NSError *__autoreleasing *)error;

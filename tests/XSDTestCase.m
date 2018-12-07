@@ -33,9 +33,13 @@ NSURL *_tmpFolderUrl;
 }
 
 + (void)helpSetUp {
-    NSURL *tmpFolderUrl = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:[[NSUUID UUID] UUIDString]]];
+    NSURL *tmpTestFolderUrl = [[[NSURL fileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:[NSBundle mainBundle].bundleIdentifier] URLByAppendingPathComponent:@"XSDConverterTestData"];
+#if !KEEP_AND_SHOW
+    [[NSFileManager defaultManager] removeItemAtURL:tmpTestFolderUrl error:nil];
+#endif
+    NSURL *tmpFolderUrl = [tmpTestFolderUrl URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
     assert(tmpFolderUrl);
-    BOOL bCreated = [[NSFileManager defaultManager] createDirectoryAtURL:tmpFolderUrl withIntermediateDirectories:NO attributes:nil error:nil];
+    BOOL bCreated = [[NSFileManager defaultManager] createDirectoryAtURL:tmpFolderUrl withIntermediateDirectories:YES attributes:nil error:nil];
     assert(bCreated);
     _tmpFolderUrl = tmpFolderUrl;
 }
@@ -89,7 +93,7 @@ NSURL *_tmpFolderUrl;
 }
 
 - (void)helpTestCorrectnessParsingSchema {
-    __block XSDschema *schema = [[XSDschema alloc] initWithUrl:self.schemaUrl targetNamespacePrefix:self.prefixOverride error:nil];
+    __block XSDschema *schema = [[XSDschema alloc] initWithUrl:self.schemaUrl targetNamespacePrefix:self.prefixOverride options:XSDschemaGeneratorOptionSourceCode error:nil];
     XCTAssert(schema);
     
     [self assertSchema:schema];
@@ -103,7 +107,7 @@ NSURL *_tmpFolderUrl;
 }
 
 - (void)helpTestCorrectnessGeneratingParser {
-    XSDschema *schema = [[XSDschema alloc] initWithUrl:self.schemaUrl targetNamespacePrefix:self.prefixOverride error:nil];
+    XSDschema *schema = [[XSDschema alloc] initWithUrl:self.schemaUrl targetNamespacePrefix:self.prefixOverride options:XSDschemaGeneratorOptionSourceCode error:nil];
     XCTAssert(schema);
     
     NSError *error;
@@ -113,7 +117,6 @@ NSURL *_tmpFolderUrl;
     BOOL bWritten;
     NSError *genError;
     bWritten = [schema generateInto:_tmpFolderUrl
-                           products:XSDschemaGeneratorOptionSourceCode
                               error:&genError];
     XCTAssert(bWritten);
 
@@ -193,13 +196,13 @@ NSURL *_tmpFolderUrl;
 - (void)helpTestPerformanceParsingSchema {
     __block XSDschema *schema;
     [self measureBlock:^{
-        schema = [[XSDschema alloc] initWithUrl:self.schemaUrl targetNamespacePrefix:self.prefixOverride error:nil];
+        schema = [[XSDschema alloc] initWithUrl:self.schemaUrl targetNamespacePrefix:self.prefixOverride options:XSDschemaGeneratorOptionSourceCode error:nil];
     }];
     XCTAssert(schema);
 }
 
 - (void)helpTestPerformanceLoadingTemplate {
-    XSDschema *schema = [[XSDschema alloc] initWithUrl:self.schemaUrl targetNamespacePrefix:self.prefixOverride  error:nil];
+    XSDschema *schema = [[XSDschema alloc] initWithUrl:self.schemaUrl targetNamespacePrefix:self.prefixOverride options:XSDschemaGeneratorOptionSourceCode error:nil];
     XCTAssert(schema);
     
     __block BOOL bLoaded;
@@ -211,7 +214,7 @@ NSURL *_tmpFolderUrl;
 }
 
 - (void)helpTestPerformanceGeneratingParser {
-    XSDschema *schema = [[XSDschema alloc] initWithUrl:self.schemaUrl targetNamespacePrefix:self.prefixOverride  error:nil];
+    XSDschema *schema = [[XSDschema alloc] initWithUrl:self.schemaUrl targetNamespacePrefix:self.prefixOverride options:XSDschemaGeneratorOptionSourceCode error:nil];
     XCTAssert(schema);
     
     NSError *error;
@@ -223,7 +226,6 @@ NSURL *_tmpFolderUrl;
         NSError *genError;
         
         bWritten = [schema generateInto:_tmpFolderUrl
-                               products:XSDschemaGeneratorOptionSourceCode
                                   error:&genError];
 
         //fix folder name
@@ -240,7 +242,7 @@ NSURL *_tmpFolderUrl;
 }
 
 - (void)helpTestPerformanceParsingXML {
-    XSDschema *schema = [[XSDschema alloc] initWithUrl:self.schemaUrl targetNamespacePrefix:self.prefixOverride error:nil];
+    XSDschema *schema = [[XSDschema alloc] initWithUrl:self.schemaUrl targetNamespacePrefix:self.prefixOverride options:XSDschemaGeneratorOptionSourceCode error:nil];
     XCTAssert(schema);
     
     NSError *error;
@@ -249,7 +251,6 @@ NSURL *_tmpFolderUrl;
     
     BOOL bWritten;
     bWritten = [schema generateInto:_tmpFolderUrl
-                           products:XSDschemaGeneratorOptionSourceCode
                               error:&error];
     //fix folder name
     id folderName = @"Sources";

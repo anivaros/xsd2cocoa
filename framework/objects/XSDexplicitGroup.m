@@ -27,7 +27,7 @@
  * Returns:     The object that is generated that contains the child elements
  * Description: Will define
  */
-- (id) initWithNode:(NSXMLElement *)node schema:(XSDschema *)schema {
+- (instancetype) initWithNode:(NSXMLElement *)node schema:(XSDschema *)schema {
     /* Generate the schema node for the current item */
     self = [super initWithNode:node schema: schema];
     

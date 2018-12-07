@@ -37,7 +37,7 @@
 
 @implementation XSDelement
 
-- (id) initWithNode:(NSXMLElement*)node schema: (XSDschema*)schema minOccurs:(NSNumber *)minOccurs maxOccurs:(NSNumber *)maxOccurs {
+- (instancetype) initWithNode:(NSXMLElement*)node schema: (XSDschema*)schema minOccurs:(NSNumber *)minOccurs maxOccurs:(NSNumber *)maxOccurs {
     self = [super initWithNode:node schema:schema];
     if(self) {
         _type = [XMLUtils node: node stringAttribute: @"type"];
@@ -127,7 +127,7 @@
     return self;
 }
 
-- (id) initWithNode:(NSXMLElement*)node schema: (XSDschema*)schema {
+- (instancetype) initWithNode:(NSXMLElement*)node schema: (XSDschema*)schema {
     return [self initWithNode:node schema:schema minOccurs:nil maxOccurs:nil];
 }
 
@@ -200,7 +200,7 @@
 }
 
 - (NSString*) variableName {
-    return [XSDschema variableNameFromName:self.name multiple:!self.isSingleValue];
+    return [self.schema variableNameFromName:self.name multiple:!self.isSingleValue];
 }
 
 /* 

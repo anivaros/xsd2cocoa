@@ -22,14 +22,16 @@
     NSMutableArray *_annotations;
 }
 
-- (id) initWithNode:(NSXMLElement*)node schema:(XSDschema*)schema {
+- (instancetype) initWithNode:(NSXMLElement*)node schema:(XSDschema*)schema {
     self = [self init];
     if(self) {
-        self.node = node;
-        self.schema = schema;
+        _node = node;
         
         if(!schema && [self isKindOfClass:[XSDschema class]]) {
-            self.schema = (XSDschema*)self;
+            _schema = (XSDschema*)self;
+        }
+        else {
+            _schema = schema;
         }
     }
     return self;
