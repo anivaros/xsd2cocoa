@@ -26,11 +26,8 @@
 }
 
 - (NSString *)formatString:(NSString *)string {
-    id set = [NSCharacterSet newlineCharacterSet];
-    id set2 = [NSCharacterSet whitespaceCharacterSet];
-
     //get lines
-    id lines = [string componentsSeparatedByCharactersInSet:set];
+    id lines = [string componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
         
     //do indentation run
     NSMutableString *newLines = [NSMutableString string];
@@ -38,7 +35,7 @@
     BOOL lastLineWasEmpty = false;
     for(id line in lines) {
         //first we trim it
-        id trimmed = [line stringByTrimmingCharactersInSet:set2];
+        id trimmed = [line stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         //skip double blanks
         if(![trimmed length]) {
             if(lastLineWasEmpty) {
