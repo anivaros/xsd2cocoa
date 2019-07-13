@@ -13,7 +13,8 @@
 #import <objc/runtime.h>
 #import "NSObject+DDDump.h"
 
-#define KEEP_AND_SHOW 0
+#define KEEP 0
+#define SHOW 0
 
 @interface XSDTestCase ()
 
@@ -34,7 +35,7 @@ NSURL *_tmpFolderUrl;
 
 + (void)helpSetUp {
     NSURL *tmpTestFolderUrl = [[[NSURL fileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:[NSBundle mainBundle].bundleIdentifier] URLByAppendingPathComponent:@"XSDConverterTestData"];
-#if !KEEP_AND_SHOW
+#if !KEEP
     [[NSFileManager defaultManager] removeItemAtURL:tmpTestFolderUrl error:nil];
 #endif
     NSURL *tmpFolderUrl = [tmpTestFolderUrl URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
@@ -66,9 +67,10 @@ NSURL *_tmpFolderUrl;
 
 + (void)helpTearDown {
     if(_tmpFolderUrl) {
-#if KEEP_AND_SHOW
+#if SHOW
         [[NSWorkspace sharedWorkspace] openFile:_tmpFolderUrl.path];
-#else
+#endif
+#if !KEEP
         BOOL bDeleted = [[NSFileManager defaultManager] removeItemAtURL:_tmpFolderUrl error:nil];
         assert(bDeleted);
 #endif
