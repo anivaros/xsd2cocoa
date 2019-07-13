@@ -8,108 +8,84 @@
     attribute_test_ENTITIES="cool cool2"
     attribute_test_ENTITY="cool"
  -->  
-<st:simpleTypes xmlns:st="http://www.example.com/xsdSimpleTypes"
-    attribute_test_string="all_is_ok"
-    attribute_test_ID="all_is_ok"
-    attribute_test_IDREF="all_is_ok"
-    attribute_test_IDREFS="all_is_ok"
-    attribute_test_language="de"
-    attribute_test_Name="all_is_ok"
-    attribute_test_NCName="all_is_ok"
-    attribute_test_NMTOKEN="all_is_ok"
-    attribute_test_NMTOKENS="all_is_ok"
-    attribute_test_normalizedString="all_is_ok"
-    attribute_test_QName="all_is_ok"
-    attribute_test_token="all_is_ok"
-    attribute_test_NOTATION="st:gif"
-    attribute_test_gDay="---01"
-    attribute_test_gMonth="--01"
-    attribute_test_gMonthDay="--01-01"
-    attribute_test_gYear="1234"
-    attribute_test_gYearMonth="2147483648-12Z"
-    attribute_test_duration="PT1004199059S"
-    attribute_test_byte="123"
-    attribute_test_int="123"
-    attribute_test_integer="123"
-    attribute_test_long="123"
-    attribute_test_negativeInteger="-123"
-    attribute_test_nonNegativeInteger="123"
-    attribute_test_nonPositiveInteger="-123"
-    attribute_test_positiveInteger="123"
-    attribute_test_short="123"
-    attribute_test_unsignedLong="123"
-    attribute_test_unsignedInt="123"
-    attribute_test_unsignedShort="123"
-    attribute_test_unsignedByte="123"
-    attribute_test_decimal="12.34"
-    attribute_test_double="12.34"
-    attribute_test_float="12.34"
-    attribute_test_boolean="true"
-    attribute_test_anyURI="http://www.google.com"
-    attribute_test_dateTime="2015-01-25T10:37:07Z"
-    attribute_test_dateTime2="2015-01-25T10:37:07.0012+01:00"
-    attribute_test_date="2015-01-25"
-    attribute_test_time="10:37:07">
+<st:simpleTypes xmlns:st="http://www.example.com/xsdSimpleTypes" attribute_test_string="all_is_ok"
+  attribute_test_ID="all_is_ok" attribute_test_IDREF="all_is_ok" attribute_test_IDREFS="all_is_ok"
+  attribute_test_language="de" attribute_test_Name="all_is_ok" attribute_test_NCName="all_is_ok"
+  attribute_test_NMTOKEN="all_is_ok" attribute_test_NMTOKENS="all_is_ok"
+  attribute_test_normalizedString="all_is_ok" attribute_test_QName="all_is_ok"
+  attribute_test_token="all_is_ok" attribute_test_NOTATION="st:gif" attribute_test_gDay="---01"
+  attribute_test_gMonth="--01" attribute_test_gMonthDay="--01-01" attribute_test_gYear="1234"
+  attribute_test_gYearMonth="2147483648-12Z" attribute_test_duration="PT1004199059S"
+  attribute_test_byte="123" attribute_test_int="123" attribute_test_integer="123"
+  attribute_test_long="123" attribute_test_negativeInteger="-123"
+  attribute_test_nonNegativeInteger="123" attribute_test_nonPositiveInteger="-123"
+  attribute_test_positiveInteger="123" attribute_test_short="123" attribute_test_unsignedLong="123"
+  attribute_test_unsignedInt="123" attribute_test_unsignedShort="123"
+  attribute_test_unsignedByte="123" attribute_test_decimal="12.34" attribute_test_double="12.34"
+  attribute_test_float="12.34" attribute_test_boolean="true"
+  attribute_test_anyURI="http://www.google.com" attribute_test_dateTime="2015-01-25T10:37:07Z"
+  attribute_test_dateTime2="2015-01-25T10:37:07.0012+01:00" attribute_test_date="2015-01-25"
+  attribute_test_time="10:37:07">
 
-    <!-- string -->
-    <element_test_string>all_is_ok</element_test_string>
-<!--
+  <!-- string -->
+  <element_test_string>all_is_ok</element_test_string>
+  <!--
     <element_test_ENTITIES>cool cool2</element_test_ENTITIES>
     <element_test_ENTITY>cool</element_test_ENTITY>
- --> 
-    <element_test_ID>all_is_ok</element_test_ID>
-    <element_test_IDREF>all_is_ok</element_test_IDREF>
-    <element_test_IDREFS>all_is_ok</element_test_IDREFS>
-    <element_test_language>de</element_test_language>
-    <element_test_Name>all_is_ok</element_test_Name>
-    <element_test_NCName>all_is_ok</element_test_NCName>
-    <element_test_NMTOKEN>all_is_ok</element_test_NMTOKEN>
-    <element_test_NMTOKENS>all_is_ok</element_test_NMTOKENS>
-    <element_test_normalizedString>all_is_ok</element_test_normalizedString>
-    <element_test_QName>all_is_ok</element_test_QName>
-    <element_test_token>all_is_ok</element_test_token>
-    <element_test_NOTATION>st:gif</element_test_NOTATION>
-    <element_test_gDay>---01</element_test_gDay>
-    <element_test_gMonth>--01</element_test_gMonth>
-    <element_test_gMonthDay>--01-01</element_test_gMonthDay>
-    <element_test_gYear>1234</element_test_gYear>
-    <element_test_gYearMonth>2147483648-12Z</element_test_gYearMonth>
-    <element_test_duration>PT1004199059S</element_test_duration>
+ -->
+  <element_test_ID>all_is_ok</element_test_ID>
+  <element_test_IDREF>all_is_ok</element_test_IDREF>
+  <element_test_IDREFS>all_is_ok</element_test_IDREFS>
+  <element_test_language>de</element_test_language>
+  <element_test_Name>all_is_ok</element_test_Name>
+  <element_test_NCName>all_is_ok</element_test_NCName>
+  <element_test_NMTOKEN>all_is_ok</element_test_NMTOKEN>
+  <element_test_NMTOKENS>all_is_ok</element_test_NMTOKENS>
+  <element_test_normalizedString>all_is_ok</element_test_normalizedString>
+  <element_test_QName>all_is_ok</element_test_QName>
+  <element_test_token>all_is_ok</element_test_token>
+  <element_test_NOTATION>st:gif</element_test_NOTATION>
+  <element_test_gDay>---01</element_test_gDay>
+  <element_test_gMonth>--01</element_test_gMonth>
+  <element_test_gMonthDay>--01-01</element_test_gMonthDay>
+  <element_test_gYear>1234</element_test_gYear>
+  <element_test_gYearMonth>2147483648-12Z</element_test_gYearMonth>
+  <element_test_duration>PT1004199059S</element_test_duration>
 
-    <!--integer -->
-    <element_test_byte>123</element_test_byte>
-    <element_test_int>123</element_test_int>
-    <element_test_integer>123</element_test_integer>
-    <element_test_long>123</element_test_long>
-    <element_test_negativeInteger>-123</element_test_negativeInteger>
-    <element_test_nonNegativeInteger>123</element_test_nonNegativeInteger>
-    <element_test_nonPositiveInteger>-123</element_test_nonPositiveInteger>
-    <element_test_positiveInteger>123</element_test_positiveInteger>
-    <element_test_short>123</element_test_short>
-    <element_test_unsignedLong>123</element_test_unsignedLong>
-    <element_test_unsignedInt>123</element_test_unsignedInt>
-    <element_test_unsignedShort>123</element_test_unsignedShort>
-    <element_test_unsignedByte>123</element_test_unsignedByte>
+  <!--integer -->
+  <element_test_byte>123</element_test_byte>
+  <element_test_int>123</element_test_int>
+  <element_test_integer>123</element_test_integer>
+  <element_test_long>123</element_test_long>
+  <element_test_negativeInteger>-123</element_test_negativeInteger>
+  <element_test_nonNegativeInteger>123</element_test_nonNegativeInteger>
+  <element_test_nonPositiveInteger>-123</element_test_nonPositiveInteger>
+  <element_test_positiveInteger>123</element_test_positiveInteger>
+  <element_test_short>123</element_test_short>
+  <element_test_unsignedLong>123</element_test_unsignedLong>
+  <element_test_unsignedInt>123</element_test_unsignedInt>
+  <element_test_unsignedShort>123</element_test_unsignedShort>
+  <element_test_unsignedByte>123</element_test_unsignedByte>
 
-    <!--decimal-->
-    <element_test_decimal>12.34</element_test_decimal>
-    <element_test_double>12.34</element_test_double>
-    <element_test_float>12.34</element_test_float>
+  <!--decimal-->
+  <element_test_decimal>12.34</element_test_decimal>
+  <element_test_double>12.34</element_test_double>
+  <element_test_float>12.34</element_test_float>
 
-    <!--boolean-->
-    <element_test_boolean>true</element_test_boolean>
+  <!--boolean-->
+  <element_test_boolean>true</element_test_boolean>
 
-    <!-- URLs -->
-    <element_test_anyURI>http://www.google.com</element_test_anyURI>
+  <!-- URLs -->
+  <element_test_anyURI>http://www.google.com</element_test_anyURI>
 
-    <!-- date time -->
-    <element_test_dateTime>2015-01-25T10:37:07Z</element_test_dateTime>
-    <element_test_dateTime2>2015-01-25T10:37:07.0012+01:00</element_test_dateTime2>
+  <!-- date time -->
+  <element_test_dateTime>2015-01-25T10:37:07Z</element_test_dateTime>
+  <element_test_dateTime2>2015-01-25T10:37:07.0012+01:00</element_test_dateTime2>
 
-    <!-- date -->
-    <element_test_date>2015-01-25</element_test_date>
+  <!-- date -->
+  <element_test_date>2015-01-25</element_test_date>
 
-    <!-- date time -->
-    <element_test_time>10:37:07</element_test_time>
+  <!-- date time -->
+  <element_test_time>10:37:07</element_test_time>
 
 </st:simpleTypes>
