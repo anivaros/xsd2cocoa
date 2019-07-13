@@ -8,12 +8,12 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
       <prefix></prefix>
       <attribute>self.{{ attribute.variableName }} = [NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding];{% /if %}</attribute>
       <element>
-          <![CDATA[{% if element.isSingleValue %}self.{{ element.variableName }} = [NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding];
-        {% else %}[{{ element.variableName }}Array addObject:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];{% /if %}]]>
-        </element>
+        <![CDATA[{% if element.isSingleValue %}self.{{ element.variableName }} = [NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding];
+          {% else %}[{{ element.variableName }}Array addObject:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];{% /if %}]]>
+      </element>
       <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
-          value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-          self.value = value;</value>
+        value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        self.value = value;</value>
     </read>
     <write>
         <prefix />
@@ -32,30 +32,30 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
     </write>
   </simpletype>
   <simpletype name="any" objType="NSString" arrayType="NSArray">
-	  <read>
-		  <prefix></prefix>
-		  <attribute>self.{{ attribute.variableName }} = [NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding];{% /if %}</attribute>
-		  <element>
-              <![CDATA[{% if element.isSingleValue %}self.{{ element.variableName }} = [NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding];
-				  {% else %}[{{ element.variableName }}Array addObject:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];{% /if %}]]>
-		  </element>
-          <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
-              value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-              self.value = value;</value>
-	  </read>
-	  <write>
-		  <prefix/>
-		  <attribute>
-			  <![CDATA[{{ attribute.variableName }}AttrValue = [self.{{ attribute.variableName }} UTF8String];]]>
-		  </attribute>
-		  <element>
-			  <![CDATA[xmlTextWriterWriteString(writer, (xmlChar*)[{{ element.variableName }}Value UTF8String]);]]>
-		  </element>
-		  <value>
-			  <![CDATA[statusCode = xmlTextWriterWriteString(writer, (xmlChar*)[self.value UTF8String]);
-				  if (statusCode < 0) return statusCode;]]>
-		  </value>
-	  </write>
+    <read>
+      <prefix></prefix>
+      <attribute>self.{{ attribute.variableName }} = [NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding];{% /if %}</attribute>
+      <element>
+        <![CDATA[{% if element.isSingleValue %}self.{{ element.variableName }} = [NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding];
+          {% else %}[{{ element.variableName }}Array addObject:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];{% /if %}]]>
+      </element>
+      <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
+        value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        self.value = value;</value>
+    </read>
+    <write>
+      <prefix/>
+      <attribute>
+        <![CDATA[{{ attribute.variableName }}AttrValue = [self.{{ attribute.variableName }} UTF8String];]]>
+      </attribute>
+      <element>
+        <![CDATA[xmlTextWriterWriteString(writer, (xmlChar*)[{{ element.variableName }}Value UTF8String]);]]>
+      </element>
+      <value>
+        <![CDATA[statusCode = xmlTextWriterWriteString(writer, (xmlChar*)[self.value UTF8String]);
+          if (statusCode < 0) return statusCode;]]>
+      </value>
+    </write>
   </simpletype>
   <simpletype name="anyURI" objType="NSURL" arrayType="NSArray">
     <read>
@@ -63,256 +63,252 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
       <attribute>self.{{ attribute.variableName }} = [NSURL URLWithString:[NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding]];</attribute>
       <element>
         <![CDATA[{% if element.isSingleValue %}self.{{ element.variableName }} = [NSURL URLWithString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];{% else %}[{{ element.variableName }}Array addObject:[NSURL URLWithString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]]];
-        {% /if %}]]>
-        </element>
+          {% /if %}]]>
+      </element>
       <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
-          value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-          self.value = [NSURL URLWithString:value];</value>
+        value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        self.value = [NSURL URLWithString:value];</value>
     </read>
     <write>
-        <prefix />
-        <attribute><![CDATA[
-            {{ attribute.variableName }}AttrValue = [[self."{{ attribute.variableName }}" absoluteString] UTF8String];
-        ]]></attribute>
-        <element><![CDATA[
-            xmlTextWriterWriteString(writer, (mlChar*)[[self.value absoluteString] UTF8String]);
-        ]]></element>
-        <value><![CDATA[
-            int rc = xmlTextWriterWriteString(writer, (xmlChar*)[[self.value absoluteString] UTF8String]);
-            if (rc < 0) {
-                return NO;
-            }
-        ]]></value>
+      <prefix />
+      <attribute><![CDATA[
+        {{ attribute.variableName }}AttrValue = [[self."{{ attribute.variableName }}" absoluteString] UTF8String];
+      ]]></attribute>
+      <element><![CDATA[
+        xmlTextWriterWriteString(writer, (mlChar*)[[self.value absoluteString] UTF8String]);
+      ]]></element>
+      <value><![CDATA[
+        int rc = xmlTextWriterWriteString(writer, (xmlChar*)[[self.value absoluteString] UTF8String]);
+        if (rc < 0) {
+            return NO;
+        }
+      ]]></value>
     </write>
   </simpletype>
   <simpletype name="boolean" objType="NSNumber"
-  arrayType="NSArray">
+    arrayType="NSArray">
     <read>
       <prefix></prefix>
       <attribute>self.{{ attribute.variableName }} = @([[NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding] isEqualToString:@"true"]);</attribute>
       <element>
         <![CDATA[self.{{ element.variableName }} = @([[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding] isEqualToString:@"true"]);]]>
-        </element>
+      </element>
       <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
-          value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-          self.value = @([value isEqualToString:@"true"]);</value>
+        value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        self.value = @([value isEqualToString:@"true"]);</value>
     </read>
     <write>
-        <prefix />
-        <attribute>{{ attribute.variableName }}AttrValue = [self.{{ attribute.variableName }} boolValue] ? "true" : "false";</attribute>
-        <element><![CDATA[
-            xmlTextWriterWriteString(writer, (xmlChar*)([{{ element.variableName }}Value boolValue] ? "true" : "false"));
-        ]]></element>
-        <value><![CDATA[
-            int rc = xmlTextWriterWriteString(writer, (xmlChar*)([{{ element.variableName }}Value boolValue] ? "true" : "false"]]);
-            if (rc < 0) {
-                return NO;
-            }
-        ]]></value>
+      <prefix />
+      <attribute>{{ attribute.variableName }}AttrValue = [self.{{ attribute.variableName }} boolValue] ? "true" : "false";</attribute>
+      <element><![CDATA[
+        xmlTextWriterWriteString(writer, (xmlChar*)([{{ element.variableName }}Value boolValue] ? "true" : "false"));
+      ]]></element>
+      <value><![CDATA[
+        int rc = xmlTextWriterWriteString(writer, (xmlChar*)([{{ element.variableName }}Value boolValue] ? "true" : "false"]]);
+        if (rc < 0) {
+            return NO;
+        }
+      ]]></value>
     </write>
   </simpletype>
   <simpletype name="integer" objType="NSNumber"
-  arrayType="NSArray">
+    arrayType="NSArray">
     <read>
       <prefix>NSNumberFormatter *numFormatter = [[NSNumberFormatter alloc] init];
-          numFormatter.numberStyle = NSNumberFormatterDecimalStyle;
-          numFormatter.locale = self.locale;</prefix>
+        numFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+        numFormatter.locale = self.locale;</prefix>
       <attribute>self.{{ attribute.variableName }} = [numFormatter numberFromString:[NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding]];</attribute>
       <element>
         <![CDATA[self.{{ element.variableName }} = [numFormatter numberFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];]]>
-        </element>
+      </element>
       <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
-          value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-          self.value = [numFormatter numberFromString:value];</value>
+        value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        self.value = [numFormatter numberFromString:value];</value>
     </read>
     <write>
-        <prefix>NSNumberFormatter* numFormatter = [[NSNumberFormatter alloc] init];
-            numFormatter.numberStyle = NSNumberFormatterDecimalStyle;</prefix>
-        <attribute>{{ attribute.variableName }}AttrValue = [[numFormatter stringFromNumber: self.{{ attribute.variableName }}] UTF8String];</attribute>
-        <element><![CDATA[
-            xmlTextWriterWriteString(writer, (xmlChar*)[[numFormatter stringFromNumber:{{ element.variableName }}Value] UTF8String]);
-        ]]></element>
-        <value><![CDATA[
-            int rc = xmlTextWriterWriteString(writer, (xmlChar*)[[numFormatter stringFromNumber:self.value] UTF8String]);
-            if (rc < 0) {
-                return NO;
-            }
-        ]]></value>
+      <prefix>NSNumberFormatter* numFormatter = [[NSNumberFormatter alloc] init];
+        numFormatter.numberStyle = NSNumberFormatterDecimalStyle;</prefix>
+      <attribute>{{ attribute.variableName }}AttrValue = [[numFormatter stringFromNumber: self.{{ attribute.variableName }}] UTF8String];</attribute>
+      <element><![CDATA[
+        xmlTextWriterWriteString(writer, (xmlChar*)[[numFormatter stringFromNumber:{{ element.variableName }}Value] UTF8String]);
+      ]]></element>
+      <value><![CDATA[
+        int rc = xmlTextWriterWriteString(writer, (xmlChar*)[[numFormatter stringFromNumber:self.value] UTF8String]);
+        if (rc < 0) {
+            return NO;
+        }
+      ]]></value>
     </write>
   </simpletype>
   <simpletype name="decimal" objType="NSNumber"
-  arrayType="NSArray">
+    arrayType="NSArray">
     <read>
       <prefix>NSNumberFormatter *decFormatter = [[NSNumberFormatter alloc] init];
-      decFormatter.locale = self.locale;
-      decFormatter.numberStyle = NSNumberFormatterDecimalStyle;</prefix>
+        decFormatter.locale = self.locale;
+        decFormatter.numberStyle = NSNumberFormatterDecimalStyle;</prefix>
       <attribute>self.{{ attribute.variableName }} = [decFormatter numberFromString:[NSString stringWithCString: {{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding]];</attribute>
       <element>
         <![CDATA[self.{{ element.variableName }} = [decFormatter numberFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];]]>
-        </element>
+      </element>
       <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
-          value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-          self.value = [decFormatter numberFromString:value];</value>
+        value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        self.value = [decFormatter numberFromString:value];</value>
     </read>
     <write>
-        <prefix>NSNumberFormatter* integerFormatter = [[NSNumberFormatter alloc] init];
-            integerFormatter.numberStyle = NSNumberFormatterDecimalStyle;</prefix>
-        <attribute>{{ attribute.variableName }}AttrValue = [[integerFormatter stringFromNumber: self.{{ attribute.variableName }}] UTF8String];</attribute>
-        <element><![CDATA[
-            xmlTextWriterWriteString(writer, (xmlChar*)[[integerFormatter stringFromNumber: {{ element.variableName }}Value] UTF8String]);
-        ]]></element>
-        <value><![CDATA[
-            int rc = xmlTextWriterWriteString(writer, (xmlChar*)[[integerFormatter stringFromNumber:self.value] UTF8String]);
-            if (rc < 0) {
-                return NO;
-            }
-        ]]></value>
+      <prefix>NSNumberFormatter* integerFormatter = [[NSNumberFormatter alloc] init];
+        integerFormatter.numberStyle = NSNumberFormatterDecimalStyle;</prefix>
+      <attribute>{{ attribute.variableName }}AttrValue = [[integerFormatter stringFromNumber: self.{{ attribute.variableName }}] UTF8String];</attribute>
+      <element>
+        <![CDATA[xmlTextWriterWriteString(writer, (xmlChar*)[[integerFormatter stringFromNumber: {{ element.variableName }}Value] UTF8String]);]]>
+      </element>
+      <value>
+        <![CDATA[int rc = xmlTextWriterWriteString(writer, (xmlChar*)[[integerFormatter stringFromNumber:self.value] UTF8String]);
+        if (rc < 0) {
+            return NO;
+        }]]>
+      </value>
     </write>
   </simpletype>
   <simpletype name="dateTime" objType="NSDate" arrayType="NSArray">
     <read>
-        <prefix>NSDate *(^dateFromStringBlock)(NSString *dateString) = ^NSDate *(NSString *dateString) {
-                NSDateFormatter *sRFC3339DateFormatter = [[NSDateFormatter alloc] init];
+      <prefix>NSDate *(^dateFromStringBlock)(NSString *dateString) = ^NSDate *(NSString *dateString) {
+            NSDateFormatter *sRFC3339DateFormatter = [[NSDateFormatter alloc] init];
             [sRFC3339DateFormatter setLocale:self.locale];
-                [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSSSSSXXXXX"];
-                NSDate *date = [sRFC3339DateFormatter dateFromString:dateString];
-                if (!date) {
-                     [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ssXXXXX"];
-                     date = [sRFC3339DateFormatter dateFromString:dateString];
-      }
-                if (!date) {
-                     [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ssZ"];
-                     date = [sRFC3339DateFormatter dateFromString:dateString];
-        }
-                if (!date) {
-                    [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss"];
-                    date = [sRFC3339DateFormatter dateFromString:dateString];
-        }
-                return date;
-            };</prefix>
+            [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSSSSSXXXXX"];
+            NSDate *date = [sRFC3339DateFormatter dateFromString:dateString];
+            if (!date) {
+                [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ssXXXXX"];
+                date = [sRFC3339DateFormatter dateFromString:dateString];
+            }
+            if (!date) {
+                [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ssZ"];
+                date = [sRFC3339DateFormatter dateFromString:dateString];
+            }
+            if (!date) {
+                [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss"];
+                date = [sRFC3339DateFormatter dateFromString:dateString];
+            }
+            return date;
+        };</prefix>
       <attribute>
-          self.{{ attribute.variableName }} = dateFromStringBlock([NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding]);</attribute>
+        self.{{ attribute.variableName }} = dateFromStringBlock([NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding]);</attribute>
       <element>
         <![CDATA[{% if element.isSingleValue %}self.{{ element.variableName }} = dateFromStringBlock([NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]);
-        {% else %}id {{ element.variableName }}Temp = dateFromStringBlock([NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]);
-        [{{ element.variableName }}Array addObject:{{ element.variableName }}Temp];
-        {% /if %}]]>
-        </element>
+          {% else %}id {{ element.variableName }}Temp = dateFromStringBlock([NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]);
+          [{{ element.variableName }}Array addObject:{{ element.variableName }}Temp];
+          {% /if %}]]>
+      </element>
       <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
-      value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-      self.value = dateFromStringBlock(value);</value>
+        value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        self.value = dateFromStringBlock(value);</value>
     </read>
     <write>
-        <prefix>NSDateFormatter* dateFormatter = [[NSDateFormatter
-            alloc] init];
-            dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";</prefix>
-        <attribute>{{ attribute.variableName }}AttrValue = [[dateFormatter stringFromDate:self.{{ attribute.variableName }}] UTF8String];</attribute>
-        <element><![CDATA[
-            xmlTextWriterWriteString(writer, (xmlChar*)[[dateFormatter stringFromDate:{{ element.variableName }}Value] UTF8String]);
-        ]]></element>
-        <value><![CDATA[
-            int rc = xmlTextWriterWriteString(writer, (xmlChar*)[[dateFormatter stringFromDate:self.value] UTF8String]);
-            if (rc < 0) {
-                return NO;
-            }
-        ]]></value>
+      <prefix>NSDateFormatter* dateFormatter = [[NSDateFormatter
+        alloc] init];
+        dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";</prefix>
+      <attribute>{{ attribute.variableName }}AttrValue = [[dateFormatter stringFromDate:self.{{ attribute.variableName }}] UTF8String];</attribute>
+      <element>
+        <![CDATA[xmlTextWriterWriteString(writer, (xmlChar*)[[dateFormatter stringFromDate:{{ element.variableName }}Value] UTF8String]);]]>
+      </element>
+      <value><![CDATA[int rc = xmlTextWriterWriteString(writer, (xmlChar*)[[dateFormatter stringFromDate:self.value] UTF8String]);
+        if (rc < 0) {
+            return NO;
+        }]]>
+      </value>
     </write>
   </simpletype>
   <simpletype name="date" objType="NSDate" arrayType="NSArray">
-      <read>
-          <prefix>NSDateFormatter *dateOnlyFormatter = [[NSDateFormatter alloc] init];
-              dateOnlyFormatter.dateFormat = @"yyyy-MM-dd";
-              dateOnlyFormatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
-              dateOnlyFormatter.locale = self.locale;
-          </prefix>
-          <attribute>self.{{ attribute.variableName }} = [dateOnlyFormatter dateFromString:[NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding]];</attribute>
-          <element>
-              <![CDATA[{% if element.isSingleValue %}self.{{ element.variableName }} = [dateOnlyFormatter dateFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];{% else %}[{{ element.variableName }}Array addObject:[dateOnlyFormatter dateFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]]];
-                  {% /if %}]]>
-          </element>
-          <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
-              value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-              self.value = [dateOnlyFormatter dateFromString:value];</value>
-      </read>
-      <write>
-          <prefix>NSDateFormatter* dateOnlyFormatter = [[NSDateFormatter
-              alloc] init];
-              dateOnlyFormatter.dateFormat = @"yyyy-MM-dd";
-              dateOnlyFormatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
-          </prefix>
-          <attribute>{{ attribute.variableName }}AttrValue = [[dateOnlyFormatter stringFromDate:self.{{ attribute.variableName }}] UTF8String];</attribute>
-          <element><![CDATA[
-              xmlTextWriterWriteString(writer, (xmlChar*)[[dateOnlyFormatter stringFromDate:{{ element.variableName }}Value] UTF8String]);
-          ]]></element>
-          <value><![CDATA[
-              int rc = xmlTextWriterWriteString(writer, (xmlChar*)[[dateOnlyFormatter stringFromDate:self.value] UTF8String]);
-              if (rc < 0) {
-                return NO;
-              }
-          ]]></value>
-      </write>
+    <read>
+      <prefix>NSDateFormatter *dateOnlyFormatter = [[NSDateFormatter alloc] init];
+        dateOnlyFormatter.dateFormat = @"yyyy-MM-dd";
+        dateOnlyFormatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+        dateOnlyFormatter.locale = self.locale;
+      </prefix>
+      <attribute>self.{{ attribute.variableName }} = [dateOnlyFormatter dateFromString:[NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding]];</attribute>
+      <element>
+        <![CDATA[{% if element.isSingleValue %}self.{{ element.variableName }} = [dateOnlyFormatter dateFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];{% else %}[{{ element.variableName }}Array addObject:[dateOnlyFormatter dateFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]]];
+          {% /if %}]]>
+      </element>
+      <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
+        value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        self.value = [dateOnlyFormatter dateFromString:value];</value>
+    </read>
+    <write>
+      <prefix>NSDateFormatter* dateOnlyFormatter = [[NSDateFormatter alloc] init];
+        dateOnlyFormatter.dateFormat = @"yyyy-MM-dd";
+        dateOnlyFormatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+      </prefix>
+      <attribute>{{ attribute.variableName }}AttrValue = [[dateOnlyFormatter stringFromDate:self.{{ attribute.variableName }}] UTF8String];</attribute>
+      <element>
+        <![CDATA[xmlTextWriterWriteString(writer, (xmlChar*)[[dateOnlyFormatter stringFromDate:{{ element.variableName }}Value] UTF8String]);]]>
+      </element>
+      <value>
+        <![CDATA[int rc = xmlTextWriterWriteString(writer, (xmlChar*)[[dateOnlyFormatter stringFromDate:self.value] UTF8String]);
+          if (rc < 0) {
+              return NO;
+          }]]>
+      </value>
+    </write>
   </simpletype>
   <simpletype name="time" objType="NSDate" arrayType="NSArray">
-      <read>
-          <prefix>NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
-              timeFormatter.dateFormat = @"HH:mm:ss";
-              timeFormatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
-              timeFormatter.locale = self.locale;
-          </prefix>
-          <attribute>self.{{ attribute.variableName }} = [timeFormatter dateFromString:[NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding]];</attribute>
-          <element>
-              <![CDATA[{% if element.isSingleValue %}self.{{ element.variableName }} = [timeFormatter dateFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];{% else %}[{{ element.variableName }}Array addObject:[timeFormatter dateFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]]];
-                  {% /if %}]]>
-          </element>
-          <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
-              value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-              self.value = [timeFormatter dateFromString:value];</value>
-      </read>
-      <write>
-          <prefix>NSDateFormatter* timeFormatter = [[NSDateFormatter
-              alloc] init];
-              timeFormatter.dateFormat = @"HH:mm:ss";
-              timeFormatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
-          </prefix>
-          <attribute>{{ attribute.variableName }}AttrValue = [[timeFormatter stringFromDate:self.{{ attribute.variableName }}] UTF8String];</attribute>
-          <element><![CDATA[
-              xmlTextWriterWriteString(writer, (xmlChar*)[[timeFormatter stringFromDate:{{ element.variableName }}Value] UTF8String]);
-          ]]></element>
-          <value><![CDATA[
-              int rc = xmlTextWriterWriteString(writer, (xmlChar*)[[timeFormatter stringFromDate:self.value] UTF8String]);
-              if (rc < 0) {
-                return NO;
-              }
-          ]]></value>
-      </write>
+    <read>
+      <prefix>NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+        timeFormatter.dateFormat = @"HH:mm:ss";
+        timeFormatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+        timeFormatter.locale = self.locale;
+      </prefix>
+      <attribute>self.{{ attribute.variableName }} = [timeFormatter dateFromString:[NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding]];</attribute>
+      <element>
+        <![CDATA[{% if element.isSingleValue %}self.{{ element.variableName }} = [timeFormatter dateFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];{% else %}[{{ element.variableName }}Array addObject:[timeFormatter dateFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]]];
+          {% /if %}]]>
+      </element>
+      <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
+        value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        self.value = [timeFormatter dateFromString:value];</value>
+    </read>
+    <write>
+      <prefix>NSDateFormatter* timeFormatter = [[NSDateFormatter alloc] init];
+        timeFormatter.dateFormat = @"HH:mm:ss";
+        timeFormatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+      </prefix>
+      <attribute>{{ attribute.variableName }}AttrValue = [[timeFormatter stringFromDate:self.{{ attribute.variableName }}] UTF8String];</attribute>
+      <element>
+        <![CDATA[xmlTextWriterWriteString(writer, (xmlChar*)[[timeFormatter stringFromDate:{{ element.variableName }}Value] UTF8String]);]]>
+      </element>
+      <value>
+        <![CDATA[int rc = xmlTextWriterWriteString(writer, (xmlChar*)[[timeFormatter stringFromDate:self.value] UTF8String]);
+          if (rc < 0) {
+              return NO;
+          }]]>
+      </value>
+    </write>
   </simpletype>
-    <simpletype name="base64Binary" objType="NSData" arrayType="NSArray">
-      <read>
-          <prefix>
-          </prefix>
-          <attribute>self.{{ attribute.variableName }} = [[NSData alloc] initWithBase64EncodedString:[NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding] options:kNilOptions];</attribute>
+  <simpletype name="base64Binary" objType="NSData" arrayType="NSArray">
+    <read>
+      <prefix>
+      </prefix>
+      <attribute>self.{{ attribute.variableName }} = [[NSData alloc] initWithBase64EncodedString:[NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding] options:kNilOptions];</attribute>
       <element>
         <![CDATA[{% if element.isSingleValue %}self.{{ element.variableName }} = [[NSData alloc] initWithBase64EncodedString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding] options:kNilOptions];{% else %}[{{ element.variableName }}Array addObject:[[NSData alloc] initWithBase64EncodedString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding] options:kNilOptions]];
-        {% /if %}]]>
-        </element>
-          <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
-              value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-              self.value = [[NSData alloc] initWithBase64EncodedString:string options:kNilOptions];</value>
-      </read>
-      <write>
-          <prefix/>
-          <attribute>
-              <![CDATA[{{ attribute.variableName }}AttrValue = [[self.{{ attribute.variableName }} base64EncodedStringWithOptions:kNilOptions] UTF8String];]]>
-          </attribute>
-          <element>
-              <![CDATA[xmlTextWriterWriteString(writer, (xmlChar*)[[{{ element.variableName }}Value base64EncodedStringWithOptions:kNilOptions] UTF8String]);]]>
-          </element>
-          <value>
-              <![CDATA[statusCode = xmlTextWriterWriteString(writer, (xmlChar*)[[self.value base64EncodedStringWithOptions:kNilOptions] UTF8String]);
-                  if (statusCode < 0) return statusCode;]]>
-          </value>
-      </write>
-
+          {% /if %}]]>
+      </element>
+      <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
+        value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        self.value = [[NSData alloc] initWithBase64EncodedString:string options:kNilOptions];</value>
+    </read>
+    <write>
+      <prefix/>
+      <attribute>
+        <![CDATA[{{ attribute.variableName }}AttrValue = [[self.{{ attribute.variableName }} base64EncodedStringWithOptions:kNilOptions] UTF8String];]]>
+      </attribute>
+      <element>
+        <![CDATA[xmlTextWriterWriteString(writer, (xmlChar*)[[{{ element.variableName }}Value base64EncodedStringWithOptions:kNilOptions] UTF8String]);]]>
+      </element>
+      <value>
+        <![CDATA[statusCode = xmlTextWriterWriteString(writer, (xmlChar*)[[self.value base64EncodedStringWithOptions:kNilOptions] UTF8String]);
+          if (statusCode < 0) return statusCode;]]>
+      </value>
+    </write>
   </simpletype>
   <!--complex type-->
   <complextype objType="NSObject-Subclass" arrayType="NSArray">
@@ -322,13 +318,13 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
         </element>
     </read>
     <write>
-        <element>
+      <element>
         <![CDATA[
-            BOOL result = [{{ element.variableName }}Value writeWithWriter:writer];
-            if (!result) {
-                return NO;
-            }]]>
-        </element>
+          BOOL result = [{{ element.variableName }}Value writeWithWriter:writer];
+          if (!result) {
+              return NO;
+          }]]>
+      </element>
     </write>
     <implementation>
       <!--
@@ -340,23 +336,23 @@ this will be used to generate the class header files for the complex types.
 -->
       <header extension="h">
         <![CDATA[//------------------------------------------------------------------------------
-		// <auto-generated>
-		//     This code was generated by XSDConverter.
-		//
-		//     Changes to this file may cause incorrect behavior and will be lost if
-		//     the code is regenerated.
-		// </auto-generated>
-		//------------------------------------------------------------------------------
-		
-		//
-		//  {{  type.targetClassFileName }}.h
-		{% if type.schema.hasAnnotations %} //  {{ type.schema.comment }}{% else %}//  {% /if %}
-		//  ExecutiveWorkspace
-		//
-		//  Copyright © 2016 Digital Design. All rights reserved.
-		//
-		//  This source code was auto-generated by XSDConverter (https://github.com/anivaros/xsd2cocoa).
-		//
+        // <auto-generated>
+        //     This code was generated by XSDConverter.
+        //
+        //     Changes to this file may cause incorrect behavior and will be lost if
+        //     the code is regenerated.
+        // </auto-generated>
+        //------------------------------------------------------------------------------
+
+        //
+        //  {{  type.targetClassFileName }}.h
+        {% if type.schema.hasAnnotations %} //  {{ type.schema.comment }}{% else %}//  {% /if %}
+        //  ExecutiveWorkspace
+        //
+        //  Copyright © 2016 Digital Design. All rights reserved.
+        //
+        //  This source code was auto-generated by XSDConverter (https://github.com/anivaros/xsd2cocoa).
+        //
 
         #import <Foundation/Foundation.h>
         {% if type.hasComplexBaseClass %}#import "{{ type.baseClass.targetClassFileName }}.h"{% /if %}
@@ -419,7 +415,7 @@ this will be used to generate the class header files for the complex types.
         
         @end
         ]]>
-        </header>
+      </header>
       <!--
 Name:          Class
 Parameters:    type - the current complex type.
@@ -428,24 +424,24 @@ this will be used to generate the class files for the complex types.
 -->
       <class extension="m">
         <![CDATA[//------------------------------------------------------------------------------
-		// <auto-generated>
-		//     This code was generated by XSDConverter.
-		//
-		//     Changes to this file may cause incorrect behavior and will be lost if
-		//     the code is regenerated.
-		// </auto-generated>
-		//------------------------------------------------------------------------------
-		
-		//
-		//  {{  type.targetClassFileName }}.m
-		{% if type.schema.hasAnnotations %}//  {{ type.schema.comment }}{% else %}//  {% /if %}
-		//  ExecutiveWorkspace
-		//
-		//  Copyright © 2016 Digital Design. All rights reserved.
-		//
-		//  This source code was auto-generated by XSDConverter (https://github.com/anivaros/xsd2cocoa).
-		//
-		
+        // <auto-generated>
+        //     This code was generated by XSDConverter.
+        //
+        //     Changes to this file may cause incorrect behavior and will be lost if
+        //     the code is regenerated.
+        // </auto-generated>
+        //------------------------------------------------------------------------------
+
+        //
+        //  {{  type.targetClassFileName }}.m
+        {% if type.schema.hasAnnotations %}//  {{ type.schema.comment }}{% else %}//  {% /if %}
+        //  ExecutiveWorkspace
+        //
+        //  Copyright © 2016 Digital Design. All rights reserved.
+        //
+        //  This source code was auto-generated by XSDConverter (https://github.com/anivaros/xsd2cocoa).
+        //
+
         #import "{{ type.targetClassFileName }}.h"
         #import <libxml/xmlreader.h>
         #import <libxml/xmlwriter.h>
@@ -522,9 +518,9 @@ this will be used to generate the class files for the complex types.
             
             {% for element in type.elements %}
             {% if element.isSingleValue %}
-            if(self.{{ element.variableName }}) {
-            xmlTextWriterStartElement(writer, (xmlChar*)"{{ element.name }}");
-            id {{ element.variableName }}Value = self.{{ element.variableName }};
+            if (self.{{ element.variableName }}) {
+                xmlTextWriterStartElement(writer, (xmlChar*)"{{ element.name }}");
+                id {{ element.variableName }}Value = self.{{ element.variableName }};
                 if ({{ element.variableName }}Value != nil) {
                     {{ element.writeCodeForContent }}
                 }
@@ -592,80 +588,80 @@ this will be used to generate the class files for the complex types.
             
             /* Customize the object */
             if (self) { {{ type.combinedReadPrefixCode }}
-            {% if type.hasComplexBaseClass %}{% else %}[self readAttributes: reader];{% /if %}
-            {% for element in type.elements %}{% if element.isSingleValue %}{% if element.defaultValue %}
-            const char *{{element.name}}ElementValue = (const char *) "{{ element.defaultValue }}";
-            if ({{element.name}}ElementValue) {
-                {{ element.readCodeForContent }}
-            }
-            {% /if %}{% else %}NSMutableArray *{{ element.variableName }}Array = [NSMutableArray array];{% /if %}
-            {% /for %}{% if type.hasComplexBaseClass %}int _readerOk __attribute__ ((unused)) = 1;{% else %}int _readerOk __attribute__ ((unused)) = xmlTextReaderRead(reader);{% /if %}
-            int _currentNodeType __attribute__ ((unused)) = xmlTextReaderNodeType(reader);
-            int _currentXmlDept = xmlTextReaderDepth(reader);
-            while (_readerOk && _currentNodeType != XML_READER_TYPE_NONE && _complexTypeXmlDept < _currentXmlDept) {
-                BOOL handledInChild = NO;
-                if (_currentNodeType == XML_READER_TYPE_ELEMENT || _currentNodeType == XML_READER_TYPE_TEXT) {
-                    NSString *_currentElementName = [NSString stringWithCString: (const char *) xmlTextReaderConstLocalName(reader) encoding:NSUTF8StringEncoding];
-                    {% for element in type.elements %}{% if not element.hasAny %}if ([@"{{element.name}}" isEqualToString: _currentElementName]) {
-                        {% if element.hasComplexType %}{{ element.readCodeForContent }}
-                        handledInChild = YES;
-                        {% else %}if (!xmlTextReaderIsEmptyElement(reader)) {
-                            _readerOk = xmlTextReaderRead(reader);
-                            _currentNodeType = xmlTextReaderNodeType(reader);
-                            if (_currentNodeType != XML_READER_TYPE_END_ELEMENT) {
-                                {% if not element.defaultValue %}const char *{% /if %}{{element.name}}ElementValue = (const char *) xmlTextReaderConstValue(reader);
-                                if ({{element.name}}ElementValue) {
-                                    {{ element.readCodeForContent }}
-                                }
+                {% if type.hasComplexBaseClass %}{% else %}[self readAttributes: reader];{% /if %}
+                {% for element in type.elements %}{% if element.isSingleValue %}{% if element.defaultValue %}
+                const char *{{element.name}}ElementValue = (const char *) "{{ element.defaultValue }}";
+                if ({{element.name}}ElementValue) {
+                    {{ element.readCodeForContent }}
+                }
+                {% /if %}{% else %}NSMutableArray *{{ element.variableName }}Array = [NSMutableArray array];{% /if %}
+                {% /for %}{% if type.hasComplexBaseClass %}int _readerOk __attribute__ ((unused)) = 1;{% else %}int _readerOk __attribute__ ((unused)) = xmlTextReaderRead(reader);{% /if %}
+                int _currentNodeType __attribute__ ((unused)) = xmlTextReaderNodeType(reader);
+                int _currentXmlDept = xmlTextReaderDepth(reader);
+                while (_readerOk && _currentNodeType != XML_READER_TYPE_NONE && _complexTypeXmlDept < _currentXmlDept) {
+                    BOOL handledInChild = NO;
+                    if (_currentNodeType == XML_READER_TYPE_ELEMENT || _currentNodeType == XML_READER_TYPE_TEXT) {
+                        NSString *_currentElementName = [NSString stringWithCString: (const char *) xmlTextReaderConstLocalName(reader) encoding:NSUTF8StringEncoding];
+                        {% for element in type.elements %}{% if not element.hasAny %}if ([@"{{element.name}}" isEqualToString: _currentElementName]) {
+                            {% if element.hasComplexType %}{{ element.readCodeForContent }}
+                            handledInChild = YES;
+                            {% else %}if (!xmlTextReaderIsEmptyElement(reader)) {
                                 _readerOk = xmlTextReaderRead(reader);
                                 _currentNodeType = xmlTextReaderNodeType(reader);
-                            }
-                        }{% /if %}
-                    }
-                    else {% /if %}{% /for %}{% if type.hasSimpleBaseClass %}if ([@"#text" isEqualToString: _currentElementName]) {
-                        const char *contentValue = (const char *) xmlTextReaderConstValue(reader);
-                        if (contentValue) {
-                            {{ type.readSimpleContent }}
+                                if (_currentNodeType != XML_READER_TYPE_END_ELEMENT) {
+                                    {% if not element.defaultValue %}const char *{% /if %}{{element.name}}ElementValue = (const char *) xmlTextReaderConstValue(reader);
+                                    if ({{element.name}}ElementValue) {
+                                        {{ element.readCodeForContent }}
+                                    }
+                                    _readerOk = xmlTextReaderRead(reader);
+                                    _currentNodeType = xmlTextReaderNodeType(reader);
+                                }
+                            }{% /if %}
                         }
-                    }
-                    else {% /if %}{
-                        {% if type.hasAnyElement %}{% for element in type.elements %}{% if element.hasAny %}if (!self.{{element.variableName}} && _currentElementName) {
-                            _currentNodeType = xmlTextReaderNodeType(reader);
-                            if (_currentNodeType != XML_READER_TYPE_END_ELEMENT) {
-                                const char *{{element.name}}ElementValue = (const char *) xmlTextReaderReadOuterXml(reader);
-                                if (strlen({{element.name}}ElementValue)) {
-                                    {{ element.readCodeForContent }}
-                                }
-                                _readerOk = strlen({{element.name}}ElementValue) ? xmlTextReaderNext(reader) : xmlTextReaderRead(reader);
+                        else {% /if %}{% /for %}{% if type.hasSimpleBaseClass %}if ([@"#text" isEqualToString: _currentElementName]) {
+                            const char *contentValue = (const char *) xmlTextReaderConstValue(reader);
+                            if (contentValue) {
+                                {{ type.readSimpleContent }}
+                            }
+                        }
+                        else {% /if %}{
+                            {% if type.hasAnyElement %}{% for element in type.elements %}{% if element.hasAny %}if (!self.{{element.variableName}} && _currentElementName) {
                                 _currentNodeType = xmlTextReaderNodeType(reader);
-                                if ({{element.name}}ElementValue) {
-                                    xmlFree({{element.name}}ElementValue);
+                                if (_currentNodeType != XML_READER_TYPE_END_ELEMENT) {
+                                    const char *{{element.name}}ElementValue = (const char *) xmlTextReaderReadOuterXml(reader);
+                                    if (strlen({{element.name}}ElementValue)) {
+                                        {{ element.readCodeForContent }}
+                                    }
+                                    _readerOk = strlen({{element.name}}ElementValue) ? xmlTextReaderNext(reader) : xmlTextReaderRead(reader);
+                                    _currentNodeType = xmlTextReaderNodeType(reader);
+                                    if ({{element.name}}ElementValue) {
+                                        xmlFree({{element.name}}ElementValue);
+                                    }
+                                    handledInChild = YES;
+                                    }
                                 }
-                                handledInChild = YES;
+                                      else if (self.{{element.variableName}}) {
+                                          NSAssert(NO, @"Unexpected: %@", _currentElementName);
+                                          _readerOk = xmlTextReaderNext(reader);
+                                          _currentNodeType = xmlTextReaderNodeType(reader);
+                                          handledInChild = YES;
+                                      }
+                          {% /if %}{% /for %}
+                          {% else %}NSAssert(NO, @"Unexpected: %@", _currentElementName);
+                          _readerOk = xmlTextReaderNext(reader);
+                          _currentNodeType = xmlTextReaderNodeType(reader);
+                          handledInChild = YES;
+                          {% /if %}}
                     }
+
+                    _readerOk = handledInChild ? xmlTextReaderReadState(reader) : xmlTextReaderRead(reader);
+                    _currentNodeType = xmlTextReaderNodeType(reader);
+                    _currentXmlDept = xmlTextReaderDepth(reader);
                 }
-                                  else if (self.{{element.variableName}}) {
-                                      NSAssert(NO, @"Unexpected: %@", _currentElementName);
-                                      _readerOk = xmlTextReaderNext(reader);
-                                      _currentNodeType = xmlTextReaderNodeType(reader);
-                                      handledInChild = YES;
-                                  }
-                      {% /if %}{% /for %}
-                      {% else %}NSAssert(NO, @"Unexpected: %@", _currentElementName);
-                      _readerOk = xmlTextReaderNext(reader);
-                      _currentNodeType = xmlTextReaderNodeType(reader);
-                      handledInChild = YES;
-                      {% /if %}}
-                }
-                
-                _readerOk = handledInChild ? xmlTextReaderReadState(reader) : xmlTextReaderRead(reader);
-                _currentNodeType = xmlTextReaderNodeType(reader);
-                _currentXmlDept = xmlTextReaderDepth(reader);
+                {% for element in type.elements %}
+                {% if element.isSingleValue %}{% else %}if ({{ element.variableName }}Array.count) self.{{ element.variableName }} = {{ element.variableName }}Array;{% /if %}{% /for %}
             }
-            {% for element in type.elements %}
-            {% if element.isSingleValue %}{% else %}if ({{ element.variableName }}Array.count) self.{{ element.variableName }} = {{ element.variableName }}Array;{% /if %}{% /for %}
-        }
-        return self;
+            return self;
         }
 
         /**
@@ -912,16 +908,16 @@ this will be used to generate the class files for the complex types.
     <read>
       <prefix></prefix>
       <attribute>
-          <![CDATA[self.{{ attribute.variableName }} = {{ attribute.schemaType.enumerationName }}FromString([NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding]);]]>
-        </attribute>
+        <![CDATA[self.{{ attribute.variableName }} = {{ attribute.schemaType.enumerationName }}FromString([NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding]);]]>
+      </attribute>
       <element>
         <![CDATA[self.{{ element.variableName }} = {{ element.schemaType.enumerationName }}FromString([NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]);]]>
-        </element>
+      </element>
       <value>
         <![CDATA[NSString *value = [NSString stringWithCString: contentValue encoding:NSUTF8StringEncoding];
-            value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            self.value = {{ type.enumerationName }}FromString(value);]]>
-        </value>
+          value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+          self.value = {{ type.enumerationName }}FromString(value);]]>
+      </value>
     </read>
     <write>
       <prefix />
@@ -929,54 +925,55 @@ this will be used to generate the class files for the complex types.
         <![CDATA[xmlTextWriterWriteAttribute(writer, (xmlChar*)"{{ attribute.name }}", (xmlChar*)[{{ attribute.schemaType.enumerationName }}ToString(self.{{ attribute.variableName }}) UTF8String]);]]>
       </attribute>
       <element>
-        <![CDATA[if (self.{{ element.variableName }}) xmlTextWriterWriteElement(writer, (xmlChar*)"{{ element.name }}", (xmlChar*)[{{ attribute.schemaType.enumerationName }}ToString(self.{{ element.variableName }}) UTF8String]);]]>
+        <![CDATA[if (self.{{ element.variableName }}) {
+              xmlTextWriterWriteElement(writer, (xmlChar*)"{{ element.name }}", (xmlChar*)[{{ attribute.schemaType.enumerationName }}ToString(self.{{ element.variableName }}) UTF8String]);
+          }]]>
       </element>
-      <value><![CDATA[
-        int rc = xmlTextWriterWriteString(writer, (xmlChar*)[{{ type.baseClass.enumerationName }}ToString(self.value) UTF8String];
+      <value>
+        <![CDATA[int rc = xmlTextWriterWriteString(writer, (xmlChar*)[{{ type.baseClass.enumerationName }}ToString(self.value) UTF8String];
         if (rc < 0) {
-        return NO;
-        }
-      ]]>
+            return NO;
+        }]]>
       </value>
     </write>
     <implementation>
       <header extension="h">
         <![CDATA[#import <Foundation/Foundation.h>
-            
-            typedef NS_ENUM(NSInteger, {{ type.enumerationName }}) {
-                {% for enumValue in type.enumerationValues %}{{ type.enumerationName }}{{ enumValue }},
-                {% /for %}
-            };
-            NSString *{{ type.enumerationName }}ToString({{ type.enumerationName }} enumType);
-            {{ type.enumerationName }} {{ type.enumerationName }}FromString(NSString *enumString);
-            ]]>
+
+          typedef NS_ENUM(NSInteger, {{ type.enumerationName }}) {
+              {% for enumValue in type.enumerationValues %}{{ type.enumerationName }}{{ enumValue }},
+              {% /for %}
+          };
+          NSString *{{ type.enumerationName }}ToString({{ type.enumerationName }} enumType);
+          {{ type.enumerationName }} {{ type.enumerationName }}FromString(NSString *enumString);
+        ]]>
       </header>
       <class extension="m">
         <![CDATA[
-            #import "{{ type.enumerationFileName }}.h"
-            
-            #define k{{ type.enumerationName }}NamesArray @[@"##enums##"{% for enumValue in type.enumerationValues %}, @"{{ enumValue }}"{% /for %}]
-            
-            NSString *{{ type.enumerationName }}ToString({{ type.enumerationName }} enumType) {
-                assert(enumType < k{{ type.enumerationName }}NamesArray.count);
-                return [k{{ type.enumerationName }}NamesArray objectAtIndex:enumType+1];
-            }
-            
-            {{ type.enumerationName }} {{ type.enumerationName }}FromString(NSString *enumString) {
-                NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-                NSNumberFormatter *numFormatter = [[NSNumberFormatter alloc] init];
-                numFormatter.locale =locale;
+          #import "{{ type.enumerationFileName }}.h"
 
-                if ([numFormatter numberFromString:enumString]) {
-                    enumString = [@"Value" stringByAppendingString:enumString];
-                }
-                    
-                NSUInteger enumType = [k{{ type.enumerationName }}NamesArray indexOfObject:enumString];
-                assert(enumType != NSNotFound);
-                return (enumType != NSNotFound) ? ({{ type.enumerationName }}) enumType-1 : NSNotFound;
-            }
-            ]]>
-        </class>
+          #define k{{ type.enumerationName }}NamesArray @[@"##enums##"{% for enumValue in type.enumerationValues %}, @"{{ enumValue }}"{% /for %}]
+
+          NSString *{{ type.enumerationName }}ToString({{ type.enumerationName }} enumType) {
+              assert(enumType < k{{ type.enumerationName }}NamesArray.count);
+              return [k{{ type.enumerationName }}NamesArray objectAtIndex:enumType+1];
+          }
+
+          {{ type.enumerationName }} {{ type.enumerationName }}FromString(NSString *enumString) {
+              NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+              NSNumberFormatter *numFormatter = [[NSNumberFormatter alloc] init];
+              numFormatter.locale =locale;
+
+              if ([numFormatter numberFromString:enumString]) {
+              enumString = [@"Value" stringByAppendingString:enumString];
+          }
+
+          NSUInteger enumType = [k{{ type.enumerationName }}NamesArray indexOfObject:enumString];
+              assert(enumType != NSNotFound);
+              return (enumType != NSNotFound) ? ({{ type.enumerationName }}) enumType-1 : NSNotFound;
+          }
+        ]]>
+      </class>
     </implementation>
   </enumeration>
 </template>
