@@ -5,7 +5,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
   <!-- known simpletypes-->
   <simpletype name="string" objType="NSString" arrayType="NSArray">
     <read>
-      <prefix></prefix>
+      <prefix />
       <attribute>self.{{ attribute.variableName }} = [NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding];{% /if %}</attribute>
       <element>
         <![CDATA[{% if element.isSingleValue %}self.{{ element.variableName }} = [NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding];
@@ -33,7 +33,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
   </simpletype>
   <simpletype name="any" objType="NSString" arrayType="NSArray">
     <read>
-      <prefix></prefix>
+      <prefix />
       <attribute>self.{{ attribute.variableName }} = [NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding];{% /if %}</attribute>
       <element>
         <![CDATA[{% if element.isSingleValue %}self.{{ element.variableName }} = [NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding];
@@ -59,7 +59,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
   </simpletype>
   <simpletype name="anyURI" objType="NSURL" arrayType="NSArray">
     <read>
-      <prefix></prefix>
+      <prefix />
       <attribute>self.{{ attribute.variableName }} = [NSURL URLWithString:[NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding]];</attribute>
       <element>
         <![CDATA[{% if element.isSingleValue %}self.{{ element.variableName }} = [NSURL URLWithString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];{% else %}[{{ element.variableName }}Array addObject:[NSURL URLWithString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]]];
@@ -72,10 +72,10 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
     <write>
       <prefix />
       <attribute><![CDATA[
-        {{ attribute.variableName }}AttrValue = [[self."{{ attribute.variableName }}" absoluteString] UTF8String];
+        {{ attribute.variableName }}AttrValue = [[self.{{ attribute.variableName }} absoluteString] UTF8String];
       ]]></attribute>
       <element><![CDATA[
-        xmlTextWriterWriteString(writer, (mlChar*)[[self.value absoluteString] UTF8String]);
+        xmlTextWriterWriteString(writer, (xmlChar*)[[{{ element.variableName }}Value absoluteString] UTF8String]);
       ]]></element>
       <value><![CDATA[
         int rc = xmlTextWriterWriteString(writer, (xmlChar*)[[self.value absoluteString] UTF8String]);
@@ -472,14 +472,9 @@ this will be used to generate the class files for the complex types.
         }
         {% /if %}
 
-        - (BOOL)writeAttributes:(void *)writer {
-            {% if type.hasBaseClass %}
-            [super writeAttributes: writer];
-            {% /if %}
-            
-            {% for simpleType in type.simpleTypesInUse %}
-            {{ simpleType.writePrefixCode }}
-            {% /for %}
+        - (BOOL)writeAttributes:(void *)writer {{% if type.hasBaseClass %}
+            [super writeAttributes: writer];{% /if %}
+            {{ type.combinedWritePrefixCode }}
             
             {% for attribute in type.attributes %}
             {% if attribute.writeCodeForAttribute.length %}
@@ -507,20 +502,15 @@ this will be used to generate the class files for the complex types.
             return YES;
         }
         
-        - (BOOL)writeElements:(xmlTextWriterPtr)writer {
-            {% if type.hasBaseClass %}
-            [super writeElements: writer];
-            {% /if %}
-            
-            {% for simpleType in type.simpleTypesInUse %}
-            {{ simpleType.writePrefixCode }}
-            {% /for %}
+        - (BOOL)writeElements:(xmlTextWriterPtr)writer {{% if type.hasBaseClass %}
+            [super writeElements: writer];{% /if %}
+            {{ type.combinedWritePrefixCode }}
             
             {% for element in type.elements %}
             {% if element.isSingleValue %}
             if (self.{{ element.variableName }}) {
                 xmlTextWriterStartElement(writer, (xmlChar*)"{{ element.name }}");
-                id {{ element.variableName }}Value = self.{{ element.variableName }};
+                {% if element.hasEnumeration %}__auto_type const {{ element.variableName }}Value = {{ element.schemaType.enumerationName }}ToString(self.{{ element.variableName }});{% else %}__auto_type const {{ element.variableName }}Value = self.{{ element.variableName }};{% /if %}
                 if ({{ element.variableName }}Value != nil) {
                     {{ element.writeCodeForContent }}
                 }
@@ -564,7 +554,8 @@ this will be used to generate the class files for the complex types.
         * Description: Read the attributes for the current XML element
         */
         - (void)readAttributes:(void *)reader {{% if type.hasComplexBaseClass %}
-        [super readAttributes: reader];{% /if %}{{ type.combinedReadPrefixCode }}
+        [super readAttributes: reader];{% /if %}
+        {{ type.combinedReadPrefixCode }}
         {% for attribute in type.attributes %}  char *{{ attribute.name }}AttrValue = (char *) xmlTextReaderGetAttribute(reader, (xmlChar *)"{{ attribute.name }}");
         if ({{ attribute.name }}AttrValue) {
             {{ attribute.readCodeForAttribute }}
@@ -587,7 +578,8 @@ this will be used to generate the class files for the complex types.
             {% if type.hasComplexBaseClass %}self = [super initWithReader: reader];{% else %}self = [super init];{% /if %}
             
             /* Customize the object */
-            if (self) { {{ type.combinedReadPrefixCode }}
+            if (self) {
+                {{ type.combinedReadPrefixCode }}
                 {% if type.hasComplexBaseClass %}{% else %}[self readAttributes: reader];{% /if %}
                 {% for element in type.elements %}{% if element.isSingleValue %}{% if element.defaultValue %}
                 const char *{{element.name}}ElementValue = (const char *) "{{ element.defaultValue }}";
@@ -926,11 +918,11 @@ this will be used to generate the class files for the complex types.
       </attribute>
       <element>
         <![CDATA[if (self.{{ element.variableName }}) {
-              xmlTextWriterWriteElement(writer, (xmlChar*)"{{ element.name }}", (xmlChar*)[{{ attribute.schemaType.enumerationName }}ToString(self.{{ element.variableName }}) UTF8String]);
+              xmlTextWriterWriteElement(writer, (xmlChar*)"{{ element.name }}", (xmlChar*)[{{ element.schemaType.enumerationName }}ToString(self.{{ element.variableName }}) UTF8String]);
           }]]>
       </element>
       <value>
-        <![CDATA[int rc = xmlTextWriterWriteString(writer, (xmlChar*)[{{ type.baseClass.enumerationName }}ToString(self.value) UTF8String];
+        <![CDATA[int rc = xmlTextWriterWriteString(writer, (xmlChar*)[{{ type.enumerationName }}ToString(self.value) UTF8String]);
         if (rc < 0) {
             return NO;
         }]]>

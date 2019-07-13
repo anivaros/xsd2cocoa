@@ -369,6 +369,16 @@
     return [lines.array componentsJoinedByString:@"\n"];
 }
 
+- (NSString*)combinedWritePrefixCode {
+    NSMutableOrderedSet *lines = [NSMutableOrderedSet orderedSetWithCapacity:self.simpleTypesInUse.count];
+    for (XSSimpleType *t in self.simpleTypesInUse) {
+        if(t.writePrefixCode) {
+            [lines addObject:t.writePrefixCode];
+        }
+    }
+    return [lines.array componentsJoinedByString:@"\n"];
+}
+
 #pragma mark bug
 
 - (NSString*)enumerationName {

@@ -34,4 +34,5 @@
 - (id<XSType>) baseClass;
 
 - (NSString*)combinedReadPrefixCode; //for templating this merges the prefix codes of all simpleTypes
+- (NSString*)combinedWritePrefixCode; //for templating this merges the prefix codes of all simpleTypes
 @end

@@ -367,23 +367,13 @@
         if(resultError) *resultError = error;
         return NO;
     }
-    NSXMLElement *enumTypeNode = nil;
-    if(nodes != nil && nodes.count > 0) {
-        enumTypeNode = [nodes objectAtIndex: 0];
-    }
     
-    //reader
-    nodes = [enumTypeNode nodesForXPath:self.XPathForTemplateReads error: &error];
-    if(error != nil) {
-        if(resultError) *resultError = error;
-        return NO;
-    }
     if(nodes != nil && nodes.count > 0) {
         self.enumNode = [nodes objectAtIndex: 0];
     }
     
     /* Fetch the header file that we will use in the enumeration section */
-    nodes = [enumTypeNode nodesForXPath:self.XPathForTemplateFirstImplementationHeaders error: &error];
+    nodes = [self.enumNode nodesForXPath:self.XPathForTemplateFirstImplementationHeaders error: &error];
     if(error != nil) {
         if(resultError) *resultError = error;
         return NO;
@@ -395,7 +385,7 @@
     
     
     /* Fetch the class file that we will use in the enumeration section */
-    nodes = [enumTypeNode nodesForXPath:self.XPathForTemplateFirstImplementationClasses error: &error];
+    nodes = [self.enumNode nodesForXPath:self.XPathForTemplateFirstImplementationClasses error: &error];
     if(error != nil) {
         if(resultError) *resultError = error;
         return NO;

@@ -298,8 +298,8 @@
         }
         if(nodes != nil && nodes.count > 0) {
             self.enumWriteElementTemplate = [[nodes objectAtIndex: 0] stringValue];
-    }
-    
+        }
+        
         nodes = [enumTypeNode nodesForXPath:@"write[1]/value[1]" error: error];
         if(*error != nil) {
             return NO;
