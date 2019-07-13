@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>classNames</key>
+	<dict>
+		<key>AddressTestsObjC</key>
+		<dict>
+			<key>testPerformanceGeneratingParser</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.43765</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+			<key>testPerformanceLoadingTemplate</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.046189</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+			<key>testPerformanceParsingSchema</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.012569</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+			<key>testPerformanceParsingXML</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.001364</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+		</dict>
+		<key>ConfigFeaturesTestsObjC</key>
+		<dict>
+			<key>testPerformanceGeneratingParser</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.22319</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+			<key>testPerformanceLoadingTemplate</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.01435</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+			<key>testPerformanceParsingSchema</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.0031085</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+			<key>testPerformanceParsingXML</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.0019736</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+		</dict>
+		<key>MyPantryTestsObjC</key>
+		<dict>
+			<key>testPerformanceGeneratingParser</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.1706</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+			<key>testPerformanceLoadingTemplate</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.015038</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+			<key>testPerformanceParsingSchema</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.0039943</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+			<key>testPerformanceParsingXML</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.00054618</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+		</dict>
+		<key>SampleLanguageDataTestsObjC</key>
+		<dict>
+			<key>testPerformanceGeneratingParser</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.088676</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+			<key>testPerformanceLoadingTemplate</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.013364</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+			<key>testPerformanceParsingSchema</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.0033824</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+			<key>testPerformanceParsingXML</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.0002067</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+		</dict>
+		<key>SimpleTypesTestsObjC</key>
+		<dict>
+			<key>testPerformanceGeneratingParser</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.89422</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+			<key>testPerformanceLoadingTemplate</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.013683</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+			<key>testPerformanceParsingSchema</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.0052345</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+			<key>testPerformanceParsingXML</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.0033798</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+		</dict>
+		<key>WeblinksTestsObjC</key>
+		<dict>
+			<key>testPerformanceGeneratingParser</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.17434</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+			<key>testPerformanceLoadingTemplate</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.038817</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+			<key>testPerformanceParsingSchema</key>
+			<dict>
+				<key>com.apple.XCTPerformanceMetric_WallClockTime</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.0085762</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>13 Jul 2019, 22:13:24</string>
+				</dict>
+			</dict>
+		</dict>
+	</dict>
+</dict>
+</plist>
