@@ -207,7 +207,7 @@
 		B42F9EE31A48663F0007FC96 /* XSSchemaNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XSSchemaNode.m; sourceTree = "<group>"; };
 		B42F9EE41A48663F0007FC96 /* XSSimpleType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XSSimpleType.h; sourceTree = "<group>"; };
 		B42F9EE51A48663F0007FC96 /* XSSimpleType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XSSimpleType.m; sourceTree = "<group>"; };
-		B42F9EFD1A48663F0007FC96 /* template-objc.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "template-objc.xml"; sourceTree = "<group>"; usesTabs = 0; };
+		B42F9EFD1A48663F0007FC96 /* template-objc.xml */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = text.xml; path = "template-objc.xml"; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		B42F9EFE1A48663F0007FC96 /* template.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = template.xsd; sourceTree = "<group>"; };
 		B42F9EFF1A48663F0007FC96 /* XMLSchema.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = XMLSchema.xsd; sourceTree = "<group>"; };
 		B42F9F001A48663F0007FC96 /* XMLUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLUtils.h; sourceTree = "<group>"; };
@@ -221,8 +221,8 @@
 		B42F9F591A4890CE0007FC96 /* WeblinksTestsObjC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeblinksTestsObjC.m; sourceTree = "<group>"; };
 		B42F9F5F1A4890CE0007FC96 /* weblinks.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = weblinks.xml; sourceTree = "<group>"; };
 		B42F9F601A4890CE0007FC96 /* weblinks.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = weblinks.xsd; sourceTree = "<group>"; };
-		B42F9FA71A48B95B0007FC96 /* datatypes.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = datatypes.xml; sourceTree = "<group>"; };
-		B444BECF1A628BC700FCA8DA /* template-swift.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "template-swift.xml"; sourceTree = "<group>"; };
+		B42F9FA71A48B95B0007FC96 /* datatypes.xml */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = text.xml; path = datatypes.xml; sourceTree = "<group>"; tabWidth = 2; };
+		B444BECF1A628BC700FCA8DA /* template-swift.xml */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = text.xml; path = "template-swift.xml"; sourceTree = "<group>"; tabWidth = 2; };
 		B444BED11A633C5D00FCA8DA /* libxml-bridging-header.header */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "libxml-bridging-header.header"; sourceTree = "<group>"; };
 		B44ACBF31A53992B0030DFEA /* DDRunTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDRunTask.h; sourceTree = "<group>"; };
 		B44ACBF41A53992B0030DFEA /* DDRunTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDRunTask.m; sourceTree = "<group>"; };
@@ -233,7 +233,7 @@
 		B49B8CFA1A4DCFE9001A2D91 /* XSDAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XSDAnnotation.h; sourceTree = "<group>"; };
 		B49B8CFB1A4DCFE9001A2D91 /* XSDAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XSDAnnotation.m; sourceTree = "<group>"; };
 		B4BAB24F1A61411F0073C821 /* weblinks_test.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = weblinks_test.xsd; sourceTree = "<group>"; };
-		B4BAB2531A614C7E0073C821 /* nameChanges.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = nameChanges.xml; sourceTree = "<group>"; };
+		B4BAB2531A614C7E0073C821 /* nameChanges.xml */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = text.xml; path = nameChanges.xml; sourceTree = "<group>"; tabWidth = 2; };
 		B4BB5A211A4AC4710044305B /* XSDTestCaseObjC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XSDTestCaseObjC.h; sourceTree = "<group>"; };
 		B4BB5A221A4AC4710044305B /* XSDTestCaseObjC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XSDTestCaseObjC.m; sourceTree = "<group>"; };
 		B4C21F4B1A5B1D74004F12F0 /* weblinks_groups.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = weblinks_groups.xsd; sourceTree = "<group>"; };
@@ -685,6 +685,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
