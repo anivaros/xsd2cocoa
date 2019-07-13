@@ -369,6 +369,16 @@
     }
     NSXMLElement *enumTypeNode = nil;
     if(nodes != nil && nodes.count > 0) {
+        enumTypeNode = [nodes objectAtIndex: 0];
+    }
+    
+    //reader
+    nodes = [enumTypeNode nodesForXPath:self.XPathForTemplateReads error: &error];
+    if(error != nil) {
+        if(resultError) *resultError = error;
+        return NO;
+    }
+    if(nodes != nil && nodes.count > 0) {
         self.enumNode = [nodes objectAtIndex: 0];
     }
     
