@@ -83,7 +83,7 @@
       <xs:element name="element_test_time" type="time"/>
 
       <!-- base64Binary -->
-      <!--<type base="base64Binary" name="base64Binary"/>-->
+      <xs:element name="element_test_base64Binary" type="base64Binary" />
 
       <!-- hexBinary: doesnt work -->
       <!--<type base="hexBinary" name="hexBinary"/>-->
@@ -150,7 +150,7 @@
     <xs:attribute use="required" name="attribute_test_time" type="time"/>
 
     <!-- base64Binary -->
-    <!--<type base="base64Binary" name="base64Binary"/>-->
+    <xs:attribute use="required" name="attribute_test_base64Binary" type="base64Binary" />
 
     <!-- hexBinary: doesnt work -->
     <!--<type base="hexBinary" name="hexBinary"/>-->

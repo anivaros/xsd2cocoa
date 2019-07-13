@@ -25,7 +25,7 @@
   attribute_test_float="12.34" attribute_test_boolean="true"
   attribute_test_anyURI="http://www.google.com" attribute_test_dateTime="2015-01-25T10:37:07Z"
   attribute_test_dateTime2="2015-01-25T10:37:07.0012+01:00" attribute_test_date="2015-01-25"
-  attribute_test_time="10:37:07">
+  attribute_test_time="10:37:07" attribute_test_base64Binary="YWxsX2lzX29r">
 
   <!-- string -->
   <element_test_string>all_is_ok</element_test_string>
@@ -85,7 +85,10 @@
   <!-- date -->
   <element_test_date>2015-01-25</element_test_date>
 
-  <!-- date time -->
+  <!-- time -->
   <element_test_time>10:37:07</element_test_time>
+
+  <!-- base64Binary -->
+  <element_test_base64Binary>YWxsX2lzX29r</element_test_base64Binary>
 
 </st:simpleTypes>
