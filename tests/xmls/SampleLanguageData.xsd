@@ -1,8 +1,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <xs:annotation>
-    <xs:documentation> SampleLanguageData.xsd defines a format for translations ( from linguist tool
-      ) </xs:documentation>
+    <xs:documentation> SampleLanguageData.xsd defines a format for translations ( from linguist tool ) </xs:documentation>
   </xs:annotation>
 
   <xs:element name="LangDef" type="LangDefType"/>

@@ -4,8 +4,7 @@
 
   <!--test annotation-->
   <annotation>
-    <documentation> weblinks.xsd defines a format for saving links to your favourite websites - it
-      uses a includes and local types </documentation>
+    <documentation> weblinks.xsd defines a format for saving links to your favourite websites - it uses a includes and local types </documentation>
   </annotation>
 
   <!--test include-->

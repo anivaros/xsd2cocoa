@@ -65,6 +65,35 @@
                BlueprintName = "XSDConverterCoreTests"
                ReferencedContainer = "container:XSDConverter.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "AddressTestsSwift">
+               </Test>
+               <Test
+                  Identifier = "ConfigFeaturesTestsSwift">
+               </Test>
+               <Test
+                  Identifier = "MyPantryTestsSwift">
+               </Test>
+               <Test
+                  Identifier = "SampleLanguageDataTestsSwift">
+               </Test>
+               <Test
+                  Identifier = "SimpleTypesTestsSwift">
+               </Test>
+               <Test
+                  Identifier = "WeblinksTestsObjC/testCorrectnessGeneratingParser">
+               </Test>
+               <Test
+                  Identifier = "WeblinksTestsObjC/testPerformanceParsingXML">
+               </Test>
+               <Test
+                  Identifier = "WeblinksTestsSwift">
+               </Test>
+               <Test
+                  Identifier = "XSDTestCaseSwift">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>

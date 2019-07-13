@@ -230,10 +230,6 @@
     return [self.type isEqual:@"any"];
 }
 
-- (NSString*) nameWithCapital {
-    return [[self variableName] stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[self.name substringToIndex:1] uppercaseString]];
-}
-
 - (NSString*) readCodeForContent {
     NSString *rtn;
     

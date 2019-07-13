@@ -3,8 +3,7 @@
   xmlns:test="http://www.example.com/xsdWebLinksTest">
 
   <xs:annotation>
-    <xs:documentation> weblinks_groups.xsd extends a format for saving links defined by weblinks.xsd
-      by adding support for groups </xs:documentation>
+    <xs:documentation> weblinks_groups.xsd extends a format for saving links defined by weblinks.xsd by adding support for groups </xs:documentation>
   </xs:annotation>
 
   <import namespace="http://www.example.com/xsdWebLinksTest" schemaLocation="weblinks_test.xsd"/>

@@ -2,8 +2,7 @@
   targetNamespace="http://www.example.com/xsdWebLinks" xmlns:wl="http://www.example.com/xsdWebLinks">
 
   <xs:annotation>
-    <xs:documentation> weblinks.xsd defines a format for saving links to your favourite websites -
-      it uses a recursive include </xs:documentation>
+    <xs:documentation> weblinks.xsd defines a format for saving links to your favourite websites - it uses a recursive include </xs:documentation>
   </xs:annotation>
 
   <include schemaLocation="weblinks_groups.xsd"/>

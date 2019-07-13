@@ -5,8 +5,7 @@
   <xs:notation name="gif" public="image/gif" system="view.exe"/>
 
   <xs:annotation>
-    <xs:documentation> simpleTypes.xsd defines a format for testing all kinds of simple types
-    </xs:documentation>
+    <xs:documentation> simpleTypes.xsd defines a format for testing all kinds of simple types </xs:documentation>
   </xs:annotation>
 
   <xs:element name="simpleTypes" type="st:SimpleTypesType">

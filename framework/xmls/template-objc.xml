@@ -11,7 +11,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
         <![CDATA[{% if element.isSingleValue %}self.{{ element.variableName }} = [NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding];
           {% else %}[{{ element.variableName }}Array addObject:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];{% /if %}]]>
       </element>
-      <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
+      <value>__auto_type value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
         value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         self.value = value;</value>
     </read>
@@ -24,7 +24,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
             xmlTextWriterWriteString(writer, (xmlChar*)[{{ element.variableName }}Value UTF8String]);
         ]]></element>
         <value><![CDATA[
-            int rc = xmlTextWriterWriteString(writer, (xmlChar*)[self.value UTF8String]);
+            __auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)[self.value UTF8String]);
             if (rc < 0) {
                 return NO;
             }
@@ -39,7 +39,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
         <![CDATA[{% if element.isSingleValue %}self.{{ element.variableName }} = [NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding];
           {% else %}[{{ element.variableName }}Array addObject:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];{% /if %}]]>
       </element>
-      <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
+      <value>__auto_type value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
         value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         self.value = value;</value>
     </read>
@@ -65,7 +65,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
         <![CDATA[{% if element.isSingleValue %}self.{{ element.variableName }} = [NSURL URLWithString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];{% else %}[{{ element.variableName }}Array addObject:[NSURL URLWithString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]]];
           {% /if %}]]>
       </element>
-      <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
+      <value>__auto_type value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
         value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         self.value = [NSURL URLWithString:value];</value>
     </read>
@@ -78,7 +78,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
         xmlTextWriterWriteString(writer, (xmlChar*)[[{{ element.variableName }}Value absoluteString] UTF8String]);
       ]]></element>
       <value><![CDATA[
-        int rc = xmlTextWriterWriteString(writer, (xmlChar*)[[self.value absoluteString] UTF8String]);
+        __auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)[[self.value absoluteString] UTF8String]);
         if (rc < 0) {
             return NO;
         }
@@ -93,7 +93,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
       <element>
         <![CDATA[self.{{ element.variableName }} = @([[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding] isEqualToString:@"true"]);]]>
       </element>
-      <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
+      <value>__auto_type value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
         value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         self.value = @([value isEqualToString:@"true"]);</value>
     </read>
@@ -104,7 +104,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
         xmlTextWriterWriteString(writer, (xmlChar*)([{{ element.variableName }}Value boolValue] ? "true" : "false"));
       ]]></element>
       <value><![CDATA[
-        int rc = xmlTextWriterWriteString(writer, (xmlChar*)([{{ element.variableName }}Value boolValue] ? "true" : "false"]]);
+        __auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)([{{ element.variableName }}Value boolValue] ? "true" : "false"]]);
         if (rc < 0) {
             return NO;
         }
@@ -121,7 +121,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
       <element>
         <![CDATA[self.{{ element.variableName }} = [numFormatter numberFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];]]>
       </element>
-      <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
+      <value>__auto_type value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
         value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         self.value = [numFormatter numberFromString:value];</value>
     </read>
@@ -133,7 +133,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
         xmlTextWriterWriteString(writer, (xmlChar*)[[numFormatter stringFromNumber:{{ element.variableName }}Value] UTF8String]);
       ]]></element>
       <value><![CDATA[
-        int rc = xmlTextWriterWriteString(writer, (xmlChar*)[[numFormatter stringFromNumber:self.value] UTF8String]);
+        __auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)[[numFormatter stringFromNumber:self.value] UTF8String]);
         if (rc < 0) {
             return NO;
         }
@@ -150,7 +150,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
       <element>
         <![CDATA[self.{{ element.variableName }} = [decFormatter numberFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];]]>
       </element>
-      <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
+      <value>__auto_type value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
         value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         self.value = [decFormatter numberFromString:value];</value>
     </read>
@@ -162,7 +162,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
         <![CDATA[xmlTextWriterWriteString(writer, (xmlChar*)[[integerFormatter stringFromNumber: {{ element.variableName }}Value] UTF8String]);]]>
       </element>
       <value>
-        <![CDATA[int rc = xmlTextWriterWriteString(writer, (xmlChar*)[[integerFormatter stringFromNumber:self.value] UTF8String]);
+        <![CDATA[__auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)[[integerFormatter stringFromNumber:self.value] UTF8String]);
         if (rc < 0) {
             return NO;
         }]]>
@@ -198,7 +198,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
           [{{ element.variableName }}Array addObject:{{ element.variableName }}Temp];
           {% /if %}]]>
       </element>
-      <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
+      <value>__auto_type value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
         value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         self.value = dateFromStringBlock(value);</value>
     </read>
@@ -210,7 +210,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
       <element>
         <![CDATA[xmlTextWriterWriteString(writer, (xmlChar*)[[dateFormatter stringFromDate:{{ element.variableName }}Value] UTF8String]);]]>
       </element>
-      <value><![CDATA[int rc = xmlTextWriterWriteString(writer, (xmlChar*)[[dateFormatter stringFromDate:self.value] UTF8String]);
+      <value><![CDATA[__auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)[[dateFormatter stringFromDate:self.value] UTF8String]);
         if (rc < 0) {
             return NO;
         }]]>
@@ -229,7 +229,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
         <![CDATA[{% if element.isSingleValue %}self.{{ element.variableName }} = [dateOnlyFormatter dateFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];{% else %}[{{ element.variableName }}Array addObject:[dateOnlyFormatter dateFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]]];
           {% /if %}]]>
       </element>
-      <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
+      <value>__auto_type value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
         value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         self.value = [dateOnlyFormatter dateFromString:value];</value>
     </read>
@@ -243,7 +243,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
         <![CDATA[xmlTextWriterWriteString(writer, (xmlChar*)[[dateOnlyFormatter stringFromDate:{{ element.variableName }}Value] UTF8String]);]]>
       </element>
       <value>
-        <![CDATA[int rc = xmlTextWriterWriteString(writer, (xmlChar*)[[dateOnlyFormatter stringFromDate:self.value] UTF8String]);
+        <![CDATA[__auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)[[dateOnlyFormatter stringFromDate:self.value] UTF8String]);
           if (rc < 0) {
               return NO;
           }]]>
@@ -262,7 +262,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
         <![CDATA[{% if element.isSingleValue %}self.{{ element.variableName }} = [timeFormatter dateFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]];{% else %}[{{ element.variableName }}Array addObject:[timeFormatter dateFromString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]]];
           {% /if %}]]>
       </element>
-      <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
+      <value>value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
         value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         self.value = [timeFormatter dateFromString:value];</value>
     </read>
@@ -276,7 +276,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
         <![CDATA[xmlTextWriterWriteString(writer, (xmlChar*)[[timeFormatter stringFromDate:{{ element.variableName }}Value] UTF8String]);]]>
       </element>
       <value>
-        <![CDATA[int rc = xmlTextWriterWriteString(writer, (xmlChar*)[[timeFormatter stringFromDate:self.value] UTF8String]);
+        <![CDATA[__auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)[[timeFormatter stringFromDate:self.value] UTF8String]);
           if (rc < 0) {
               return NO;
           }]]>
@@ -292,7 +292,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
         <![CDATA[{% if element.isSingleValue %}self.{{ element.variableName }} = [[NSData alloc] initWithBase64EncodedString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding] options:kNilOptions];{% else %}[{{ element.variableName }}Array addObject:[[NSData alloc] initWithBase64EncodedString:[NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding] options:kNilOptions]];
           {% /if %}]]>
       </element>
-      <value>NSString *value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
+      <value>__auto_type value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
         value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         self.value = [[NSData alloc] initWithBase64EncodedString:string options:kNilOptions];</value>
     </read>
@@ -480,7 +480,7 @@ this will be used to generate the class files for the complex types.
             {% if attribute.writeCodeForAttribute.length %}
             {% if attribute.hasEnumeration %}
             if (self.{{ attribute.variableName }}) {
-                int rc = {{ attribute.writeCodeForAttribute }}
+                __auto_type const rc = {{ attribute.writeCodeForAttribute }}
                 if (rc < 0) {
                     return NO;
                 }
@@ -489,7 +489,7 @@ this will be used to generate the class files for the complex types.
             if(self.{{ attribute.variableName }}) {
                 const char* {{ attribute.variableName }}AttrValue = NULL;
                 {{ attribute.writeCodeForAttribute }}
-                int rc = xmlTextWriterWriteAttribute(writer, (xmlChar*)"{{ attribute.name }}", (xmlChar*){{ attribute.variableName }}AttrValue);
+                __auto_type const rc = xmlTextWriterWriteAttribute(writer, (xmlChar*)"{{ attribute.name }}", (xmlChar*){{ attribute.variableName }}AttrValue);
                 if (rc < 0) {
                     return NO;
                 }
@@ -556,7 +556,7 @@ this will be used to generate the class files for the complex types.
         - (void)readAttributes:(void *)reader {{% if type.hasComplexBaseClass %}
         [super readAttributes: reader];{% /if %}
         {{ type.combinedReadPrefixCode }}
-        {% for attribute in type.attributes %}  char *{{ attribute.name }}AttrValue = (char *) xmlTextReaderGetAttribute(reader, (xmlChar *)"{{ attribute.name }}");
+        {% for attribute in type.attributes %} __auto_type {{ attribute.name }}AttrValue = (char *) xmlTextReaderGetAttribute(reader, (xmlChar *)"{{ attribute.name }}");
         if ({{ attribute.name }}AttrValue) {
             {{ attribute.readCodeForAttribute }}
             xmlFree({{ attribute.name }}AttrValue);
@@ -574,7 +574,7 @@ this will be used to generate the class files for the complex types.
         * Description: Iterate through the XML and create the {{ type.targetClassFileName }} object
         */
         - (instancetype)initWithReader:(void *)reader {
-            int _complexTypeXmlDept = xmlTextReaderDepth(reader);
+            __auto_type const _complexTypeXmlDept = xmlTextReaderDepth(reader);
             {% if type.hasComplexBaseClass %}self = [super initWithReader: reader];{% else %}self = [super init];{% /if %}
             
             /* Customize the object */
@@ -582,18 +582,18 @@ this will be used to generate the class files for the complex types.
                 {{ type.combinedReadPrefixCode }}
                 {% if type.hasComplexBaseClass %}{% else %}[self readAttributes: reader];{% /if %}
                 {% for element in type.elements %}{% if element.isSingleValue %}{% if element.defaultValue %}
-                const char *{{element.name}}ElementValue = (const char *) "{{ element.defaultValue }}";
+                __auto_type const {{element.name}}ElementValue = (const char *) "{{ element.defaultValue }}";
                 if ({{element.name}}ElementValue) {
                     {{ element.readCodeForContent }}
                 }
-                {% /if %}{% else %}NSMutableArray *{{ element.variableName }}Array = [NSMutableArray array];{% /if %}
-                {% /for %}{% if type.hasComplexBaseClass %}int _readerOk __attribute__ ((unused)) = 1;{% else %}int _readerOk __attribute__ ((unused)) = xmlTextReaderRead(reader);{% /if %}
-                int _currentNodeType __attribute__ ((unused)) = xmlTextReaderNodeType(reader);
-                int _currentXmlDept = xmlTextReaderDepth(reader);
+                {% /if %}{% else %}__auto_type const {{ element.variableName }}Array = [NSMutableArray array];{% /if %}
+                {% /for %}{% if type.hasComplexBaseClass %}__auto_type _readerOk __attribute__ ((unused)) = 1;{% else %}__auto_type _readerOk __attribute__ ((unused)) = xmlTextReaderRead(reader);{% /if %}
+                __auto_type _currentNodeType __attribute__ ((unused)) = xmlTextReaderNodeType(reader);
+                __auto_type _currentXmlDept = xmlTextReaderDepth(reader);
                 while (_readerOk && _currentNodeType != XML_READER_TYPE_NONE && _complexTypeXmlDept < _currentXmlDept) {
-                    BOOL handledInChild = NO;
+                    __auto_type handledInChild = NO;
                     if (_currentNodeType == XML_READER_TYPE_ELEMENT || _currentNodeType == XML_READER_TYPE_TEXT) {
-                        NSString *_currentElementName = [NSString stringWithCString: (const char *) xmlTextReaderConstLocalName(reader) encoding:NSUTF8StringEncoding];
+                        __auto_type const _currentElementName = [NSString stringWithCString:(const char *) xmlTextReaderConstLocalName(reader) encoding:NSUTF8StringEncoding];
                         {% for element in type.elements %}{% if not element.hasAny %}if ([@"{{element.name}}" isEqualToString: _currentElementName]) {
                             {% if element.hasComplexType %}{{ element.readCodeForContent }}
                             handledInChild = YES;
@@ -601,7 +601,7 @@ this will be used to generate the class files for the complex types.
                                 _readerOk = xmlTextReaderRead(reader);
                                 _currentNodeType = xmlTextReaderNodeType(reader);
                                 if (_currentNodeType != XML_READER_TYPE_END_ELEMENT) {
-                                    {% if not element.defaultValue %}const char *{% /if %}{{element.name}}ElementValue = (const char *) xmlTextReaderConstValue(reader);
+                                    {% if not element.defaultValue %}__auto_type const {% /if %}{{element.name}}ElementValue = (const char *) xmlTextReaderConstValue(reader);
                                     if ({{element.name}}ElementValue) {
                                         {{ element.readCodeForContent }}
                                     }
@@ -611,7 +611,7 @@ this will be used to generate the class files for the complex types.
                             }{% /if %}
                         }
                         else {% /if %}{% /for %}{% if type.hasSimpleBaseClass %}if ([@"#text" isEqualToString: _currentElementName]) {
-                            const char *contentValue = (const char *) xmlTextReaderConstValue(reader);
+                            __auto_type const contentValue = (const char *) xmlTextReaderConstValue(reader);
                             if (contentValue) {
                                 {{ type.readSimpleContent }}
                             }
@@ -620,7 +620,7 @@ this will be used to generate the class files for the complex types.
                             {% if type.hasAnyElement %}{% for element in type.elements %}{% if element.hasAny %}if (!self.{{element.variableName}} && _currentElementName) {
                                 _currentNodeType = xmlTextReaderNodeType(reader);
                                 if (_currentNodeType != XML_READER_TYPE_END_ELEMENT) {
-                                    const char *{{element.name}}ElementValue = (const char *) xmlTextReaderReadOuterXml(reader);
+                                    __auto_type const {{element.name}}ElementValue = (const char *) xmlTextReaderReadOuterXml(reader);
                                     if (strlen({{element.name}}ElementValue)) {
                                         {{ element.readCodeForContent }}
                                     }
@@ -651,7 +651,7 @@ this will be used to generate the class files for the complex types.
                     _currentXmlDept = xmlTextReaderDepth(reader);
                 }
                 {% for element in type.elements %}
-                {% if element.isSingleValue %}{% else %}if ({{ element.variableName }}Array.count) self.{{ element.variableName }} = {{ element.variableName }}Array;{% /if %}{% /for %}
+                {% if element.isSingleValue %}{% else %}if ({{ element.variableName }}Array.count) self.{{ element.variableName }} = {{ element.variableName }}Array.copy;{% /if %}{% /for %}
             }
             return self;
         }
@@ -664,7 +664,7 @@ this will be used to generate the class files for the complex types.
         */
         - (NSDictionary *)dictionary {
             /* Initial setup */
-            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+            __auto_type const dict = [[NSMutableDictionary alloc] init];
             {% if type.hasComplexBaseClass %}[dict setValuesForKeysWithDictionary:[super dictionary]];{% /if %}
             
             /* Populate the dictionary */
@@ -689,11 +689,11 @@ this will be used to generate the class files for the complex types.
                 {% if type.baseClass.hasEnumeration %}[dict setObject:{{ type.baseClass.enumerationName }}ToString(self.value) forKey:@"value"];{% else %}[dict setObject:self.value forKey:@"value"];{% /if %}
                 }{% /if %}
                 
-                return dict;
+                return dict.copy;
             }
             
             - (id)copyWithZone:(nullable NSZone *)zone {
-                {{ type.targetClassFileName }} *copy = [[{{ type.targetClassFileName }} allocWithZone:zone] init];
+                __auto_type const copy = [[{{ type.targetClassFileName }} allocWithZone:zone] init];
                 if (copy) {
                     {% for attribute in type.attributes %}
                     {% if attribute.hasEnumeration %}copy.{{ attribute.variableName }} = self.{{ attribute.variableName }};
@@ -770,7 +770,7 @@ this will be used to generate the class files for the complex types.
             #import <libxml/xmlreader.h>
             #import <libxml/xmlwriter.h>
             
-            #define kGlobalElementNamesArray @[@"##elements##"{% for element in type.globalElements %}, @"{{ element.name }}"{% /for %}]
+            #define kGlobalElementNamesArray ((NSArray <NSString *> *)@[@"##elements##"{% for element in type.globalElements %}, @"{{ element.name }}"{% /for %}])
             
             @implementation {{ type.targetClassFileName }} (File)
             
@@ -787,7 +787,7 @@ this will be used to generate the class files for the complex types.
                     return nil;
                 }
                 
-                int rc = xmlTextWriterStartDocument(writer, NULL, "UTF-8", NULL);
+                __auto_type rc = xmlTextWriterStartDocument(writer, NULL, "UTF-8", NULL);
                 if (rc < 0) {
                     NSLog(@"Error at xmlTextWriterStartDocument.");
                     return nil;
@@ -796,8 +796,8 @@ this will be used to generate the class files for the complex types.
                 xmlTextWriterSetIndentString(writer, (xmlChar *)"\t");
                 
                 // Serialize object
-                xmlTextWriterStartElement(writer, (xmlChar*)"{{ type.name }}");
-                BOOL result = [{{ type.name }}Value writeWithWriter:writer];
+                xmlTextWriterStartElement(writer, (xmlChar*) kGlobalElementNamesArray.lastObject.UTF8String);
+                __auto_type const result = [{{ type.name }}Value writeWithWriter:writer];
                 
                 if (!result) {
                     xmlBufferFree(buf);
@@ -814,9 +814,8 @@ this will be used to generate the class files for the complex types.
                     return nil;
                 }
                 
-                int libxmlVersion = atoi(xmlParserVersion);
-                NSData *xmlData = [[NSData alloc] initWithBytes:(buf->content) length:(buf->use)];
-                //NSLog(@"%s", (const char *) buf->content);
+                __auto_type const libxmlVersion = atoi(xmlParserVersion);
+                __auto_type const xmlData = [[NSData alloc] initWithBytes:(buf->content) length:(buf->use)];
                 
                 xmlBufferFree(buf);
                 xmlCleanupCharEncodingHandlers();
@@ -841,9 +840,8 @@ this will be used to generate the class files for the complex types.
                     do {
                         ret = xmlTextReaderRead(reader);
                         if (ret == XML_READER_TYPE_ELEMENT) {
-                                NSString *elementName = [NSString stringWithCString: (const char *) xmlTextReaderConstLocalName(reader) encoding:NSUTF8StringEncoding];
-                                id array = kGlobalElementNamesArray;
-                                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF IN %@", array];
+                                __auto_type const elementName = [NSString stringWithCString: (const char *) xmlTextReaderConstLocalName(reader) encoding:NSUTF8StringEncoding];
+                                __auto_type const predicate = [NSPredicate predicateWithFormat:@"SELF IN %@", kGlobalElementNamesArray];
                                 if ([predicate evaluateWithObject:elementName]) {
                                     obj = [[{{ type.targetClassName }} alloc] initWithReader: reader];
                                     break;
@@ -881,7 +879,7 @@ this will be used to generate the class files for the complex types.
                 
                 /* Ensure that we have a reader and the data within it to generate the object */
                 if (reader != nil) {
-                    int ret = xmlTextReaderRead(reader);
+                    __auto_type const ret = xmlTextReaderRead(reader);
                     if (ret > 0) {
                         obj = [[{{ type.targetClassName }} alloc] initWithReader: reader];
                     }
@@ -906,7 +904,7 @@ this will be used to generate the class files for the complex types.
         <![CDATA[self.{{ element.variableName }} = {{ element.schemaType.enumerationName }}FromString([NSString stringWithCString:{{element.name}}ElementValue encoding:NSUTF8StringEncoding]);]]>
       </element>
       <value>
-        <![CDATA[NSString *value = [NSString stringWithCString: contentValue encoding:NSUTF8StringEncoding];
+        <![CDATA[__auto_type value = [NSString stringWithCString:contentValue encoding:NSUTF8StringEncoding];
           value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
           self.value = {{ type.enumerationName }}FromString(value);]]>
       </value>
@@ -922,7 +920,7 @@ this will be used to generate the class files for the complex types.
           }]]>
       </element>
       <value>
-        <![CDATA[int rc = xmlTextWriterWriteString(writer, (xmlChar*)[{{ type.enumerationName }}ToString(self.value) UTF8String]);
+        <![CDATA[__auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)[{{ type.enumerationName }}ToString(self.value) UTF8String]);
         if (rc < 0) {
             return NO;
         }]]>
@@ -944,7 +942,7 @@ this will be used to generate the class files for the complex types.
         <![CDATA[
           #import "{{ type.enumerationFileName }}.h"
 
-          #define k{{ type.enumerationName }}NamesArray @[@"##enums##"{% for enumValue in type.enumerationValues %}, @"{{ enumValue }}"{% /for %}]
+          #define k{{ type.enumerationName }}NamesArray ((NSArray <NSString *> *)@[@"##enums##"{% for enumValue in type.enumerationValues %}, @"{{ enumValue }}"{% /for %}])
 
           NSString *{{ type.enumerationName }}ToString({{ type.enumerationName }} enumType) {
               assert(enumType < k{{ type.enumerationName }}NamesArray.count);
@@ -952,15 +950,15 @@ this will be used to generate the class files for the complex types.
           }
 
           {{ type.enumerationName }} {{ type.enumerationName }}FromString(NSString *enumString) {
-              NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-              NSNumberFormatter *numFormatter = [[NSNumberFormatter alloc] init];
-              numFormatter.locale =locale;
+              __auto_type const enUSPOSIXLocale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+              __auto_type const numFormatter = [[NSNumberFormatter alloc] init];
+              numFormatter.locale = enUSPOSIXLocale;
 
               if ([numFormatter numberFromString:enumString]) {
-              enumString = [@"Value" stringByAppendingString:enumString];
-          }
+                  enumString = [@"Value" stringByAppendingString:enumString];
+              }
 
-          NSUInteger enumType = [k{{ type.enumerationName }}NamesArray indexOfObject:enumString];
+              __auto_type const enumType = [k{{ type.enumerationName }}NamesArray indexOfObject:enumString];
               assert(enumType != NSNotFound);
               return (enumType != NSNotFound) ? ({{ type.enumerationName }}) enumType-1 : NSNotFound;
           }

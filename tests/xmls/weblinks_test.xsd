@@ -3,8 +3,7 @@
   xmlns:test="http://www.example.com/xsdWebLinksTest">
 
   <xs:annotation>
-    <xs:documentation> weblinks_test.xsd extends a format for saving links defined by weblinks.xsd
-      by adding support for descriptions of groups (mainly to test import) </xs:documentation>
+    <xs:documentation> weblinks_test.xsd extends a format for saving links defined by weblinks.xsd by adding support for descriptions of groups (mainly to test import) </xs:documentation>
   </xs:annotation>
 
   <xs:complexType name="description">

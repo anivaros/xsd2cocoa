@@ -4,8 +4,7 @@
   xmlns:config="http://www.example.org/configs/configFeatures" elementFormDefault="qualified">
 
   <annotation>
-    <documentation> configFeatures.xsd defines a format for testing enumeration support
-    </documentation>
+    <documentation> configFeatures.xsd defines a format for testing enumeration support </documentation>
   </annotation>
 
   <complexType name="Config">
