@@ -25,8 +25,10 @@
     self.expectedFiles = @[@"address.h",
                            @"MYCOMPANYAddress.h",
                            @"MYCOMPANYAddress.m",
-                           @"MYCOMPANYAddress+File.h",
-                           @"MYCOMPANYAddress+File.m",
+                           @"MYCOMPANYAddress+Read.h",
+                           @"MYCOMPANYAddress+Read.m",
+                           @"MYCOMPANYAddress+Write.h",
+                           @"MYCOMPANYAddress+Write.m",
                            @"MYCOMPANYStreetInfo.h",
                            @"MYCOMPANYStreetInfo.m",
                            @"MYCOMPANYUnitInfo.h",
@@ -37,7 +39,7 @@
                            @"MYCOMPANYPropertiesEntry.m"];
     self.rootClassName = @"MYCOMPANYAddress";
     self.parseMethodName = @"addressFromURL:";
-    self.generateMethodName = @"dataFromaddress:";
+    self.generateMethodName = @"toXmlData";
     
     [self helpSetUp];
     [super setUp];

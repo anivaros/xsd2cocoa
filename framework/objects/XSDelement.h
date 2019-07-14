@@ -33,6 +33,9 @@
 - (NSString*) writeCodeForContent;
 - (NSString*) variableName; //in generated code
 
+- (BOOL) isOptional;
+- (BOOL) isRequired;
+
 - (BOOL) isSingleValue;
 
 - (id<XSType>) schemaType;

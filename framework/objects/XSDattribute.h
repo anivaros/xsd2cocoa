@@ -22,7 +22,7 @@ typedef NS_ENUM(NSUInteger, XSDattributeUse) {
 
 - (NSString*) variableName; //name in generated code
 - (BOOL) hasEnumeration;
-- (BOOL) isUseOptional;
-- (BOOL) isUseRequired;
+- (BOOL) isOptional;
+- (BOOL) isRequired;
 
 @end

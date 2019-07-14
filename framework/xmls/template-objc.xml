@@ -114,7 +114,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
   <simpletype name="integer" objType="NSNumber"
     arrayType="NSArray">
     <read>
-      <prefix>NSNumberFormatter *numFormatter = [[NSNumberFormatter alloc] init];
+      <prefix>__auto_type const numFormatter = [[NSNumberFormatter alloc] init];
         numFormatter.numberStyle = NSNumberFormatterDecimalStyle;
         numFormatter.locale = self.locale;</prefix>
       <attribute>self.{{ attribute.variableName }} = [numFormatter numberFromString:[NSString stringWithCString:{{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding]];</attribute>
@@ -126,7 +126,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
         self.value = [numFormatter numberFromString:value];</value>
     </read>
     <write>
-      <prefix>NSNumberFormatter* numFormatter = [[NSNumberFormatter alloc] init];
+      <prefix>__auto_type const numFormatter = [[NSNumberFormatter alloc] init];
         numFormatter.numberStyle = NSNumberFormatterDecimalStyle;</prefix>
       <attribute>{{ attribute.variableName }}AttrValue = [[numFormatter stringFromNumber: self.{{ attribute.variableName }}] UTF8String];</attribute>
       <element><![CDATA[
@@ -143,7 +143,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
   <simpletype name="decimal" objType="NSNumber"
     arrayType="NSArray">
     <read>
-      <prefix>NSNumberFormatter *decFormatter = [[NSNumberFormatter alloc] init];
+      <prefix>__auto_type const decFormatter = [[NSNumberFormatter alloc] init];
         decFormatter.locale = self.locale;
         decFormatter.numberStyle = NSNumberFormatterDecimalStyle;</prefix>
       <attribute>self.{{ attribute.variableName }} = [decFormatter numberFromString:[NSString stringWithCString: {{ attribute.name }}AttrValue encoding:NSUTF8StringEncoding]];</attribute>
@@ -155,7 +155,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
         self.value = [decFormatter numberFromString:value];</value>
     </read>
     <write>
-      <prefix>NSNumberFormatter* integerFormatter = [[NSNumberFormatter alloc] init];
+      <prefix>__auto_type const integerFormatter = [[NSNumberFormatter alloc] init];
         integerFormatter.numberStyle = NSNumberFormatterDecimalStyle;</prefix>
       <attribute>{{ attribute.variableName }}AttrValue = [[integerFormatter stringFromNumber: self.{{ attribute.variableName }}] UTF8String];</attribute>
       <element>
@@ -412,8 +412,7 @@ this will be used to generate the class header files for the complex types.
         /** Property that sets the NSLocale used by formatters of this type. It defaults to enUSPOSIX */
         @property(nonatomic, strong) NSLocale *locale;
         
-        @end
-        ]]>
+        @end]]>
       </header>
       <!--
 Name:          Class
@@ -446,10 +445,6 @@ this will be used to generate the class files for the complex types.
         #import <libxml/xmlwriter.h>
         {% for complexType in type.complexTypesInUse %}
         #import "{{ complexType.targetClassFileName }}.h"{% /for %}
-
-        @interface {{ type.targetClassName }} ()
-
-        @end
 
         {% if type.hasComplexBaseClass %}
         @implementation {{ type.targetClassName }}
@@ -485,7 +480,7 @@ this will be used to generate the class files for the complex types.
                 }
             }
             {% else %}
-            if(self.{{ attribute.variableName }}) {
+            if (self.{{ attribute.variableName }}) {
                 const char* {{ attribute.variableName }}AttrValue = NULL;
                 {{ attribute.writeCodeForAttribute }}
                 __auto_type const rc = xmlTextWriterWriteAttribute(writer, (xmlChar*)"{{ attribute.name }}", (xmlChar*){{ attribute.variableName }}AttrValue);
@@ -580,77 +575,79 @@ this will be used to generate the class files for the complex types.
             if (self) {
                 {{ type.combinedReadPrefixCode }}
                 {% if type.hasComplexBaseClass %}{% else %}[self readAttributes: reader];{% /if %}
-                {% for element in type.elements %}{% if element.isSingleValue %}{% if element.defaultValue %}
-                __auto_type const {{element.name}}ElementValue = (const char *) "{{ element.defaultValue }}";
-                if ({{element.name}}ElementValue) {
-                    {{ element.readCodeForContent }}
-                }
-                {% /if %}{% else %}__auto_type const {{ element.variableName }}Array = [NSMutableArray array];{% /if %}
-                {% /for %}{% if type.hasComplexBaseClass %}__auto_type _readerOk __attribute__ ((unused)) = 1;{% else %}__auto_type _readerOk __attribute__ ((unused)) = xmlTextReaderRead(reader);{% /if %}
-                __auto_type _currentNodeType __attribute__ ((unused)) = xmlTextReaderNodeType(reader);
-                __auto_type _currentXmlDept = xmlTextReaderDepth(reader);
-                while (_readerOk && _currentNodeType != XML_READER_TYPE_NONE && _complexTypeXmlDept < _currentXmlDept) {
-                    __auto_type handledInChild = NO;
-                    if (_currentNodeType == XML_READER_TYPE_ELEMENT || _currentNodeType == XML_READER_TYPE_TEXT) {
-                        __auto_type const _currentElementName = [NSString stringWithCString:(const char *) xmlTextReaderConstLocalName(reader) encoding:NSUTF8StringEncoding];
-                        {% for element in type.elements %}{% if not element.hasAny %}if ([@"{{element.name}}" isEqualToString: _currentElementName]) {
-                            {% if element.hasComplexType %}{{ element.readCodeForContent }}
-                            handledInChild = YES;
-                            {% else %}if (!xmlTextReaderIsEmptyElement(reader)) {
-                                _readerOk = xmlTextReaderRead(reader);
-                                _currentNodeType = xmlTextReaderNodeType(reader);
-                                if (_currentNodeType != XML_READER_TYPE_END_ELEMENT) {
-                                    {% if not element.defaultValue %}__auto_type const {% /if %}{{element.name}}ElementValue = (const char *) xmlTextReaderConstValue(reader);
-                                    if ({{element.name}}ElementValue) {
-                                        {{ element.readCodeForContent }}
-                                    }
+                @autoreleasepool {
+                    {% for element in type.elements %}{% if element.isSingleValue %}{% if element.defaultValue %}
+                    __auto_type {{element.name}}ElementValue = (const char *) "{{ element.defaultValue }}";
+                    if ({{element.name}}ElementValue) {
+                        {{ element.readCodeForContent }}
+                    }
+                    {% /if %}{% else %}__auto_type const {{ element.variableName }}Array = [NSMutableArray array];{% /if %}
+                    {% /for %}{% if type.hasComplexBaseClass %}__auto_type _readerOk __attribute__ ((unused)) = 1;{% else %}__auto_type _readerOk __attribute__ ((unused)) = xmlTextReaderRead(reader);{% /if %}
+                    __auto_type _currentNodeType __attribute__ ((unused)) = xmlTextReaderNodeType(reader);
+                    __auto_type _currentXmlDept = xmlTextReaderDepth(reader);
+                    while (_readerOk && _currentNodeType != XML_READER_TYPE_NONE && _complexTypeXmlDept < _currentXmlDept) {
+                        __auto_type handledInChild = NO;
+                        if (_currentNodeType == XML_READER_TYPE_ELEMENT || _currentNodeType == XML_READER_TYPE_TEXT) {
+                            __auto_type const _currentElementName = [NSString stringWithCString:(const char *) xmlTextReaderConstLocalName(reader) encoding:NSUTF8StringEncoding];
+                            {% for element in type.elements %}{% if not element.hasAny %}if ([@"{{element.name}}" isEqualToString: _currentElementName]) {
+                                {% if element.hasComplexType %}{{ element.readCodeForContent }}
+                                handledInChild = YES;
+                                {% else %}if (!xmlTextReaderIsEmptyElement(reader)) {
                                     _readerOk = xmlTextReaderRead(reader);
                                     _currentNodeType = xmlTextReaderNodeType(reader);
-                                }
-                            }{% /if %}
-                        }
-                        else {% /if %}{% /for %}{% if type.hasSimpleBaseClass %}if ([@"#text" isEqualToString: _currentElementName]) {
-                            __auto_type const contentValue = (const char *) xmlTextReaderConstValue(reader);
-                            if (contentValue) {
-                                {{ type.readSimpleContent }}
+                                    if (_currentNodeType != XML_READER_TYPE_END_ELEMENT) {
+                                        {% if not element.defaultValue %}__auto_type const {% /if %}{{element.name}}ElementValue = (const char *) xmlTextReaderConstValue(reader);
+                                        if ({{element.name}}ElementValue) {
+                                            {{ element.readCodeForContent }}
+                                        }
+                                        _readerOk = xmlTextReaderRead(reader);
+                                        _currentNodeType = xmlTextReaderNodeType(reader);
+                                    }
+                                }{% /if %}
                             }
-                        }
-                        else {% /if %}{
-                            {% if type.hasAnyElement %}{% for element in type.elements %}{% if element.hasAny %}if (!self.{{element.variableName}} && _currentElementName) {
-                                _currentNodeType = xmlTextReaderNodeType(reader);
-                                if (_currentNodeType != XML_READER_TYPE_END_ELEMENT) {
-                                    __auto_type const {{element.name}}ElementValue = (const char *) xmlTextReaderReadOuterXml(reader);
-                                    if (strlen({{element.name}}ElementValue)) {
-                                        {{ element.readCodeForContent }}
-                                    }
-                                    _readerOk = strlen({{element.name}}ElementValue) ? xmlTextReaderNext(reader) : xmlTextReaderRead(reader);
-                                    _currentNodeType = xmlTextReaderNodeType(reader);
-                                    if ({{element.name}}ElementValue) {
-                                        xmlFree({{element.name}}ElementValue);
-                                    }
-                                    handledInChild = YES;
-                                    }
+                            else {% /if %}{% /for %}{% if type.hasSimpleBaseClass %}if ([@"#text" isEqualToString: _currentElementName]) {
+                                __auto_type const contentValue = (const char *) xmlTextReaderConstValue(reader);
+                                if (contentValue) {
+                                    {{ type.readSimpleContent }}
                                 }
-                                      else if (self.{{element.variableName}}) {
-                                          NSAssert(NO, @"Unexpected: %@", _currentElementName);
-                                          _readerOk = xmlTextReaderNext(reader);
-                                          _currentNodeType = xmlTextReaderNodeType(reader);
-                                          handledInChild = YES;
-                                      }
-                          {% /if %}{% /for %}
-                          {% else %}NSAssert(NO, @"Unexpected: %@", _currentElementName);
-                          _readerOk = xmlTextReaderNext(reader);
-                          _currentNodeType = xmlTextReaderNodeType(reader);
-                          handledInChild = YES;
-                          {% /if %}}
-                    }
+                            }
+                            else {% /if %}{
+                                {% if type.hasAnyElement %}{% for element in type.elements %}{% if element.hasAny %}if (!self.{{element.variableName}} && _currentElementName) {
+                                    _currentNodeType = xmlTextReaderNodeType(reader);
+                                    if (_currentNodeType != XML_READER_TYPE_END_ELEMENT) {
+                                        __auto_type const {{element.name}}ElementValue = (const char *) xmlTextReaderReadOuterXml(reader);
+                                        if (strlen({{element.name}}ElementValue)) {
+                                            {{ element.readCodeForContent }}
+                                        }
+                                        _readerOk = strlen({{element.name}}ElementValue) ? xmlTextReaderNext(reader) : xmlTextReaderRead(reader);
+                                        _currentNodeType = xmlTextReaderNodeType(reader);
+                                        if ({{element.name}}ElementValue) {
+                                            xmlFree({{element.name}}ElementValue);
+                                        }
+                                        handledInChild = YES;
+                                        }
+                                    }
+                                          else if (self.{{element.variableName}}) {
+                                              NSAssert(NO, @"Unexpected: %@", _currentElementName);
+                                              _readerOk = xmlTextReaderNext(reader);
+                                              _currentNodeType = xmlTextReaderNodeType(reader);
+                                              handledInChild = YES;
+                                          }
+                              {% /if %}{% /for %}
+                              {% else %}NSAssert(NO, @"Unexpected: %@", _currentElementName);
+                              _readerOk = xmlTextReaderNext(reader);
+                              _currentNodeType = xmlTextReaderNodeType(reader);
+                              handledInChild = YES;
+                              {% /if %}}
+                        }
 
-                    _readerOk = handledInChild ? xmlTextReaderReadState(reader) : xmlTextReaderRead(reader);
-                    _currentNodeType = xmlTextReaderNodeType(reader);
-                    _currentXmlDept = xmlTextReaderDepth(reader);
+                        _readerOk = handledInChild ? xmlTextReaderReadState(reader) : xmlTextReaderRead(reader);
+                        _currentNodeType = xmlTextReaderNodeType(reader);
+                        _currentXmlDept = xmlTextReaderDepth(reader);
+                    }
+                    {% for element in type.elements %}
+                    {% if element.isSingleValue %}{% else %}if ({{ element.variableName }}Array.count) self.{{ element.variableName }} = {{ element.variableName }}Array.copy;{% /if %}{% /for %}
                 }
-                {% for element in type.elements %}
-                {% if element.isSingleValue %}{% else %}if ({{ element.variableName }}Array.count) self.{{ element.variableName }} = {{ element.variableName }}Array.copy;{% /if %}{% /for %}
             }
             return self;
         }
@@ -718,190 +715,213 @@ this will be used to generate the class files for the complex types.
                 return copy;
             }
             
-            @end
-            ]]>
+            @end]]>
         </class>
     </implementation>
-    <reader>
-      <!--
-    Name:          Header Element
-    Parameters:    type - the current global element type.
-    Description:   Work our way through the template CDATA and replace the the {{ }} with the proper values
-    this will be used to generate the header file for the elements within our XSD types.
-    <Object>+File.h
-    -->
-      <header extension="h">
-        <![CDATA[
-            /**
-            * {{  type.targetClassFileName }}+File.h
-            {% if type.schema.hasAnnotations %} * {{ type.schema.comment }}
-            {% /if %}*/
-            #import <Foundation/Foundation.h>
-            #import "{{ type.targetClassFileName }}.h"
-            
-            @interface {{ type.targetClassName }} (File)
-            
-            /* Reads a xml file specified by the given url and parses it, returning a {{ type.targetClassName }} */
-            + ({{ type.targetClassName }} *){{ type.name }}FromURL:(NSURL *)url;
-            
-            /* Reads a xml file specified by the given file path and parses it, returning a {{ type.targetClassName }} */
-            + ({{ type.targetClassName }} *){{ type.name }}FromFile:(NSString *)path;
-            
-            /* Reads xml text specified by the given data and parses it, returning a {{ type.targetClassName }} */
-            + ({{ type.targetClassName }} *){{ type.name }}FromData:(NSData *)data;
-            
-            /* Method will write object to data. */
-            + (NSData *)dataFrom{{ type.name }}:({{ type.targetClassName }}*){{ type.name }}Value;
-            
-            @property (nonatomic, strong, readonly) NSData *toXmlData;
+  <reader>
+    <!--
+  Name:          Header Element
+  Parameters:    type - the current global element type.
+  Description:   Work our way through the template CDATA and replace the the {{ }} with the proper values
+  this will be used to generate the header file for the elements within our XSD types.
+  <Object>+Read.h
+  -->
+    <header extension="h">
+      <![CDATA[/**
+          * {{  type.targetClassFileName }}+Read.h
+          {% if type.schema.hasAnnotations %} * {{ type.schema.comment }}
+          {% /if %}*/
+          #import <Foundation/Foundation.h>
+          #import "{{ type.targetClassFileName }}.h"
+          
+          @interface {{ type.targetClassName }} (Read)
+          
+          /* Reads a xml file specified by the given url and parses it, returning a {{ type.targetClassName }} */
+          + ({{ type.targetClassName }} *){{ type.name }}FromURL:(NSURL *)url;
+          
+          /* Reads a xml file specified by the given file path and parses it, returning a {{ type.targetClassName }} */
+          + ({{ type.targetClassName }} *){{ type.name }}FromFile:(NSString *)path;
+          
+          /* Reads xml text specified by the given data and parses it, returning a {{ type.targetClassName }} */
+          + ({{ type.targetClassName }} *){{ type.name }}FromData:(NSData *)data;
 
-            @end
-            ]]>
-        </header>
-      <!--
-    Name:           Class Element
-    Parameters:     type - the current global element type.
-    Description:    Work our way through the template CDATA and replace the the {{ }} with the proper values
-    this will be used to generate the header file for the elements within our XSD types.
-    <Object>+File.m
-    -->
-      <class extension="m">
-        <![CDATA[
-            #import "{{ type.targetClassFileName }}+File.h"
-            #import <libxml/xmlreader.h>
-            #import <libxml/xmlwriter.h>
+          @end]]>
+      </header>
+    <!--
+  Name:           Class Element
+  Parameters:     type - the current global element type.
+  Description:    Work our way through the template CDATA and replace the the {{ }} with the proper values
+  this will be used to generate the header file for the elements within our XSD types.
+  <Object>+Read.m
+  -->
+    <class extension="m">
+      <![CDATA[#import "{{ type.targetClassFileName }}+Read.h"
+          #import <libxml/xmlreader.h>
+          
+          #define kGlobalElementNamesArray ((NSArray <NSString *> *)@[@"##elements##"{% for element in type.globalElements %}, @"{{ element.name }}"{% /for %}])
+          
+          @implementation {{ type.targetClassFileName }} (Read)
+          
+          /**
+          * Name:            FromURL
+          * Parameters:      (NSURL *) - the location of the XML file as a NSURL representation
+          * Returns:         A generated {{ type.targetClassName }} object
+          * Description:     Generate a {{ type.targetClassName }} object from the path
+          *                  specified by the user
+          */
+          + ({{ type.targetClassName }} *){{ type.name }}FromURL:(NSURL *)url {
+              {{ type.targetClassName }} *obj = nil;
+              xmlTextReaderPtr reader = xmlReaderForFile(url.absoluteString.UTF8String, NULL, (XML_PARSE_NOBLANKS | XML_PARSE_NOCDATA | XML_PARSE_NOERROR | XML_PARSE_NOWARNING));
+              int ret;
+              if (reader != nil) {
+                  //find the correct root
+                  do {
+                      ret = xmlTextReaderRead(reader);
+                      if (ret == XML_READER_TYPE_ELEMENT) {
+                              __auto_type const elementName = [NSString stringWithCString: (const char *) xmlTextReaderConstLocalName(reader) encoding:NSUTF8StringEncoding];
+                              __auto_type const predicate = [NSPredicate predicateWithFormat:@"SELF IN %@", kGlobalElementNamesArray];
+                              if ([predicate evaluateWithObject:elementName]) {
+                                  obj = [[{{ type.targetClassName }} alloc] initWithReader: reader];
+                                  break;
+                              }
+                      }
+                  } while (ret);
+                  xmlFreeTextReader(reader);
+              }
+              return obj;
+          }
+          
+          /**
+          * Name:            FromFile
+          * Parameters:      (NSString *) - the location of the XML file as a string
+          * Returns:         A generated {{ type.targetClassName }} object
+          * Description:     Generate a {{ type.targetClassName }} object from the path
+          *                  specified by the user
+          */
+          + ({{ type.targetClassName }} *){{ type.name }}FromFile:(NSString *)path {
+              return [self {{ type.name }}FromURL:[NSURL fileURLWithPath:path]];
+          }
+          
+          /**
+          * Name:            FromData:
+          * Parameters:      (NSData *)
+          * Returns:         A generated {{ type.targetClassName }} object
+          * Description:     Generate the {{ type.targetClassName }} object from the NSData
+          *                  object generated from the XML.
+          */
+          + ({{ type.targetClassName }} *){{ type.name }}FromData:(NSData *)data {
+              /* Initial Setup */
+              {{ type.targetClassName }} *obj = nil;
+              /* Create the reader */
+              xmlTextReaderPtr reader = xmlReaderForMemory([data bytes], (int)[data length], NULL, NULL, (XML_PARSE_NOBLANKS | XML_PARSE_NOCDATA | XML_PARSE_NOERROR | XML_PARSE_NOWARNING));
+              
+              /* Ensure that we have a reader and the data within it to generate the object */
+              if (reader != nil) {
+                  __auto_type const ret = xmlTextReaderRead(reader);
+                  if (ret > 0) {
+                      obj = [[{{ type.targetClassName }} alloc] initWithReader: reader];
+                  }
+                  xmlFreeTextReader(reader);
+              }
+              
+              return obj;
+          }
+          
+          @end]]>
+      </class>
+  </reader>
+  <writer>
+    <!--
+Name:          Header Element
+Parameters:    type - the current global element type.
+Description:   Work our way through the template CDATA and replace the the {{ }} with the proper values
+this will be used to generate the header file for the elements within our XSD types.
+<Object>+Write.h
+-->
+    <header extension="h">
+      <![CDATA[/**
+        * {{  type.targetClassFileName }}+Read.h
+        {% if type.schema.hasAnnotations %} * {{ type.schema.comment }}
+        {% /if %}*/
+        #import <Foundation/Foundation.h>
+        #import "{{ type.targetClassFileName }}.h"
+        
+        @interface {{ type.targetClassName }} (Write)
+        
+        /* Method will write object to data. */
+        @property (nonatomic, strong, readonly) NSData *toXmlData;
+
+        @end]]>
+    </header>
+    <!--
+Name:           Class Element
+Parameters:     type - the current global element type.
+Description:    Work our way through the template CDATA and replace the the {{ }} with the proper values
+this will be used to generate the header file for the elements within our XSD types.
+<Object>+Write.m
+-->
+    <class extension="m">
+      <![CDATA[#import "{{ type.targetClassFileName }}+Write.h"
+        #import <libxml/xmlwriter.h>
+        
+        #define kGlobalElementNamesArray ((NSArray <NSString *> *)@[@"##elements##"{% for element in type.globalElements %}, @"{{ element.name }}"{% /for %}])
+        
+        @implementation {{ type.targetClassFileName }} (Write)
+        
+        - (NSData *)toXmlData {
+            __auto_type const buf = xmlBufferCreate();
+            if (buf == NULL) {
+                NSLog(@"Error creating the xml buffer.");
+                return nil;
+            }
             
-            #define kGlobalElementNamesArray ((NSArray <NSString *> *)@[@"##elements##"{% for element in type.globalElements %}, @"{{ element.name }}"{% /for %}])
+            __auto_type const writer = xmlNewTextWriterMemory(buf, 0);
+            if (writer == NULL) {
+                NSLog(@"Error creating the xml writer.");
+                return nil;
+            }
             
-            @implementation {{ type.targetClassFileName }} (File)
+            __auto_type rc = xmlTextWriterStartDocument(writer, NULL, "UTF-8", NULL);
+            if (rc < 0) {
+                NSLog(@"Error at xmlTextWriterStartDocument.");
+                return nil;
+            }
+            xmlTextWriterSetIndent(writer, 1);
+            xmlTextWriterSetIndentString(writer, (xmlChar *)"  ");
             
-            + (NSData*)dataFrom{{ type.name }}:({{ type.targetClassName }}*){{ type.name }}Value {
-                __auto_type const buf = xmlBufferCreate();
-                if (buf == NULL) {
-                    NSLog(@"Error creating the xml buffer.");
-                    return nil;
-                }
-                
-                __auto_type const writer = xmlNewTextWriterMemory(buf, 0);
-                if (writer == NULL) {
-                    NSLog(@"Error creating the xml writer.");
-                    return nil;
-                }
-                
-                __auto_type rc = xmlTextWriterStartDocument(writer, NULL, "UTF-8", NULL);
-                if (rc < 0) {
-                    NSLog(@"Error at xmlTextWriterStartDocument.");
-                    return nil;
-                }
-                xmlTextWriterSetIndent(writer, 1);
-                xmlTextWriterSetIndentString(writer, (xmlChar *)"  ");
-                
-                // Serialize object
-                xmlTextWriterStartElement(writer, (xmlChar*) kGlobalElementNamesArray.lastObject.UTF8String);
-                //__auto_type rc = xmlTextWriterWriteAttribute(writer, (xmlChar*)"{{ attribute.name }}", (xmlChar*){{ attribute.variableName }}AttrValue);
-                //if (rc < 0) {
-                //    return NO;
-                //}
-                __auto_type const result = [{{ type.name }}Value writeWithWriter:writer];
-                
-                if (!result) {
-                    xmlBufferFree(buf);
-                    xmlCleanupCharEncodingHandlers();
-                    xmlCleanupParser();
-                    return nil;
-                }
-                
-                xmlTextWriterEndElement(writer);
-                
-                rc = xmlTextWriterEndDocument(writer);
-                if (rc < 0) {
-                    NSLog(@"Error at xmlTextWriterEndDocument.");
-                    return nil;
-                }
-                
-                __auto_type const libxmlVersion = atoi(xmlParserVersion);
-                __auto_type const xmlData = [[NSData alloc] initWithBytes:(buf->content) length:(buf->use)];
-                
+            // Serialize object
+            xmlTextWriterStartElement(writer, (xmlChar*) kGlobalElementNamesArray.lastObject.UTF8String);
+            
+            __auto_type const result = [self writeWithWriter:writer];
+            
+            if (!result) {
                 xmlBufferFree(buf);
                 xmlCleanupCharEncodingHandlers();
                 xmlCleanupParser();
-                
-                return xmlData;
+                return nil;
             }
             
-            - (NSData *)toXmlData {
-                return [{{ type.targetClassFileName }} dataFrom{{ type.name }}:self];
+            xmlTextWriterEndElement(writer);
+            
+            rc = xmlTextWriterEndDocument(writer);
+            if (rc < 0) {
+                NSLog(@"Error at xmlTextWriterEndDocument.");
+                return nil;
             }
             
-            /**
-            * Name:            FromURL
-            * Parameters:      (NSURL *) - the location of the XML file as a NSURL representation
-            * Returns:         A generated {{ type.targetClassName }} object
-            * Description:     Generate a {{ type.targetClassName }} object from the path
-            *                  specified by the user
-            */
-            + ({{ type.targetClassName }} *){{ type.name }}FromURL:(NSURL *)url {
-                {{ type.targetClassName }} *obj = nil;
-                xmlTextReaderPtr reader = xmlReaderForFile(url.absoluteString.UTF8String, NULL, (XML_PARSE_NOBLANKS | XML_PARSE_NOCDATA | XML_PARSE_NOERROR | XML_PARSE_NOWARNING));
-                int ret;
-                if (reader != nil) {
-                    //find the correct root
-                    do {
-                        ret = xmlTextReaderRead(reader);
-                        if (ret == XML_READER_TYPE_ELEMENT) {
-                                __auto_type const elementName = [NSString stringWithCString: (const char *) xmlTextReaderConstLocalName(reader) encoding:NSUTF8StringEncoding];
-                                __auto_type const predicate = [NSPredicate predicateWithFormat:@"SELF IN %@", kGlobalElementNamesArray];
-                                if ([predicate evaluateWithObject:elementName]) {
-                                    obj = [[{{ type.targetClassName }} alloc] initWithReader: reader];
-                                    break;
-                                }
-                        }
-                    } while (ret);
-                    xmlFreeTextReader(reader);
-                }
-                return obj;
-            }
+            __auto_type const libxmlVersion = atoi(xmlParserVersion);
+            __auto_type const xmlData = [[NSData alloc] initWithBytes:(buf->content) length:(buf->use)];
             
-            /**
-            * Name:            FromFile
-            * Parameters:      (NSString *) - the location of the XML file as a string
-            * Returns:         A generated {{ type.targetClassName }} object
-            * Description:     Generate a {{ type.targetClassName }} object from the path
-            *                  specified by the user
-            */
-            + ({{ type.targetClassName }} *){{ type.name }}FromFile:(NSString *)path {
-                return [self {{ type.name }}FromURL:[NSURL fileURLWithPath:path]];
-            }
+            xmlBufferFree(buf);
+            xmlCleanupCharEncodingHandlers();
+            xmlCleanupParser();
             
-            /**
-            * Name:            FromData:
-            * Parameters:      (NSData *)
-            * Returns:         A generated {{ type.targetClassName }} object
-            * Description:     Generate the {{ type.targetClassName }} object from the NSData
-            *                  object generated from the XML.
-            */
-            + ({{ type.targetClassName }} *){{ type.name }}FromData:(NSData *)data {
-                /* Initial Setup */
-                {{ type.targetClassName }} *obj = nil;
-                /* Create the reader */
-                xmlTextReaderPtr reader = xmlReaderForMemory([data bytes], (int)[data length], NULL, NULL, (XML_PARSE_NOBLANKS | XML_PARSE_NOCDATA | XML_PARSE_NOERROR | XML_PARSE_NOWARNING));
-                
-                /* Ensure that we have a reader and the data within it to generate the object */
-                if (reader != nil) {
-                    __auto_type const ret = xmlTextReaderRead(reader);
-                    if (ret > 0) {
-                        obj = [[{{ type.targetClassName }} alloc] initWithReader: reader];
-                    }
-                    xmlFreeTextReader(reader);
-                }
-                
-                return obj;
-            }
-            
-            @end
-            ]]>
-        </class>
-    </reader>
+            return xmlData;
+        }
+        
+        @end]]>
+    </class>
+  </writer>
   </complextype>
   <enumeration objType="NS_ENUM" arrayType="">
     <read>
@@ -924,9 +944,7 @@ this will be used to generate the class files for the complex types.
         <![CDATA[xmlTextWriterWriteAttribute(writer, (xmlChar*)"{{ attribute.name }}", (xmlChar*)[{{ attribute.schemaType.enumerationName }}ToString(self.{{ attribute.variableName }}) UTF8String]);]]>
       </attribute>
       <element>
-        <![CDATA[if (self.{{ element.variableName }}) {
-              xmlTextWriterWriteElement(writer, (xmlChar*)"{{ element.name }}", (xmlChar*)[{{ element.schemaType.enumerationName }}ToString(self.{{ element.variableName }}) UTF8String]);
-          }]]>
+        <![CDATA[xmlTextWriterWriteString(writer, (xmlChar*)[{{ element.variableName }}Value UTF8String]);]]>
       </element>
       <value>
         <![CDATA[__auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)[{{ type.enumerationName }}ToString(self.value) UTF8String]);
@@ -944,12 +962,10 @@ this will be used to generate the class files for the complex types.
               {% /for %}
           };
           NSString *{{ type.enumerationName }}ToString({{ type.enumerationName }} enumType);
-          {{ type.enumerationName }} {{ type.enumerationName }}FromString(NSString *enumString);
-        ]]>
+          {{ type.enumerationName }} {{ type.enumerationName }}FromString(NSString *enumString);]]>
       </header>
       <class extension="m">
-        <![CDATA[
-          #import "{{ type.enumerationFileName }}.h"
+        <![CDATA[#import "{{ type.enumerationFileName }}.h"
 
           #define k{{ type.enumerationName }}NamesArray ((NSArray <NSString *> *)@[@"##enums##"{% for enumValue in type.enumerationValues %}, @"{{ enumValue }}"{% /for %}])
 
@@ -970,8 +986,7 @@ this will be used to generate the class files for the complex types.
               __auto_type const enumType = [k{{ type.enumerationName }}NamesArray indexOfObject:enumString];
               assert(enumType != NSNotFound);
               return (enumType != NSNotFound) ? ({{ type.enumerationName }}) enumType-1 : NSNotFound;
-          }
-        ]]>
+          }]]>
       </class>
     </implementation>
   </enumeration>

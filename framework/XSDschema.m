@@ -45,6 +45,10 @@
 @property (strong, nonatomic) NSString* readerClassTemplateExtension;
 @property (strong, nonatomic) NSString* readerHeaderTemplateString;
 @property (strong, nonatomic) NSString* readerHeaderTemplateExtension;
+@property (strong, nonatomic) NSString* writerClassTemplateString;
+@property (strong, nonatomic) NSString* writerClassTemplateExtension;
+@property (strong, nonatomic) NSString* writerHeaderTemplateString;
+@property (strong, nonatomic) NSString* writerHeaderTemplateExtension;
 @property (strong, nonatomic) NSString* classTemplateString;
 @property (strong, nonatomic) NSString* classTemplateExtension;
 @property (strong, nonatomic) NSString* headerTemplateString;
@@ -514,6 +518,28 @@
         self.readerClassTemplateExtension = [XMLUtils node:[nodes objectAtIndex: 0] stringAttribute:@"extension"];
     }
     
+    /* Fetch the header file that we will use in the implementation section of the file writer */
+    nodes = [complexTypeNode nodesForXPath:self.XPathForTemplateFirstWriterHeaders error: &error];
+    if(error != nil) {
+        if(resultError) *resultError = error;
+        return NO;
+    }
+    if(nodes != nil && nodes.count > 0) {
+        self.writerHeaderTemplateString = [[nodes objectAtIndex: 0] stringValue];
+        self.writerHeaderTemplateExtension = [XMLUtils node:[nodes objectAtIndex: 0] stringAttribute:@"extension"];
+    }
+    
+    /* Fetch the header file that we will use in the implementation section of the file writer */
+    nodes = [complexTypeNode nodesForXPath:self.XPathForTemplateFirstWriterClasses error: &error];
+    if(error != nil) {
+        if(resultError) *resultError = error;
+        return NO;
+    }
+    if(nodes != nil && nodes.count > 0) {
+        self.writerClassTemplateString = [[nodes objectAtIndex: 0] stringValue];
+        self.writerClassTemplateExtension = [XMLUtils node:[nodes objectAtIndex: 0] stringAttribute:@"extension"];
+    }
+    
     //
     //load included schemes
     //
@@ -750,7 +776,7 @@
                 NSString *result = [engine processTemplate: self.readerHeaderTemplateString
                                              withVariables: type.substitutionDict];
                 
-                NSString* headerFileName = [NSString stringWithFormat: @"%@+File.%@", type.targetClassFileName, self.readerHeaderTemplateExtension];
+                NSString* headerFileName = [NSString stringWithFormat: @"%@+Read.%@", type.targetClassFileName, self.readerHeaderTemplateExtension];
                 NSURL* headerFilePath = [createSubfolders ? [self subfolderForURL:destinationFolder schema:type.schema] : destinationFolder URLByAppendingPathComponent: headerFileName];
                 BOOL br = [result writeToURL: headerFilePath atomically:YES encoding: NSUTF8StringEncoding error: error];
 
@@ -764,7 +790,35 @@
                 NSString *result = [engine processTemplate: self.readerClassTemplateString
                                              withVariables: type.substitutionDict];
                 
-                NSString* classFileName = [NSString stringWithFormat: @"%@+File.%@", type.targetClassFileName, self.readerClassTemplateExtension];
+                NSString* classFileName = [NSString stringWithFormat: @"%@+Read.%@", type.targetClassFileName, self.readerClassTemplateExtension];
+                NSURL* classFilePath = [createSubfolders ? [self subfolderForURL:destinationFolder schema:type.schema] : destinationFolder URLByAppendingPathComponent: classFileName];
+                BOOL br = [result writeToURL: classFilePath atomically:YES encoding: NSUTF8StringEncoding error: error];
+                
+                /* Ensure that there was no errors for writing */
+                if(!br) {
+                    return NO;
+                }
+            }
+            
+            if (self.writerHeaderTemplateString.length) {
+                NSString *result = [engine processTemplate: self.writerHeaderTemplateString
+                                             withVariables: type.substitutionDict];
+                
+                NSString* headerFileName = [NSString stringWithFormat: @"%@+Write.%@", type.targetClassFileName, self.writerHeaderTemplateExtension];
+                NSURL* headerFilePath = [createSubfolders ? [self subfolderForURL:destinationFolder schema:type.schema] : destinationFolder URLByAppendingPathComponent: headerFileName];
+                BOOL br = [result writeToURL: headerFilePath atomically:YES encoding: NSUTF8StringEncoding error: error];
+                
+                /* Ensure that there was no errors for writing */
+                if(!br) {
+                    return NO;
+                }
+            }
+            
+            if (self.writerClassTemplateString.length) {
+                NSString *result = [engine processTemplate: self.writerClassTemplateString
+                                             withVariables: type.substitutionDict];
+                
+                NSString* classFileName = [NSString stringWithFormat: @"%@+Write.%@", type.targetClassFileName, self.writerClassTemplateExtension];
                 NSURL* classFilePath = [createSubfolders ? [self subfolderForURL:destinationFolder schema:type.schema] : destinationFolder URLByAppendingPathComponent: classFileName];
                 BOOL br = [result writeToURL: classFilePath atomically:YES encoding: NSUTF8StringEncoding error: error];
                 

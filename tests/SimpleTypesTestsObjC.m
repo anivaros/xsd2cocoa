@@ -28,11 +28,13 @@
     self.expectedFiles = @[@"simpleTypes.h",
                            @"STSimpleTypesType.h",
                            @"STSimpleTypesType.m",
-                           @"STSimpleTypesType+File.h",
-                           @"STSimpleTypesType+File.m"];
+                           @"STSimpleTypesType+Read.h",
+                           @"STSimpleTypesType+Read.m"
+                           @"STSimpleTypesType+Write.h",
+                           @"STSimpleTypesType+Write.m"];
     self.rootClassName = @"STSimpleTypesType";
     self.parseMethodName = @"SimpleTypesTypeFromURL:";
-    self.generateMethodName = @"dataFromSimpleTypesType:";
+    self.generateMethodName = @"toXmlData";
     
     _expectedClassnames = @{
                             @"gMonth": @"NSString",

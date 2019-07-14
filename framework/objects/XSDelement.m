@@ -263,8 +263,16 @@
     return rtn;
 }
 
+- (BOOL) isOptional {
+    return self.minOccurs.integerValue == 0;
+}
+
+- (BOOL) isRequired {
+    return self.minOccurs.integerValue > 0;
+}
+
 - (BOOL) isSingleValue {
-    return [self.maxOccurs intValue] >= 0 && [self.maxOccurs intValue] <= 1;
+    return self.maxOccurs.integerValue >= 0 && self.maxOccurs.integerValue <= 1;
 }
 
 @end

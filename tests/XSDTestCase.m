@@ -184,11 +184,11 @@ NSURL *_tmpFolderUrl;
         }
         
         if (self.generateMethodName) {
-            XCTAssert([wlfg_class respondsToSelector:NSSelectorFromString(self.generateMethodName)]);
+            XCTAssert([root respondsToSelector:NSSelectorFromString(self.generateMethodName)]);
             
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            NSData *data = [wlfg_class performSelector:NSSelectorFromString(self.generateMethodName) withObject:root];
+            NSData *data = [root performSelector:NSSelectorFromString(self.generateMethodName)];
 #pragma clang diagnostic pop
             XCTAssert(data);
             NSLog(@"%@", [data dump]);

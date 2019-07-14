@@ -112,6 +112,13 @@
           </documentation>
         </annotation>
       </element>
+      <element name="writer" type="xsd2cocoa:writer" minOccurs="1" maxOccurs="1">
+        <annotation>
+          <documentation>
+            This element defines the templating options for convenience methods to export a complex type to a valid xml file / xml data
+          </documentation>
+        </annotation>
+      </element>
     </sequence>
     <attribute name="objType" type="string" use="required" />
     <attribute name="arrayType" type="string" use="required" />
@@ -141,6 +148,13 @@
   </complexType>
 
   <complexType name="reader">
+    <sequence>
+      <element name="header" type="xsd2cocoa:filecontent" minOccurs="0" maxOccurs="1"/>
+      <element name="class" type="xsd2cocoa:filecontent" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+  </complexType>
+  
+  <complexType name="writer">
     <sequence>
       <element name="header" type="xsd2cocoa:filecontent" minOccurs="0" maxOccurs="1"/>
       <element name="class" type="xsd2cocoa:filecontent" minOccurs="1" maxOccurs="1"/>

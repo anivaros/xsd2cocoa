@@ -101,14 +101,18 @@
     return isEnumeration;
 }
 
-- (BOOL) isUseOptional {
+- (BOOL) isOptional {
     return self.use == XSDattributeUseOptional;
 }
-- (BOOL) isUseRequired {
+
+- (BOOL) isRequired {
     return self.use == XSDattributeUseRequired;
 }
 
 XSDattributeUse XSDattributeUseFromString(NSString *enumString) {
+    if (enumString.length == 0) {
+        return XSDattributeUseOptional;
+    }
     __auto_type const enumType = [@[@"optional", @"prohibited", @"required"] indexOfObject:enumString];
     assert(enumType != NSNotFound);
     return (enumType != NSNotFound) ? (XSDattributeUse) enumType : NSNotFound;

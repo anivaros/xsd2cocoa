@@ -77,6 +77,14 @@
     return @"reader[1]/class";
 }
 
+- (NSString*)XPathForTemplateFirstWriterHeaders {
+    return @"writer[1]/header";
+}
+
+- (NSString*)XPathForTemplateFirstWriterClasses {
+    return @"writer[1]/class";
+}
+
 - (NSString*)XPathForTemplateFirstComplexType {
     return @"/template[1]/complextype[1]";
 }

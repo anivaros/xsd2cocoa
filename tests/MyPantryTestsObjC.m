@@ -29,13 +29,15 @@
                            @"PFoodItemType.m",
                            @"PPantryType.h",
                            @"PPantryType.m",
-                           @"PPantryType+File.h",
-                           @"PPantryType+File.m",
+                           @"PPantryType+Read.h",
+                           @"PPantryType+Read.m",
+                           @"PPantryType+Write.h",
+                           @"PPantryType+Write.m",
                            @"PShelfType.h",
                            @"PShelfType.m"];
     self.rootClassName = @"PPantryType";
     self.parseMethodName = @"PantryTypeFromURL:";
-    self.generateMethodName = @"dataFromPantryType:";
+    self.generateMethodName = @"toXmlData";
     
     [self helpSetUp];
     [super setUp];
