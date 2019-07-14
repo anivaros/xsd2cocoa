@@ -41,7 +41,7 @@
     self = [super initWithNode:node schema:schema];
     if(self) {
         _type = [XMLUtils node: node stringAttribute: @"type"];
-		_ref = [XMLUtils node: node stringAttribute: @"ref"];
+        _ref = [XMLUtils node: node stringAttribute: @"ref"];
         _name = [XMLUtils node: node stringAttribute: @"name"];
         if (!_name && [node.localName isEqualToString:@"any"]) {
             _name = @"Any";
@@ -65,18 +65,18 @@
         
         NSString* minOccursValue = [XMLUtils node: node stringAttribute: @"minOccurs"];
         if(minOccursValue == nil) {
-            _minOccurs = minOccurs ? minOccurs : [NSNumber numberWithInt: 1];
+            _minOccurs = minOccurs ? minOccurs : @1;
         } else if([minOccursValue isEqual: @"unbounded"]) {
-            _minOccurs = [NSNumber numberWithInt: -1];
+            _minOccurs = @-1;
         } else {
             _minOccurs = [numFormatter numberFromString: minOccursValue];
         }
         
         NSString* maxOccursValue = [XMLUtils node: node stringAttribute: @"maxOccurs"];
         if(maxOccursValue == nil) {
-            _maxOccurs = maxOccurs ? maxOccurs : [NSNumber numberWithInt: 1];
+            _maxOccurs = maxOccurs ? maxOccurs : @1;
         } else if([maxOccursValue isEqual: @"unbounded"]) {
-            _maxOccurs = [NSNumber numberWithInt: -1];
+            _maxOccurs = @-1;
         } else {
             _maxOccurs = [numFormatter numberFromString: maxOccursValue];
         }
