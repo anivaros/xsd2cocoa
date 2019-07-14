@@ -15,7 +15,8 @@ typedef NS_OPTIONS(NSUInteger, XSDschemaGeneratorOptions) {
     XSDschemaGeneratorOptionSourceCode = 1 << 0,
     XSDschemaGeneratorOptionSourceCodeWithSubfolders = 1 << 1,
     XSDschemaGeneratorOptionLowercaseProperties = 1 << 2,
-    XSDschemaGeneratorOptionIndentWithTabs = 1 << 3
+    XSDschemaGeneratorOptionIndentWithTabs = 1 << 3,
+    XSDschemaGeneratorOptionValidateXsdSchema = 1 << 4
 };
 
 @interface XSDschema : XSSchemaNode

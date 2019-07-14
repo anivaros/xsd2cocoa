@@ -209,7 +209,7 @@
 		B42F9EE51A48663F0007FC96 /* XSSimpleType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XSSimpleType.m; sourceTree = "<group>"; };
 		B42F9EFD1A48663F0007FC96 /* template-objc.xml */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = text.xml; path = "template-objc.xml"; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		B42F9EFE1A48663F0007FC96 /* template.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = template.xsd; sourceTree = "<group>"; };
-		B42F9EFF1A48663F0007FC96 /* XMLSchema.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = XMLSchema.xsd; sourceTree = "<group>"; };
+		B42F9EFF1A48663F0007FC96 /* XMLSchema.xsd */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = text.xml; path = XMLSchema.xsd; sourceTree = "<group>"; tabWidth = 2; };
 		B42F9F001A48663F0007FC96 /* XMLUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLUtils.h; sourceTree = "<group>"; };
 		B42F9F011A48663F0007FC96 /* XMLUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLUtils.m; sourceTree = "<group>"; };
 		B42F9F021A48663F0007FC96 /* XSDConverterCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XSDConverterCore.h; sourceTree = "<group>"; };

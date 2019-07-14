@@ -12,6 +12,7 @@
 #import <dlfcn.h>
 #import <objc/runtime.h>
 #import "NSObject+DDDump.h"
+#import "DDXMLValidator.h"
 
 #define KEEP 0
 #define SHOW 0
@@ -95,7 +96,7 @@ NSURL *_tmpFolderUrl;
 }
 
 - (void)helpTestCorrectnessParsingSchema {
-    __block XSDschema *schema = [[XSDschema alloc] initWithUrl:self.schemaUrl targetNamespacePrefix:self.prefixOverride options:XSDschemaGeneratorOptionSourceCode error:nil];
+    __block XSDschema *schema = [[XSDschema alloc] initWithUrl:self.schemaUrl targetNamespacePrefix:self.prefixOverride options:XSDschemaGeneratorOptionSourceCode | XSDschemaGeneratorOptionValidateXsdSchema error:nil];
     XCTAssert(schema);
     
     [self assertSchema:schema];

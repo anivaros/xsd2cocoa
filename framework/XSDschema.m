@@ -205,6 +205,12 @@
 }
 
 - (instancetype) initWithUrl: (NSURL*) schemaUrl targetNamespacePrefix: (NSString*) prefix options: (XSDschemaGeneratorOptions)options error: (NSError**) error {
+    NSURL *xmlSchemaUrl = [[NSBundle bundleForClass:self.class] URLForResource:@"XMLSchema" withExtension:@"xsd"];
+    BOOL isNeedValidate = !!(options & XSDschemaGeneratorOptionValidateXsdSchema);
+    BOOL isValid = !isNeedValidate || [[DDXMLValidator sharedInstace] validateXMLFile:schemaUrl withSchema:DDXMLValidatorSchemaTypeXSD schemaFile:xmlSchemaUrl error:error];
+    if (!isValid) {
+        return nil;
+    }
     NSData* data = [NSData dataWithContentsOfURL: schemaUrl];
     /* If we do not have data present an instance error that we cannot open the xsd file at the given location */
     if(!data) {
@@ -350,7 +356,7 @@
         NSString *attr = [[styleNode attributeForName:@"type"] stringValue];
         if([attr isEqualToString:@"builtin"]) {
             self.formatter = [DDSimpleFormatter sharedInstance];
-            self.formatter.indentWithTabs = self.options & XSDschemaGeneratorOptionIndentWithTabs;
+            self.formatter.indentWithTabs = !!(self.options & XSDschemaGeneratorOptionIndentWithTabs);
         }
         else {
             NSLog(@"Unknown formatter type: %@", attr);
@@ -666,7 +672,7 @@
             }
         }
         /* If all is well, start writing the code into the directory we created */
-        if(![self writeCodeInto:srcFolderUrl createSubfolders:self.options & XSDschemaGeneratorOptionSourceCodeWithSubfolders error:error]) {
+        if(![self writeCodeInto:srcFolderUrl createSubfolders:!!(self.options & XSDschemaGeneratorOptionSourceCodeWithSubfolders) error:error]) {
             return NO;
         }
         if(![self formatFilesInFolder:srcFolderUrl error:nil])  {
