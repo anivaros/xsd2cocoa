@@ -32,6 +32,7 @@
                            @"STSimpleTypesType+File.m"];
     self.rootClassName = @"STSimpleTypesType";
     self.parseMethodName = @"SimpleTypesTypeFromURL:";
+    self.generateMethodName = @"dataFromSimpleTypesType:";
     
     _expectedClassnames = @{
                             @"gMonth": @"NSString",

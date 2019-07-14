@@ -10,6 +10,7 @@
 #import "XSDTestCaseObjC.h"
 #import "XSDConverterCore.h"
 
+
 @interface ConfigFeaturesTestsObjC : XSDTestCaseObjC
 @end
 
@@ -41,6 +42,7 @@
                            @"CONFIGConfigUserRightsEnum.m"];
     self.rootClassName = @"CONFIGConfig";
     self.parseMethodName = @"ConfigFromURL:";
+    self.generateMethodName = @"dataFromConfig:";
     
     [self helpSetUp];
     [super setUp];
@@ -170,7 +172,6 @@
 - (void)testCorrectnessGeneratingParser {
     [self helpTestCorrectnessGeneratingParser];
 }
-
 
 - (void)testCorrectnessGeneratingNamespacedParser {
     [self setUpNamespaced];

@@ -31,6 +31,7 @@
                            @"SampleLanguageData.h"];
     self.rootClassName = @"LangDefType";
     self.parseMethodName = @"LangDefTypeFromURL:";
+    self.generateMethodName = @"dataFromLangDef:";
     
     [self helpSetUp];
     [super setUp];

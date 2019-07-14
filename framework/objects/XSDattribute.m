@@ -15,7 +15,7 @@
 @property (strong, nonatomic) NSString* name;
 @property (strong, nonatomic) NSString* simpleType;
 @property (strong, nonatomic) NSString* type;
-@property (strong, nonatomic) id use;
+@property (assign, nonatomic) XSDattributeUse use;
 @property (strong, nonatomic) NSString* defaultValue;
 @property (strong, nonatomic) NSString* fixed;
 @property (strong, nonatomic) NSString* form;
@@ -24,8 +24,7 @@
 
 @implementation XSDattribute
 
-- (instancetype) init
-{
+- (instancetype) init {
     if(self = [super init]) {
         self.name = nil;
         self.simpleType = nil; 
@@ -44,11 +43,11 @@
         self.name = [XMLUtils node:node stringAttribute:@"name"];
         self.simpleType = [XMLUtils node:node stringAttribute:@"simpleType"];
         self.type = [XMLUtils node:node stringAttribute:@"type"];
-        self.use = [XMLUtils node:node stringAttribute:@"use"];
+        self.use = XSDattributeUseFromString([XMLUtils node:node stringAttribute:@"use"]);
         self.defaultValue = [XMLUtils node:node stringAttribute:@"default"];
         self.fixed = [XMLUtils node:node stringAttribute:@"fixed"];
+        NSAssert(!self.fixed || !self.defaultValue, @"Default and fixed attributes cannot both be present");
         self.form = [XMLUtils node:node stringAttribute:@"form"];
-
         //specify string as default value
         if(!self.type) {
             NSLog(@"assign default tye xs:string to attribute %@", self.name);
@@ -100,6 +99,19 @@
     
     /* Return BOOL if we have enumerations */
     return isEnumeration;
+}
+
+- (BOOL) isUseOptional {
+    return self.use == XSDattributeUseOptional;
+}
+- (BOOL) isUseRequired {
+    return self.use == XSDattributeUseRequired;
+}
+
+XSDattributeUse XSDattributeUseFromString(NSString *enumString) {
+    __auto_type const enumType = [@[@"optional", @"prohibited", @"required"] indexOfObject:enumString];
+    assert(enumType != NSNotFound);
+    return (enumType != NSNotFound) ? (XSDattributeUse) enumType : NSNotFound;
 }
 
 @end

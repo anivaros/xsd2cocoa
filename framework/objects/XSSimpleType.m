@@ -433,8 +433,8 @@
     /* Iterate through the enumerations to grab the value*/
     for (XSDenumeration* enumType in [self enumerations]) {
         NSString *modifiedValue = enumType.value;
-        if([[[NSNumberFormatter alloc] init] numberFromString:modifiedValue])
-            modifiedValue = [@"Value" stringByAppendingString:modifiedValue];
+//        if([[[NSNumberFormatter alloc] init] numberFromString:modifiedValue])
+//            modifiedValue = [@"Value" stringByAppendingString:modifiedValue];
         [rtn addObject:modifiedValue];
     }
     

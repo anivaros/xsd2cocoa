@@ -35,6 +35,7 @@
                            @"PShelfType.m"];
     self.rootClassName = @"PPantryType";
     self.parseMethodName = @"PantryTypeFromURL:";
+    self.generateMethodName = @"dataFromPantryType:";
     
     [self helpSetUp];
     [super setUp];

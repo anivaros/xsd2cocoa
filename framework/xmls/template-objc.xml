@@ -172,20 +172,20 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
   <simpletype name="dateTime" objType="NSDate" arrayType="NSArray">
     <read>
       <prefix>NSDate *(^dateFromStringBlock)(NSString *dateString) = ^NSDate *(NSString *dateString) {
-            NSDateFormatter *sRFC3339DateFormatter = [[NSDateFormatter alloc] init];
-            [sRFC3339DateFormatter setLocale:self.locale];
-            [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSSSSSXXXXX"];
+            __auto_type const sRFC3339DateFormatter = [[NSDateFormatter alloc] init];
+            sRFC3339DateFormatter.locale = self.locale;
+            sRFC3339DateFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSSSSSXXXXX";
             NSDate *date = [sRFC3339DateFormatter dateFromString:dateString];
             if (!date) {
-                [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ssXXXXX"];
+                sRFC3339DateFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ssXXXXX";
                 date = [sRFC3339DateFormatter dateFromString:dateString];
             }
             if (!date) {
-                [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ssZ"];
+                sRFC3339DateFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ssZ";
                 date = [sRFC3339DateFormatter dateFromString:dateString];
             }
             if (!date) {
-                [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss"];
+                sRFC3339DateFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss";
                 date = [sRFC3339DateFormatter dateFromString:dateString];
             }
             return date;
@@ -203,8 +203,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
         self.value = dateFromStringBlock(value);</value>
     </read>
     <write>
-      <prefix>NSDateFormatter* dateFormatter = [[NSDateFormatter
-        alloc] init];
+      <prefix>__auto_type const dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";</prefix>
       <attribute>{{ attribute.variableName }}AttrValue = [[dateFormatter stringFromDate:self.{{ attribute.variableName }}] UTF8String];</attribute>
       <element>
@@ -219,7 +218,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
   </simpletype>
   <simpletype name="date" objType="NSDate" arrayType="NSArray">
     <read>
-      <prefix>NSDateFormatter *dateOnlyFormatter = [[NSDateFormatter alloc] init];
+      <prefix>__auto_type const dateOnlyFormatter = [[NSDateFormatter alloc] init];
         dateOnlyFormatter.dateFormat = @"yyyy-MM-dd";
         dateOnlyFormatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
         dateOnlyFormatter.locale = self.locale;
@@ -234,7 +233,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
         self.value = [dateOnlyFormatter dateFromString:value];</value>
     </read>
     <write>
-      <prefix>NSDateFormatter* dateOnlyFormatter = [[NSDateFormatter alloc] init];
+      <prefix>__auto_type const dateOnlyFormatter = [[NSDateFormatter alloc] init];
         dateOnlyFormatter.dateFormat = @"yyyy-MM-dd";
         dateOnlyFormatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
       </prefix>
@@ -252,7 +251,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
   </simpletype>
   <simpletype name="time" objType="NSDate" arrayType="NSArray">
     <read>
-      <prefix>NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+      <prefix>__auto_type const timeFormatter = [[NSDateFormatter alloc] init];
         timeFormatter.dateFormat = @"HH:mm:ss";
         timeFormatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
         timeFormatter.locale = self.locale;
@@ -267,7 +266,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
         self.value = [timeFormatter dateFromString:value];</value>
     </read>
     <write>
-      <prefix>NSDateFormatter* timeFormatter = [[NSDateFormatter alloc] init];
+      <prefix>__auto_type const timeFormatter = [[NSDateFormatter alloc] init];
         timeFormatter.dateFormat = @"HH:mm:ss";
         timeFormatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
       </prefix>
@@ -752,7 +751,9 @@ this will be used to generate the class files for the complex types.
             + ({{ type.targetClassName }} *){{ type.name }}FromData:(NSData *)data;
             
             /* Method will write object to data. */
-            + (NSData*)dataFrom{{ type.name }}:({{ type.targetClassName }}*){{ type.name }}Value;
+            + (NSData *)dataFrom{{ type.name }}:({{ type.targetClassName }}*){{ type.name }}Value;
+            
+            @property (nonatomic, strong, readonly) NSData *toXmlData;
 
             @end
             ]]>
@@ -775,13 +776,13 @@ this will be used to generate the class files for the complex types.
             @implementation {{ type.targetClassFileName }} (File)
             
             + (NSData*)dataFrom{{ type.name }}:({{ type.targetClassName }}*){{ type.name }}Value {
-                xmlBufferPtr buf = xmlBufferCreate();
+                __auto_type const buf = xmlBufferCreate();
                 if (buf == NULL) {
                     NSLog(@"Error creating the xml buffer.");
                     return nil;
                 }
                 
-                xmlTextWriterPtr writer = xmlNewTextWriterMemory(buf, 0);
+                __auto_type const writer = xmlNewTextWriterMemory(buf, 0);
                 if (writer == NULL) {
                     NSLog(@"Error creating the xml writer.");
                     return nil;
@@ -793,10 +794,14 @@ this will be used to generate the class files for the complex types.
                     return nil;
                 }
                 xmlTextWriterSetIndent(writer, 1);
-                xmlTextWriterSetIndentString(writer, (xmlChar *)"\t");
+                xmlTextWriterSetIndentString(writer, (xmlChar *)"  ");
                 
                 // Serialize object
                 xmlTextWriterStartElement(writer, (xmlChar*) kGlobalElementNamesArray.lastObject.UTF8String);
+                //__auto_type rc = xmlTextWriterWriteAttribute(writer, (xmlChar*)"{{ attribute.name }}", (xmlChar*){{ attribute.variableName }}AttrValue);
+                //if (rc < 0) {
+                //    return NO;
+                //}
                 __auto_type const result = [{{ type.name }}Value writeWithWriter:writer];
                 
                 if (!result) {
@@ -822,6 +827,10 @@ this will be used to generate the class files for the complex types.
                 xmlCleanupParser();
                 
                 return xmlData;
+            }
+            
+            - (NSData *)toXmlData {
+                return [{{ type.targetClassFileName }} dataFrom{{ type.name }}:self];
             }
             
             /**
@@ -948,16 +957,16 @@ this will be used to generate the class files for the complex types.
               assert(enumType < k{{ type.enumerationName }}NamesArray.count);
               return [k{{ type.enumerationName }}NamesArray objectAtIndex:enumType+1];
           }
-
+          
           {{ type.enumerationName }} {{ type.enumerationName }}FromString(NSString *enumString) {
               __auto_type const enUSPOSIXLocale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
               __auto_type const numFormatter = [[NSNumberFormatter alloc] init];
               numFormatter.locale = enUSPOSIXLocale;
-
+              /*
               if ([numFormatter numberFromString:enumString]) {
                   enumString = [@"Value" stringByAppendingString:enumString];
               }
-
+              */
               __auto_type const enumType = [k{{ type.enumerationName }}NamesArray indexOfObject:enumString];
               assert(enumType != NSNotFound);
               return (enumType != NSNotFound) ? ({{ type.enumerationName }}) enumType-1 : NSNotFound;

@@ -37,6 +37,7 @@
                            @"MYCOMPANYPropertiesEntry.m"];
     self.rootClassName = @"MYCOMPANYAddress";
     self.parseMethodName = @"addressFromURL:";
+    self.generateMethodName = @"dataFromaddress:";
     
     [self helpSetUp];
     [super setUp];

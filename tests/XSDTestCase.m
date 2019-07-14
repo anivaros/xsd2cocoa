@@ -52,6 +52,7 @@ NSURL *_tmpFolderUrl;
     assert(self.expectedFiles);
     assert(self.rootClassName);
     assert(self.parseMethodName);
+    assert(self.generateMethodName);
     
     NSURL *schemaUrl = [[NSBundle bundleForClass:self.class] URLForResource:self.schemaName withExtension:@"xsd"];
     NSURL *xmlFileUrl = [[NSBundle bundleForClass:self.class] URLForResource:self.xmlFileName withExtension:@"xml"];
@@ -180,6 +181,40 @@ NSURL *_tmpFolderUrl;
         XCTAssert([root respondsToSelector:@selector(dictionary)]);
         if([root respondsToSelector:@selector(dictionary)]) {
             [self assertParsedXML:root];
+        }
+        
+        if (self.generateMethodName) {
+            XCTAssert([wlfg_class respondsToSelector:NSSelectorFromString(self.generateMethodName)]);
+            
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            NSData *data = [wlfg_class performSelector:NSSelectorFromString(self.generateMethodName) withObject:root];
+#pragma clang diagnostic pop
+            XCTAssert(data);
+            NSLog(@"%@", [data dump]);
+            NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+            
+            NSURL *generatedFileUrl = [_tmpFolderUrl URLByAppendingPathComponent:@"generated.xml"];
+            [data writeToURL:generatedFileUrl atomically:NO];
+//            NSError *error = nil;
+//            BOOL valid = [[DDXMLValidator sharedInstace] validateXMLData:data withSchema:DDXMLValidatorSchemaTypeXSD schemaFile:self.schemaUrl error:&error];
+//            if (!valid) {
+//                NSLog(@"%@", error);
+//            }
+//            XCTAssert(valid);
+            //parse it
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            id root = [wlfg_class performSelector:NSSelectorFromString(self.parseMethodName) withObject:generatedFileUrl];
+#pragma clang diagnostic pop
+            XCTAssert(root);
+            NSLog(@"%@", [root dump]);
+            
+            //check it
+            XCTAssert([root respondsToSelector:@selector(dictionary)]);
+            if([root respondsToSelector:@selector(dictionary)]) {
+                [self assertParsedXML:root];
+            }
         }
         
         //unload it

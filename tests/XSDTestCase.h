@@ -18,10 +18,12 @@
 @property NSArray *expectedFiles;
 @property NSString *rootClassName;
 @property NSString *parseMethodName;
+@property NSString *generateMethodName;
 
 @property (readonly) NSURL *schemaUrl;
 @property (readonly) NSURL *templateUrl;
 @property (readonly) NSURL *xmlFileUrl;
+
 + (NSURL*)tmpFolderUrl;
 
 //optional
