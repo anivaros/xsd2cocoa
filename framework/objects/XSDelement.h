@@ -19,9 +19,9 @@
 @property (readonly, nonatomic) NSString* substitutionGroup;
 @property (readonly, nonatomic) NSString* defaultValue;
 @property (readonly, nonatomic) NSString* fixed;
-@property (readonly, nonatomic) NSString* nillable;
-@property (readonly, nonatomic) NSString* abstractValue;
-@property (readonly, nonatomic) NSString* final;
+@property (readonly, nonatomic) NSNumber* nillable;
+@property (readonly, nonatomic) NSNumber* abstract;
+@property (readonly, nonatomic) NSString* finalValue;
 @property (readonly, nonatomic) NSString* block;
 @property (readonly, nonatomic) NSString* form;
 @property (readonly, nonatomic) NSNumber* minOccurs;

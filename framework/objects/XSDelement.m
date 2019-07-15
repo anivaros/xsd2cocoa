@@ -26,9 +26,9 @@
 @property (strong, nonatomic) NSString* substitutionGroup;
 @property (strong, nonatomic) NSString* defaultValue;
 @property (strong, nonatomic) NSString* fixed;
-@property (strong, nonatomic) NSString* nillable;
-@property (strong, nonatomic) NSString* abstractValue;
-@property (strong, nonatomic) NSString* final;
+@property (strong, nonatomic) NSNumber* nillable;
+@property (strong, nonatomic) NSNumber* abstract;
+@property (strong, nonatomic) NSString* finalValue;
 @property (strong, nonatomic) NSString* block;
 @property (strong, nonatomic) NSString* form;
 @property (strong, nonatomic) NSNumber* minOccurs;
@@ -50,9 +50,9 @@
         _substitutionGroup = [XMLUtils node: node stringAttribute: @"substitutionGroup"];
         _defaultValue = [XMLUtils node: node stringAttribute:  @"default"];
         _fixed = [XMLUtils node: node stringAttribute: @"fixed"];
-        _nillable = [XMLUtils node: node stringAttribute: @"nillable"];
-        _abstractValue = [XMLUtils node: node stringAttribute: @"abstract"];
-        _final = [XMLUtils node: node stringAttribute: @"final"];
+        _nillable = [XMLUtils node: node boolAttribute: @"nillable"];
+        _abstract = [XMLUtils node: node boolAttribute: @"abstract"];
+        _finalValue = [XMLUtils node: node stringAttribute: @"final"];
         _block = [XMLUtils node: node stringAttribute: @"block"];
         _form = [XMLUtils node: node stringAttribute: @"form"];
         

@@ -17,18 +17,16 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
     </read>
     <write>
         <prefix />
-        <attribute><![CDATA[
-            {{ attribute.variableName }}AttrValue = [self.{{ attribute.variableName }} UTF8String];
-        ]]></attribute>
-        <element><![CDATA[
-            xmlTextWriterWriteString(writer, (xmlChar*)[{{ element.variableName }}Value UTF8String]);
-        ]]></element>
-        <value><![CDATA[
-            __auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)[self.value UTF8String]);
+        <attribute>
+          <![CDATA[{{ attribute.variableName }}AttrValue = [self.{{ attribute.variableName }} UTF8String];]]></attribute>
+        <element>
+          <![CDATA[xmlTextWriterWriteString(writer, (xmlChar*)[{{ element.variableName }}Value UTF8String]);]]></element>
+        <value>
+          <![CDATA[__auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)[self.value UTF8String]);
             if (rc < 0) {
                 return NO;
-            }
-        ]]></value>
+            }]]>
+        </value>
     </write>
   </simpletype>
   <simpletype name="any" objType="NSString" arrayType="NSArray">
@@ -71,18 +69,16 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
     </read>
     <write>
       <prefix />
-      <attribute><![CDATA[
-        {{ attribute.variableName }}AttrValue = [[self.{{ attribute.variableName }} absoluteString] UTF8String];
-      ]]></attribute>
-      <element><![CDATA[
-        xmlTextWriterWriteString(writer, (xmlChar*)[[{{ element.variableName }}Value absoluteString] UTF8String]);
-      ]]></element>
-      <value><![CDATA[
-        __auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)[[self.value absoluteString] UTF8String]);
+      <attribute>
+        <![CDATA[{{ attribute.variableName }}AttrValue = [[self.{{ attribute.variableName }} absoluteString] UTF8String];]]></attribute>
+      <element>
+        <![CDATA[xmlTextWriterWriteString(writer, (xmlChar*)[[{{ element.variableName }}Value absoluteString] UTF8String]);]]></element>
+      <value>
+        <![CDATA[__auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)[[self.value absoluteString] UTF8String]);
         if (rc < 0) {
             return NO;
-        }
-      ]]></value>
+        }]]>
+      </value>
     </write>
   </simpletype>
   <simpletype name="boolean" objType="NSNumber"
@@ -100,15 +96,13 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
     <write>
       <prefix />
       <attribute>{{ attribute.variableName }}AttrValue = [self.{{ attribute.variableName }} boolValue] ? "true" : "false";</attribute>
-      <element><![CDATA[
-        xmlTextWriterWriteString(writer, (xmlChar*)([{{ element.variableName }}Value boolValue] ? "true" : "false"));
-      ]]></element>
-      <value><![CDATA[
-        __auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)([{{ element.variableName }}Value boolValue] ? "true" : "false"]]);
+      <element><![CDATA[xmlTextWriterWriteString(writer, (xmlChar*)([{{ element.variableName }}Value boolValue] ? "true" : "false"));]]></element>
+      <value>
+        <![CDATA[__auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)([{{ element.variableName }}Value boolValue] ? "true" : "false"]]);
         if (rc < 0) {
             return NO;
-        }
-      ]]></value>
+        }]]>
+      </value>
     </write>
   </simpletype>
   <simpletype name="integer" objType="NSNumber"
@@ -127,17 +121,17 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
     </read>
     <write>
       <prefix>__auto_type const numFormatter = [[NSNumberFormatter alloc] init];
-        numFormatter.numberStyle = NSNumberFormatterDecimalStyle;</prefix>
+        numFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+        numFormatter.locale = self.locale;</prefix>
       <attribute>{{ attribute.variableName }}AttrValue = [[numFormatter stringFromNumber: self.{{ attribute.variableName }}] UTF8String];</attribute>
-      <element><![CDATA[
-        xmlTextWriterWriteString(writer, (xmlChar*)[[numFormatter stringFromNumber:{{ element.variableName }}Value] UTF8String]);
-      ]]></element>
-      <value><![CDATA[
-        __auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)[[numFormatter stringFromNumber:self.value] UTF8String]);
+      <element>
+        <![CDATA[xmlTextWriterWriteString(writer, (xmlChar*)[[numFormatter stringFromNumber:{{ element.variableName }}Value] UTF8String]);]]></element>
+      <value>
+        <![CDATA[__auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)[[numFormatter stringFromNumber:self.value] UTF8String]);
         if (rc < 0) {
             return NO;
-        }
-      ]]></value>
+        }]]>
+      </value>
     </write>
   </simpletype>
   <simpletype name="decimal" objType="NSNumber"
@@ -155,14 +149,15 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
         self.value = [decFormatter numberFromString:value];</value>
     </read>
     <write>
-      <prefix>__auto_type const integerFormatter = [[NSNumberFormatter alloc] init];
-        integerFormatter.numberStyle = NSNumberFormatterDecimalStyle;</prefix>
-      <attribute>{{ attribute.variableName }}AttrValue = [[integerFormatter stringFromNumber: self.{{ attribute.variableName }}] UTF8String];</attribute>
+      <prefix>__auto_type const decFormatter = [[NSNumberFormatter alloc] init];
+        decFormatter.locale = self.locale;
+        decFormatter.numberStyle = NSNumberFormatterDecimalStyle;</prefix>
+      <attribute>{{ attribute.variableName }}AttrValue = [[decFormatter stringFromNumber: self.{{ attribute.variableName }}] UTF8String];</attribute>
       <element>
-        <![CDATA[xmlTextWriterWriteString(writer, (xmlChar*)[[integerFormatter stringFromNumber: {{ element.variableName }}Value] UTF8String]);]]>
+        <![CDATA[xmlTextWriterWriteString(writer, (xmlChar*)[[decFormatter stringFromNumber: {{ element.variableName }}Value] UTF8String]);]]>
       </element>
       <value>
-        <![CDATA[__auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)[[integerFormatter stringFromNumber:self.value] UTF8String]);
+        <![CDATA[__auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)[[decFormatter stringFromNumber:self.value] UTF8String]);
         if (rc < 0) {
             return NO;
         }]]>
@@ -204,12 +199,14 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
     </read>
     <write>
       <prefix>__auto_type const dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";</prefix>
+        dateFormatter.locale = self.locale;
+        dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss";</prefix>
       <attribute>{{ attribute.variableName }}AttrValue = [[dateFormatter stringFromDate:self.{{ attribute.variableName }}] UTF8String];</attribute>
       <element>
         <![CDATA[xmlTextWriterWriteString(writer, (xmlChar*)[[dateFormatter stringFromDate:{{ element.variableName }}Value] UTF8String]);]]>
       </element>
-      <value><![CDATA[__auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)[[dateFormatter stringFromDate:self.value] UTF8String]);
+      <value>
+        <![CDATA[__auto_type const rc = xmlTextWriterWriteString(writer, (xmlChar*)[[dateFormatter stringFromDate:self.value] UTF8String]);
         if (rc < 0) {
             return NO;
         }]]>
@@ -236,6 +233,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
       <prefix>__auto_type const dateOnlyFormatter = [[NSDateFormatter alloc] init];
         dateOnlyFormatter.dateFormat = @"yyyy-MM-dd";
         dateOnlyFormatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+        dateOnlyFormatter.locale = self.locale;
       </prefix>
       <attribute>{{ attribute.variableName }}AttrValue = [[dateOnlyFormatter stringFromDate:self.{{ attribute.variableName }}] UTF8String];</attribute>
       <element>
@@ -269,6 +267,7 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
       <prefix>__auto_type const timeFormatter = [[NSDateFormatter alloc] init];
         timeFormatter.dateFormat = @"HH:mm:ss";
         timeFormatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+        timeFormatter.locale = self.locale;
       </prefix>
       <attribute>{{ attribute.variableName }}AttrValue = [[timeFormatter stringFromDate:self.{{ attribute.variableName }}] UTF8String];</attribute>
       <element>
@@ -396,21 +395,25 @@ this will be used to generate the class header files for the complex types.
         /** Returns a dictionary representation of this class (recursivly making dictionaries of properties) */
         @property (nonatomic, readonly) NSDictionary *dictionary;
 
+        /** Property that sets the NSLocale used by formatters of this type. It defaults to enUSPOSIX */
+        @property(nonatomic, strong) NSLocale *locale;
+        
+        /** The class's initializer used by the reader to build the object structure during parsing (xmlTextReaderPtr at the moment) */
+        - (instancetype)initWithReader:(void *)reader NS_DESIGNATED_INITIALIZER;
+        
         @end
 
         @interface {{ type.targetClassName }} (Reading)
-
-        /** The class's initializer used by the reader to build the object structure during parsing (xmlTextReaderPtr at the moment) */
-        - (instancetype)initWithReader:(void *)reader;
-
+        
         /** Method that is overidden by subclasses that want to extend the base type (xmlTextReaderPtr at the moment) */
         - (void)readAttributes:(void *)reader;
-
+        
+        @end
+        
+        @interface {{ type.targetClassName }} (Writing)
+        
         /* Method serialize object to xml */
-        - (BOOL) writeWithWriter: (void*) writer;
-
-        /** Property that sets the NSLocale used by formatters of this type. It defaults to enUSPOSIX */
-        @property(nonatomic, strong) NSLocale *locale;
+        - (BOOL)writeWithWriter:(void *)writer;
         
         @end]]>
       </header>
@@ -446,15 +449,10 @@ this will be used to generate the class files for the complex types.
         {% for complexType in type.complexTypesInUse %}
         #import "{{ complexType.targetClassFileName }}.h"{% /for %}
 
-        {% if type.hasComplexBaseClass %}
-        @implementation {{ type.targetClassName }}
-        {% else %}
-        @implementation {{ type.targetClassName }} {
+        {% if type.hasComplexBaseClass %}@implementation {{ type.targetClassName }}{% else %}@implementation {{ type.targetClassName }} {
             NSLocale *_locale;
         }
-        /**
-        * the type's locale. We need this often so we put it here
-        */
+        
         - (NSLocale *)locale {
             if (!_locale) {
                 _locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
@@ -463,32 +461,23 @@ this will be used to generate the class files for the complex types.
         }
         - (void)setLocale:(NSLocale *)locale {
              _locale = locale;
-        }
-        {% /if %}
+        }{% /if %}
 
         - (BOOL)writeAttributes:(void *)writer {{% if type.hasBaseClass %}
             [super writeAttributes: writer];{% /if %}
             {{ type.combinedWritePrefixCode }}
             
             {% for attribute in type.attributes %}
+            {% if currentLoop.startIndex == currentLoop.currentIndex %}__auto_type rc = 0;{% /if %}
             {% if attribute.writeCodeForAttribute.length %}
-            {% if attribute.hasEnumeration %}
-            if (self.{{ attribute.variableName }}) {
-                __auto_type const rc = {{ attribute.writeCodeForAttribute }}
-                if (rc < 0) {
-                    return NO;
-                }
-            }
-            {% else %}
-            if (self.{{ attribute.variableName }}) {
-                const char* {{ attribute.variableName }}AttrValue = NULL;
+            {% if attribute.isOptional %}if (self.{{ attribute.variableName }}) {{% /if %}
+                {% if attribute.hasEnumeration %}rc = {{ attribute.writeCodeForAttribute }}{% else %}const char* {{ attribute.variableName }}AttrValue = NULL;
                 {{ attribute.writeCodeForAttribute }}
-                __auto_type const rc = xmlTextWriterWriteAttribute(writer, (xmlChar*)"{{ attribute.name }}", (xmlChar*){{ attribute.variableName }}AttrValue);
+                rc = xmlTextWriterWriteAttribute(writer, (xmlChar*)"{{ attribute.name }}", (xmlChar*){{ attribute.variableName }}AttrValue);{% /if %}
                 if (rc < 0) {
                     return NO;
                 }
-            }
-            {% /if %}
+            {% if attribute.isOptional %}}{% /if %}
             {% else %}
             NSLog(@"{{ attribute.variableName }}");
             {% /if %}
@@ -502,14 +491,17 @@ this will be used to generate the class files for the complex types.
             
             {% for element in type.elements %}
             {% if element.isSingleValue %}
-            if (self.{{ element.variableName }}) {
+            {% if element.isOptional %}if (self.{{ element.variableName }}) {{% /if %}
                 xmlTextWriterStartElement(writer, (xmlChar*)"{{ element.name }}");
                 {% if element.hasEnumeration %}__auto_type const {{ element.variableName }}Value = {{ element.schemaType.enumerationName }}ToString(self.{{ element.variableName }});{% else %}__auto_type const {{ element.variableName }}Value = self.{{ element.variableName }};{% /if %}
                 if ({{ element.variableName }}Value != nil) {
                     {{ element.writeCodeForContent }}
                 }
+                else {
+                    {% if element.nillable %}xmlTextWriterWriteAttributeNS(writer, "xsi", "nil", NULL, "true");{% else %}NSLog(@"Error: Required element {{ element.name }} is empty!");{% /if %}
+                }
                 xmlTextWriterEndElement(writer);
-            }
+            {% if element.isOptional %}}{% /if %}
             {% else %}
             for (id {{ element.variableName }}Value in self.{{ element.variableName }}) {
                 xmlTextWriterStartElement(writer, (xmlChar*)"{{ element.name }}");
@@ -548,19 +540,16 @@ this will be used to generate the class files for the complex types.
         * Description: Read the attributes for the current XML element
         */
         - (void)readAttributes:(void *)reader {{% if type.hasComplexBaseClass %}
-        [super readAttributes: reader];{% /if %}
-        {{ type.combinedReadPrefixCode }}
-        {% for attribute in type.attributes %} __auto_type {{ attribute.name }}AttrValue = (char *) xmlTextReaderGetAttribute(reader, (xmlChar *)"{{ attribute.name }}");
-        if ({{ attribute.name }}AttrValue) {
-            {{ attribute.readCodeForAttribute }}
-            xmlFree({{ attribute.name }}AttrValue);
-        }{% if attribute.defaultValue %}
-        else {
-            {{ attribute.name }}AttrValue = (char *) "{{ attribute.defaultValue }}";
-            {{ attribute.readCodeForAttribute }}
-        }{% /if %}
-        {% /for %}}
-
+            [super readAttributes: reader];{% /if %}
+            {{ type.combinedReadPrefixCode }}
+            {% for attribute in type.attributes %}
+            __auto_type {{ attribute.name }}AttrValue = (char *) xmlTextReaderGetAttribute(reader, (xmlChar *)"{{ attribute.name }}");
+            if ({{ attribute.name }}AttrValue) {
+                {{ attribute.readCodeForAttribute }}
+                xmlFree({{ attribute.name }}AttrValue);
+            }{% /for %}
+        }
+        
         /**
         * Name:        initWithReader
         * Parameters:  (void *) - the Libxml's xmlTextReader pointer
@@ -573,15 +562,18 @@ this will be used to generate the class files for the complex types.
             
             /* Customize the object */
             if (self) {
-                {{ type.combinedReadPrefixCode }}
+                {{ type.combinedReadPrefixCode }}{% for attribute in type.attributes %}{% if attribute.defaultValue %}
+                __auto_type const {{ attribute.name }}AttrValue = (char *) "{{ attribute.defaultValue }}";
+                {{ attribute.readCodeForAttribute }}{% /if %}{% /for %}
+                {% for element in type.elements %}{% if element.isSingleValue %}{% if element.defaultValue %}
+                __auto_type const {{element.name}}ElementValue = (const char *) "{{ element.defaultValue }}";
+                if ({{element.name}}ElementValue) {
+                {{ element.readCodeForContent }}
+                }{% /if %}{% /if %}{% /for %}
+                
                 {% if type.hasComplexBaseClass %}{% else %}[self readAttributes: reader];{% /if %}
                 @autoreleasepool {
-                    {% for element in type.elements %}{% if element.isSingleValue %}{% if element.defaultValue %}
-                    __auto_type {{element.name}}ElementValue = (const char *) "{{ element.defaultValue }}";
-                    if ({{element.name}}ElementValue) {
-                        {{ element.readCodeForContent }}
-                    }
-                    {% /if %}{% else %}__auto_type const {{ element.variableName }}Array = [NSMutableArray array];{% /if %}
+                    {% for element in type.elements %}{% if not element.isSingleValue %}__auto_type const {{ element.variableName }}Array = [NSMutableArray array];{% /if %}
                     {% /for %}{% if type.hasComplexBaseClass %}__auto_type _readerOk __attribute__ ((unused)) = 1;{% else %}__auto_type _readerOk __attribute__ ((unused)) = xmlTextReaderRead(reader);{% /if %}
                     __auto_type _currentNodeType __attribute__ ((unused)) = xmlTextReaderNodeType(reader);
                     __auto_type _currentXmlDept = xmlTextReaderDepth(reader);
@@ -596,7 +588,7 @@ this will be used to generate the class files for the complex types.
                                     _readerOk = xmlTextReaderRead(reader);
                                     _currentNodeType = xmlTextReaderNodeType(reader);
                                     if (_currentNodeType != XML_READER_TYPE_END_ELEMENT) {
-                                        {% if not element.defaultValue %}__auto_type const {% /if %}{{element.name}}ElementValue = (const char *) xmlTextReaderConstValue(reader);
+                                        __auto_type const {{element.name}}ElementValue = (const char *) xmlTextReaderConstValue(reader);
                                         if ({{element.name}}ElementValue) {
                                             {{ element.readCodeForContent }}
                                         }
@@ -887,7 +879,7 @@ this will be used to generate the header file for the elements within our XSD ty
                 return nil;
             }
             xmlTextWriterSetIndent(writer, 1);
-            xmlTextWriterSetIndentString(writer, (xmlChar *)"  ");
+            xmlTextWriterSetIndentString(writer, (xmlChar *)"\t");
             
             // Serialize object
             xmlTextWriterStartElement(writer, (xmlChar*) kGlobalElementNamesArray.lastObject.UTF8String);
