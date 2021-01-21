@@ -104,6 +104,10 @@ xsi:schemaLocation="http://www.example.com/xsd2cocoa template.xsd">
                 [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss"];
                 date = [sRFC3339DateFormatter dateFromString:dateString];
             }
+            if (!date) {
+            [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSSSSS"];
+                date = [sRFC3339DateFormatter dateFromString:dateString];
+            }
             return date;
         };</prefix>
       <attribute>
