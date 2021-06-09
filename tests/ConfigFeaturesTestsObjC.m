@@ -10,6 +10,7 @@
 #import "XSDTestCaseObjC.h"
 #import "XSDConverterCore.h"
 
+
 @interface ConfigFeaturesTestsObjC : XSDTestCaseObjC
 @end
 
@@ -26,8 +27,10 @@
                            @"CONFIGConfig.m",
                            @"CONFIGConfigAdvanced.h",
                            @"CONFIGConfigAdvanced.m",
-                           @"CONFIGConfig+File.h",
-                           @"CONFIGConfig+File.m",
+                           @"CONFIGConfig+Read.h",
+                           @"CONFIGConfig+Read.m",
+                           @"CONFIGConfig+Write.h",
+                           @"CONFIGConfig+Write.m",
                            @"CONFIGEnumeratedStringEnum.h",
                            @"CONFIGEnumeratedStringEnum.m",
                            @"CONFIGFeature.h",
@@ -41,6 +44,7 @@
                            @"CONFIGConfigUserRightsEnum.m"];
     self.rootClassName = @"CONFIGConfig";
     self.parseMethodName = @"ConfigFromURL:";
+    self.generateMethodName = @"toXmlData";
     
     [self helpSetUp];
     [super setUp];
@@ -53,8 +57,10 @@
                            @"CONFIGConfig.m",
                            @"CONFIGConfigAdvanced.h",
                            @"CONFIGConfigAdvanced.m",
-                           @"CONFIGConfig+File.h",
-                           @"CONFIGConfig+File.m",
+                           @"CONFIGConfig+Read.h",
+                           @"CONFIGConfig+Read.m",
+                           @"CONFIGConfig+Write.h",
+                           @"CONFIGConfig+Write.m",
                            @"CONFIGEnumeratedStringEnum.h",
                            @"CONFIGEnumeratedStringEnum.m",
                            @"CONFIGFeature.h",
@@ -76,8 +82,10 @@
                            @"TESTConfig.m",
                            @"TESTConfigAdvanced.h",
                            @"TESTConfigAdvanced.m",
-                           @"TESTConfig+File.h",
-                           @"TESTConfig+File.m",
+                           @"TESTConfig+Read.h",
+                           @"TESTConfig+Read.m",
+                           @"TESTConfig+Write.h",
+                           @"TESTConfig+Write.m",
                            @"TESTEnumeratedStringEnum.h",
                            @"TESTEnumeratedStringEnum.m",
                            @"TESTFeature.h",
@@ -170,7 +178,6 @@
 - (void)testCorrectnessGeneratingParser {
     [self helpTestCorrectnessGeneratingParser];
 }
-
 
 - (void)testCorrectnessGeneratingNamespacedParser {
     [self setUpNamespaced];

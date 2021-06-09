@@ -27,4 +27,7 @@
 - (NSString*) readCodeForAttribute: (XSDattribute*) attribute;
 - (NSString*) readCodeForElement: (XSDelement*) element;
 
+- (NSString*) writeCodeForAttribute: (XSDattribute*) attribute;
+- (NSString*) writeCodeForElement: (XSDelement*) element;
+
 @end

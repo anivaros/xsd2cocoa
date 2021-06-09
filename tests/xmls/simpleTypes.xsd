@@ -1,35 +1,28 @@
-<xs:schema xmlns="http://www.w3.org/2001/XMLSchema"
- xmlns:xs="http://www.w3.org/2001/XMLSchema" 	
- targetNamespace="http://www.example.com/xsdSimpleTypes"
- xmlns:st="http://www.example.com/xsdSimpleTypes">
+<xs:schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://www.example.com/xsdSimpleTypes"
+  xmlns:st="http://www.example.com/xsdSimpleTypes">
 
-<xs:notation name="gif" public="image/gif" system="view.exe"/>
+  <xs:notation name="gif" public="image/gif" system="view.exe"/>
 
   <xs:annotation>
-	<xs:documentation>
-		simpleTypes.xsd defines a format for testing all kinds of simple types
-	</xs:documentation>
+    <xs:documentation> simpleTypes.xsd defines a format for testing all kinds of simple types </xs:documentation>
   </xs:annotation>
 
-  <xs:element name='simpleTypes' type="st:SimpleTypesType">
+  <xs:element name="simpleTypes" type="st:SimpleTypesType">
     <xs:annotation>
-      <xs:documentation>
-        this root element contains links or groups of links
-      </xs:documentation>
+      <xs:documentation> this root element contains links or groups of links </xs:documentation>
     </xs:annotation>
   </xs:element>
 
   <xs:complexType name="SimpleTypesType">
     <xs:annotation>
-      <xs:documentation>
-        this type contains children of all supported types
-      </xs:documentation>
+      <xs:documentation> this type contains children of all supported types </xs:documentation>
     </xs:annotation>
 
     <xs:sequence>
       <!-- string -->
       <xs:element name="element_test_string" type="string"/>
-<!--
+      <!--
       <xs:element name="element_test_ENTITIES" type="ENTITIES"/>
       <xs:element name="element_test_ENTITY" type="ENTITY"/>
 -->
@@ -89,77 +82,78 @@
       <xs:element name="element_test_time" type="time"/>
 
       <!-- base64Binary -->
-      <!--<type base="base64Binary" name="base64Binary"/>-->
+      <xs:element name="element_test_base64Binary" type="base64Binary" />
 
       <!-- hexBinary: doesnt work -->
       <!--<type base="hexBinary" name="hexBinary"/>-->
     </xs:sequence>
-<!-- string -->
-<xs:attribute use="required" name="attribute_test_string" type="string"/>
-<!--
+    <!-- string -->
+    <xs:attribute use="required" name="attribute_test_string" type="string"/>
+    <!--
     <xs:attribute use="required" name="attribute_test_ENTITIES" type="ENTITIES"/>
     <xs:attribute use="required" name="attribute_test_ENTITY" type="ENTITY"/>
 -->
-<xs:attribute use="required" name="attribute_test_ID" type="ID"/>
-<xs:attribute use="required" name="attribute_test_IDREF" type="IDREF"/>
-<xs:attribute use="required" name="attribute_test_IDREFS" type="IDREFS"/>
-<xs:attribute use="required" name="attribute_test_language" type="language"/>
-<xs:attribute use="required" name="attribute_test_Name" type="Name"/>
-<xs:attribute use="required" name="attribute_test_NCName" type="NCName"/>
-<xs:attribute use="required" name="attribute_test_NMTOKEN" type="NMTOKEN"/>
-<xs:attribute use="required" name="attribute_test_NMTOKENS" type="NMTOKENS"/>
-<xs:attribute use="required" name="attribute_test_normalizedString" type="normalizedString"/>
-<xs:attribute use="required" name="attribute_test_QName" type="QName"/>
-<xs:attribute use="required" name="attribute_test_token" type="token"/>
-<xs:attribute use="required" name="attribute_test_NOTATION" type="NOTATION"/>
-<xs:attribute use="required" name="attribute_test_gDay" type="gDay"/>
-<xs:attribute use="required" name="attribute_test_gMonth" type="gMonth"/>
-<xs:attribute use="required" name="attribute_test_gMonthDay" type="gMonthDay"/>
-<xs:attribute use="required" name="attribute_test_gYear" type="gYear"/>
-<xs:attribute use="required" name="attribute_test_gYearMonth" type="gYearMonth"/>
-<xs:attribute use="required" name="attribute_test_duration" type="duration"/>
+    <xs:attribute use="required" name="attribute_test_ID" type="ID"/>
+    <xs:attribute use="required" name="attribute_test_IDREF" type="IDREF"/>
+    <xs:attribute use="required" name="attribute_test_IDREFS" type="IDREFS"/>
+    <xs:attribute use="required" name="attribute_test_language" type="language"/>
+    <xs:attribute use="required" name="attribute_test_Name" type="Name"/>
+    <xs:attribute use="required" name="attribute_test_NCName" type="NCName"/>
+    <xs:attribute use="required" name="attribute_test_NMTOKEN" type="NMTOKEN"/>
+    <xs:attribute use="required" name="attribute_test_NMTOKENS" type="NMTOKENS"/>
+    <xs:attribute use="required" name="attribute_test_normalizedString" type="normalizedString"/>
+    <xs:attribute use="required" name="attribute_test_QName" type="QName"/>
+    <xs:attribute use="required" name="attribute_test_token" type="token"/>
+    <xs:attribute use="required" name="attribute_test_NOTATION" type="NOTATION"/>
+    <xs:attribute use="required" name="attribute_test_gDay" type="gDay"/>
+    <xs:attribute use="required" name="attribute_test_gMonth" type="gMonth"/>
+    <xs:attribute use="required" name="attribute_test_gMonthDay" type="gMonthDay"/>
+    <xs:attribute use="required" name="attribute_test_gYear" type="gYear"/>
+    <xs:attribute use="required" name="attribute_test_gYearMonth" type="gYearMonth"/>
+    <xs:attribute use="required" name="attribute_test_duration" type="duration"/>
 
-<!--integer -->
-<xs:attribute use="required" name="attribute_test_byte" type="byte"/>
-<xs:attribute use="required" name="attribute_test_int" type="int"/>
-<xs:attribute use="required" name="attribute_test_integer" type="integer"/>
-<xs:attribute use="required" name="attribute_test_long" type="long"/>
-<xs:attribute use="required" name="attribute_test_negativeInteger" type="negativeInteger"/>
-<xs:attribute use="required" name="attribute_test_nonNegativeInteger" type="nonNegativeInteger"/>
-<xs:attribute use="required" name="attribute_test_nonPositiveInteger" type="nonPositiveInteger"/>
-<xs:attribute use="required" name="attribute_test_positiveInteger" type="positiveInteger"/>
-<xs:attribute use="required" name="attribute_test_short" type="short"/>
-<xs:attribute use="required" name="attribute_test_unsignedLong" type="unsignedLong"/>
-<xs:attribute use="required" name="attribute_test_unsignedInt" type="unsignedInt"/>
-<xs:attribute use="required" name="attribute_test_unsignedShort" type="unsignedShort"/>
-<xs:attribute use="required" name="attribute_test_unsignedByte" type="unsignedByte"/>
+    <!--integer -->
+    <xs:attribute use="required" name="attribute_test_byte" type="byte"/>
+    <xs:attribute use="required" name="attribute_test_int" type="int"/>
+    <xs:attribute use="required" name="attribute_test_integer" type="integer"/>
+    <xs:attribute use="required" name="attribute_test_long" type="long"/>
+    <xs:attribute use="required" name="attribute_test_negativeInteger" type="negativeInteger"/>
+    <xs:attribute use="required" name="attribute_test_nonNegativeInteger" type="nonNegativeInteger"/>
+    <xs:attribute use="required" name="attribute_test_nonPositiveInteger" type="nonPositiveInteger"/>
+    <xs:attribute use="required" name="attribute_test_positiveInteger" type="positiveInteger"/>
+    <xs:attribute use="required" name="attribute_test_short" type="short"/>
+    <xs:attribute use="required" name="attribute_test_unsignedLong" type="unsignedLong"/>
+    <xs:attribute use="required" name="attribute_test_unsignedInt" type="unsignedInt"/>
+    <xs:attribute use="required" name="attribute_test_unsignedShort" type="unsignedShort"/>
+    <xs:attribute use="required" name="attribute_test_unsignedByte" type="unsignedByte"/>
 
-<!--decimal-->
-<xs:attribute use="required" name="attribute_test_decimal" type="decimal"/>
-<xs:attribute use="required" name="attribute_test_double" type="double"/>
-<xs:attribute use="required" name="attribute_test_float" type="float"/>
+    <!--decimal-->
+    <xs:attribute use="required" name="attribute_test_decimal" type="decimal"/>
+    <xs:attribute use="required" name="attribute_test_double" type="double"/>
+    <xs:attribute use="required" name="attribute_test_float" type="float"/>
 
-<!--boolean-->
-<xs:attribute use="required" name="attribute_test_boolean" type="boolean"/>
+    <!--boolean-->
+    <xs:attribute use="required" name="attribute_test_boolean" type="boolean"/>
 
-<!-- URLs -->
-<xs:attribute use="required" name="attribute_test_anyURI" type="anyURI"/>
+    <!-- URLs -->
+    <xs:attribute use="required" name="attribute_test_anyURI" type="anyURI"/>
 
-<!-- date time -->
-<xs:attribute use="required" name="attribute_test_dateTime" type="dateTime"/>
-<xs:attribute use="required" name="attribute_test_dateTime2" type="dateTime"/>
+    <!-- date time -->
+    <xs:attribute use="required" name="attribute_test_dateTime" type="dateTime"/>
+    <xs:attribute use="required" name="attribute_test_dateTime2" type="dateTime"/>
 
-<!-- date -->
-<xs:attribute use="required" name="attribute_test_date" type="date"/>
+    <!-- date -->
+    <xs:attribute use="required" name="attribute_test_date" type="date"/>
 
-<!-- time -->
-<xs:attribute use="required" name="attribute_test_time" type="time"/>
+    <!-- time -->
+    <xs:attribute use="required" name="attribute_test_time" type="time"/>
 
-<!-- base64Binary -->
-<!--<type base="base64Binary" name="base64Binary"/>-->
+    <!-- base64Binary -->
+    <xs:attribute use="required" name="attribute_test_base64Binary" type="base64Binary" />
 
-<!-- hexBinary: doesnt work -->
-<!--<type base="hexBinary" name="hexBinary"/>-->
+    <!-- hexBinary: doesnt work -->
+    <!--<type base="hexBinary" name="hexBinary"/>-->
 
   </xs:complexType>
+
 </xs:schema>

@@ -24,13 +24,16 @@
     self.xmlFileName = @"SampleLanguageData";
     self.expectedFiles = @[@"LangDefType.h",
                            @"LangDefType.m",
-                           @"LangDefType+File.h",
-                           @"LangDefType+File.m",
+                           @"LangDefType+Read.h",
+                           @"LangDefType+Read.m",
+                           @"LangDefType+Write.h",
+                           @"LangDefType+Write.m",
                            @"LangIDType.h",
                            @"LangIDType.m",
                            @"SampleLanguageData.h"];
     self.rootClassName = @"LangDefType";
     self.parseMethodName = @"LangDefTypeFromURL:";
+    self.generateMethodName = @"toXmlData";
     
     [self helpSetUp];
     [super setUp];

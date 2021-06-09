@@ -12,8 +12,10 @@
 #import <dlfcn.h>
 #import <objc/runtime.h>
 #import "NSObject+DDDump.h"
+#import "DDXMLValidator.h"
 
-#define KEEP_AND_SHOW 0
+#define KEEP 0
+#define SHOW 0
 
 @interface XSDTestCase ()
 
@@ -34,7 +36,7 @@ NSURL *_tmpFolderUrl;
 
 + (void)helpSetUp {
     NSURL *tmpTestFolderUrl = [[[NSURL fileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:[NSBundle mainBundle].bundleIdentifier] URLByAppendingPathComponent:@"XSDConverterTestData"];
-#if !KEEP_AND_SHOW
+#if !KEEP
     [[NSFileManager defaultManager] removeItemAtURL:tmpTestFolderUrl error:nil];
 #endif
     NSURL *tmpFolderUrl = [tmpTestFolderUrl URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
@@ -50,6 +52,7 @@ NSURL *_tmpFolderUrl;
     assert(self.expectedFiles);
     assert(self.rootClassName);
     assert(self.parseMethodName);
+    assert(self.generateMethodName);
     
     NSURL *schemaUrl = [[NSBundle bundleForClass:self.class] URLForResource:self.schemaName withExtension:@"xsd"];
     NSURL *xmlFileUrl = [[NSBundle bundleForClass:self.class] URLForResource:self.xmlFileName withExtension:@"xml"];
@@ -66,9 +69,10 @@ NSURL *_tmpFolderUrl;
 
 + (void)helpTearDown {
     if(_tmpFolderUrl) {
-#if KEEP_AND_SHOW
+#if SHOW
         [[NSWorkspace sharedWorkspace] openFile:_tmpFolderUrl.path];
-#else
+#endif
+#if !KEEP
         BOOL bDeleted = [[NSFileManager defaultManager] removeItemAtURL:_tmpFolderUrl error:nil];
         assert(bDeleted);
 #endif
@@ -93,7 +97,7 @@ NSURL *_tmpFolderUrl;
 }
 
 - (void)helpTestCorrectnessParsingSchema {
-    __block XSDschema *schema = [[XSDschema alloc] initWithUrl:self.schemaUrl targetNamespacePrefix:self.prefixOverride options:XSDschemaGeneratorOptionSourceCode error:nil];
+    __block XSDschema *schema = [[XSDschema alloc] initWithUrl:self.schemaUrl targetNamespacePrefix:self.prefixOverride options:XSDschemaGeneratorOptionSourceCode | XSDschemaGeneratorOptionValidateXsdSchema error:nil];
     XCTAssert(schema);
     
     [self assertSchema:schema];
@@ -177,6 +181,40 @@ NSURL *_tmpFolderUrl;
         XCTAssert([root respondsToSelector:@selector(dictionary)]);
         if([root respondsToSelector:@selector(dictionary)]) {
             [self assertParsedXML:root];
+        }
+        
+        if (self.generateMethodName) {
+            XCTAssert([root respondsToSelector:NSSelectorFromString(self.generateMethodName)]);
+            
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            NSData *data = [root performSelector:NSSelectorFromString(self.generateMethodName)];
+#pragma clang diagnostic pop
+            XCTAssert(data);
+            NSLog(@"%@", [data dump]);
+            NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+            
+            NSURL *generatedFileUrl = [_tmpFolderUrl URLByAppendingPathComponent:@"generated.xml"];
+            [data writeToURL:generatedFileUrl atomically:NO];
+//            NSError *error = nil;
+//            BOOL valid = [[DDXMLValidator sharedInstace] validateXMLData:data withSchema:DDXMLValidatorSchemaTypeXSD schemaFile:self.schemaUrl error:&error];
+//            if (!valid) {
+//                NSLog(@"%@", error);
+//            }
+//            XCTAssert(valid);
+            //parse it
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            id root = [wlfg_class performSelector:NSSelectorFromString(self.parseMethodName) withObject:generatedFileUrl];
+#pragma clang diagnostic pop
+            XCTAssert(root);
+            NSLog(@"%@", [root dump]);
+            
+            //check it
+            XCTAssert([root respondsToSelector:@selector(dictionary)]);
+            if([root respondsToSelector:@selector(dictionary)]) {
+                [self assertParsedXML:root];
+            }
         }
         
         //unload it

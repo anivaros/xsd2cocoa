@@ -36,6 +36,10 @@
 
 - (NSString*)XPathForTemplateFirstReaderClasses;
 
+- (NSString*)XPathForTemplateFirstWriterHeaders;
+
+- (NSString*)XPathForTemplateFirstWriterClasses;
+
 - (NSString*)XPathForTemplateFirstComplexType;
 
 - (NSString*)XPathForTemplateSimpleTypes;

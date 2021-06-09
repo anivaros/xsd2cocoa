@@ -26,9 +26,9 @@
 @property (strong, nonatomic) NSString* substitutionGroup;
 @property (strong, nonatomic) NSString* defaultValue;
 @property (strong, nonatomic) NSString* fixed;
-@property (strong, nonatomic) NSString* nillable;
-@property (strong, nonatomic) NSString* abstractValue;
-@property (strong, nonatomic) NSString* final;
+@property (strong, nonatomic) NSNumber* nillable;
+@property (strong, nonatomic) NSNumber* abstract;
+@property (strong, nonatomic) NSString* finalValue;
 @property (strong, nonatomic) NSString* block;
 @property (strong, nonatomic) NSString* form;
 @property (strong, nonatomic) NSNumber* minOccurs;
@@ -41,7 +41,7 @@
     self = [super initWithNode:node schema:schema];
     if(self) {
         _type = [XMLUtils node: node stringAttribute: @"type"];
-		_ref = [XMLUtils node: node stringAttribute: @"ref"];
+        _ref = [XMLUtils node: node stringAttribute: @"ref"];
         _name = [XMLUtils node: node stringAttribute: @"name"];
         if (!_name && [node.localName isEqualToString:@"any"]) {
             _name = @"Any";
@@ -50,9 +50,9 @@
         _substitutionGroup = [XMLUtils node: node stringAttribute: @"substitutionGroup"];
         _defaultValue = [XMLUtils node: node stringAttribute:  @"default"];
         _fixed = [XMLUtils node: node stringAttribute: @"fixed"];
-        _nillable = [XMLUtils node: node stringAttribute: @"nillable"];
-        _abstractValue = [XMLUtils node: node stringAttribute: @"abstract"];
-        _final = [XMLUtils node: node stringAttribute: @"final"];
+        _nillable = [XMLUtils node: node boolAttribute: @"nillable"];
+        _abstract = [XMLUtils node: node boolAttribute: @"abstract"];
+        _finalValue = [XMLUtils node: node stringAttribute: @"final"];
         _block = [XMLUtils node: node stringAttribute: @"block"];
         _form = [XMLUtils node: node stringAttribute: @"form"];
         
@@ -65,18 +65,18 @@
         
         NSString* minOccursValue = [XMLUtils node: node stringAttribute: @"minOccurs"];
         if(minOccursValue == nil) {
-            _minOccurs = minOccurs ? minOccurs : [NSNumber numberWithInt: 1];
+            _minOccurs = minOccurs ? minOccurs : @1;
         } else if([minOccursValue isEqual: @"unbounded"]) {
-            _minOccurs = [NSNumber numberWithInt: -1];
+            _minOccurs = @-1;
         } else {
             _minOccurs = [numFormatter numberFromString: minOccursValue];
         }
         
         NSString* maxOccursValue = [XMLUtils node: node stringAttribute: @"maxOccurs"];
         if(maxOccursValue == nil) {
-            _maxOccurs = maxOccurs ? maxOccurs : [NSNumber numberWithInt: 1];
+            _maxOccurs = maxOccurs ? maxOccurs : @1;
         } else if([maxOccursValue isEqual: @"unbounded"]) {
-            _maxOccurs = [NSNumber numberWithInt: -1];
+            _maxOccurs = @-1;
         } else {
             _maxOccurs = [numFormatter numberFromString: maxOccursValue];
         }
@@ -230,10 +230,6 @@
     return [self.type isEqual:@"any"];
 }
 
-- (NSString*) nameWithCapital {
-    return [[self variableName] stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[self.name substringToIndex:1] uppercaseString]];
-}
-
 - (NSString*) readCodeForContent {
     NSString *rtn;
     
@@ -252,8 +248,31 @@
     return rtn;
 }
 
+- (NSString*) writeCodeForContent {
+    NSString *rtn;
+    
+    if (self.localType != nil) {
+        rtn = [self.localType writeCodeForElement:self];
+    } else if(self.hasEnumeration){
+        XSSimpleType* simpleTypeTemp = self.schemaType;
+        rtn = [simpleTypeTemp writeCodeForElement:self];
+    } else {
+        rtn = [[self.schema typeForName:self.type] writeCodeForElement:self];
+    }
+    
+    return rtn;
+}
+
+- (BOOL) isOptional {
+    return self.minOccurs.integerValue == 0;
+}
+
+- (BOOL) isRequired {
+    return self.minOccurs.integerValue > 0;
+}
+
 - (BOOL) isSingleValue {
-    return [self.maxOccurs intValue] >= 0 && [self.maxOccurs intValue] <= 1;
+    return self.maxOccurs.integerValue >= 0 && self.maxOccurs.integerValue <= 1;
 }
 
 @end

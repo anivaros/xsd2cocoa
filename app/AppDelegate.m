@@ -146,6 +146,8 @@
     if(self.indentWithTabsCheckbox.state==NSOnState) {
         productTypes |= XSDschemaGeneratorOptionIndentWithTabs;
     }
+    
+//    productTypes |= XSDschemaGeneratorOptionValidateXsdSchema;
 
     /* Open the schema specified by the user */
     NSError* error = nil;

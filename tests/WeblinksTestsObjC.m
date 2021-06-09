@@ -26,8 +26,10 @@
                            @"WLFavdef.m",
                            @"WLFG.h",
                            @"WLFG.m",
-                           @"WLFG+File.h",
-                           @"WLFG+File.m",
+                           @"WLFG+Read.h",
+                           @"WLFG+Read.m",
+                           @"WLFG+Write.h",
+                           @"WLFG+Write.m",
                            @"WLGroupdef.h",
                            @"WLGroupdef.m",
                            @"WLDescription.m",
@@ -35,6 +37,7 @@
                            @"weblinks.h"];
     self.rootClassName = @"WLFG";
     self.parseMethodName = @"FGFromURL:";
+    self.generateMethodName = @"toXmlData";
     
     [self helpSetUp];
     [super setUp];

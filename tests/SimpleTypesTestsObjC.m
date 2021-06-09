@@ -28,10 +28,13 @@
     self.expectedFiles = @[@"simpleTypes.h",
                            @"STSimpleTypesType.h",
                            @"STSimpleTypesType.m",
-                           @"STSimpleTypesType+File.h",
-                           @"STSimpleTypesType+File.m"];
+                           @"STSimpleTypesType+Read.h",
+                           @"STSimpleTypesType+Read.m"
+                           @"STSimpleTypesType+Write.h",
+                           @"STSimpleTypesType+Write.m"];
     self.rootClassName = @"STSimpleTypesType";
     self.parseMethodName = @"SimpleTypesTypeFromURL:";
+    self.generateMethodName = @"toXmlData";
     
     _expectedClassnames = @{
                             @"gMonth": @"NSString",
@@ -75,7 +78,8 @@
                             @"normalizedString": @"NSString",
                             @"ENTITIES": @"NSString",
                             @"nonNegativeInteger": @"NSNumber",
-                            @"unsignedLong": @"NSNumber"
+                            @"unsignedLong": @"NSNumber",
+                            @"base64Binary": @"NSData"
                             };
     [self helpSetUp];
     [super setUp];
@@ -96,7 +100,7 @@
     XCTAssert(ct.hasAnnotations);
     XCTAssert([[ct.globalElements valueForKeyPath:@"name"] containsObject:@"simpleTypes"]);
 
-    XCTAssert(ct.simpleTypesInUse.count==40);
+    XCTAssert(ct.simpleTypesInUse.count==41);
 }
 
 - (void)assertParsedXML:(id)rootNode {
@@ -168,6 +172,8 @@
     XCTAssertTrue(([[rootNode valueForKey:[NSString stringWithFormat:@"%@_unsignedInt", prefix]] isEqualToNumber:@123]));
     XCTAssertTrue(([[rootNode valueForKey:[NSString stringWithFormat:@"%@_unsignedLong", prefix]] isEqualToNumber:@123]));
     XCTAssertTrue(([[rootNode valueForKey:[NSString stringWithFormat:@"%@_unsignedShort", prefix]] isEqualToNumber:@123]));
+    NSData *data = [rootNode valueForKey:[NSString stringWithFormat:@"%@_base64Binary", prefix]];
+    XCTAssertTrue(([[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] isEqualToString:@"all_is_ok"]));
 }
 
 #pragma mark -
@@ -185,7 +191,7 @@
     BOOL bLoaded = [schema loadTemplate:self.templateUrl error:&error];
     XCTAssert(bLoaded);
     
-    XCTAssert(ct.simpleTypesInUse.count==40);
+    XCTAssert(ct.simpleTypesInUse.count==41);
     for (XSSimpleType *t in ct.simpleTypesInUse) {
         XCTAssert(t.name);
         id expectedClassname = _expectedClassnames[t.name];
@@ -204,7 +210,7 @@
     BOOL bLoaded = [schema loadTemplate:self.templateUrl error:&error];
     XCTAssert(bLoaded);
     
-    XCTAssert(ct.simpleTypesInUse.count==40);
+    XCTAssert(ct.simpleTypesInUse.count==41);
     for (XSSimpleType *t in ct.simpleTypesInUse) {
         XCTAssert(t.readAttributeTemplate);
         XCTAssert(t.readElementTemplate);

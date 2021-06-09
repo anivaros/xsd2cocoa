@@ -40,10 +40,15 @@
 
 @property (strong, nonatomic) NSString* complexTypeArrayType;
 @property (strong, nonatomic) NSString* readComplexTypeElementTemplate;
+@property (strong, nonatomic) NSString* writeComplexTypeElementTemplate;
 @property (strong, nonatomic) NSString* readerClassTemplateString;
 @property (strong, nonatomic) NSString* readerClassTemplateExtension;
 @property (strong, nonatomic) NSString* readerHeaderTemplateString;
 @property (strong, nonatomic) NSString* readerHeaderTemplateExtension;
+@property (strong, nonatomic) NSString* writerClassTemplateString;
+@property (strong, nonatomic) NSString* writerClassTemplateExtension;
+@property (strong, nonatomic) NSString* writerHeaderTemplateString;
+@property (strong, nonatomic) NSString* writerHeaderTemplateExtension;
 @property (strong, nonatomic) NSString* classTemplateString;
 @property (strong, nonatomic) NSString* classTemplateExtension;
 @property (strong, nonatomic) NSString* headerTemplateString;
@@ -53,7 +58,7 @@
 @property (strong, nonatomic) NSString* enumHeaderTemplateString;
 @property (strong, nonatomic) NSString* enumHeaderTemplateExtension;
 
-@property (strong, nonatomic) NSXMLNode* enumReadNode;
+@property (strong, nonatomic) NSXMLNode* enumNode;
 
 @property (strong, nonatomic) NSDictionary* additionalFiles;
 @property (strong, nonatomic) NSString *targetNamespacePrefix;
@@ -204,6 +209,12 @@
 }
 
 - (instancetype) initWithUrl: (NSURL*) schemaUrl targetNamespacePrefix: (NSString*) prefix options: (XSDschemaGeneratorOptions)options error: (NSError**) error {
+    NSURL *xmlSchemaUrl = [[NSBundle bundleForClass:self.class] URLForResource:@"XMLSchema" withExtension:@"xsd"];
+    BOOL isNeedValidate = !!(options & XSDschemaGeneratorOptionValidateXsdSchema);
+    BOOL isValid = !isNeedValidate || [[DDXMLValidator sharedInstace] validateXMLFile:schemaUrl withSchema:DDXMLValidatorSchemaTypeXSD schemaFile:xmlSchemaUrl error:error];
+    if (!isValid) {
+        return nil;
+    }
     NSData* data = [NSData dataWithContentsOfURL: schemaUrl];
     /* If we do not have data present an instance error that we cannot open the xsd file at the given location */
     if(!data) {
@@ -349,7 +360,7 @@
         NSString *attr = [[styleNode attributeForName:@"type"] stringValue];
         if([attr isEqualToString:@"builtin"]) {
             self.formatter = [DDSimpleFormatter sharedInstance];
-            self.formatter.indentWithTabs = self.options & XSDschemaGeneratorOptionIndentWithTabs;
+            self.formatter.indentWithTabs = !!(self.options & XSDschemaGeneratorOptionIndentWithTabs);
         }
         else {
             NSLog(@"Unknown formatter type: %@", attr);
@@ -366,23 +377,13 @@
         if(resultError) *resultError = error;
         return NO;
     }
-    NSXMLElement *enumTypeNode = nil;
-    if(nodes != nil && nodes.count > 0) {
-        enumTypeNode = [nodes objectAtIndex: 0];
-    }
     
-    //reader
-    nodes = [enumTypeNode nodesForXPath:self.XPathForTemplateReads error: &error];
-    if(error != nil) {
-        if(resultError) *resultError = error;
-        return NO;
-    }
     if(nodes != nil && nodes.count > 0) {
-        self.enumReadNode = [nodes objectAtIndex: 0];
+        self.enumNode = [nodes objectAtIndex: 0];
     }
     
     /* Fetch the header file that we will use in the enumeration section */
-    nodes = [enumTypeNode nodesForXPath:self.XPathForTemplateFirstImplementationHeaders error: &error];
+    nodes = [self.enumNode nodesForXPath:self.XPathForTemplateFirstImplementationHeaders error: &error];
     if(error != nil) {
         if(resultError) *resultError = error;
         return NO;
@@ -394,7 +395,7 @@
     
     
     /* Fetch the class file that we will use in the enumeration section */
-    nodes = [enumTypeNode nodesForXPath:self.XPathForTemplateFirstImplementationClasses error: &error];
+    nodes = [self.enumNode nodesForXPath:self.XPathForTemplateFirstImplementationClasses error: &error];
     if(error != nil) {
         if(resultError) *resultError = error;
         return NO;
@@ -424,10 +425,10 @@
         /* Check if we have that simpletype within our XSD provided */
         if(existingSimpleType) {
             /* For our simple type, define the values from the template */
-            [existingSimpleType supplyTemplates:aSimpleTypeNode enumTypeNode:self.enumReadNode error: &error];
+            [existingSimpleType supplyTemplates:aSimpleTypeNode enumTypeNode:self.enumNode error: &error];
         }
         else {
-            [aSimpleType supplyTemplates:aSimpleTypeNode enumTypeNode:self.enumReadNode error:&error];
+            [aSimpleType supplyTemplates:aSimpleTypeNode enumTypeNode:self.enumNode error:&error];
             [_knownSimpleTypeDict setValue: aSimpleType forKey: aSimpleType.name];
         }
     }
@@ -480,6 +481,16 @@
         self.readComplexTypeElementTemplate = [[nodes objectAtIndex: 0] stringValue];
     }
     
+    /*   */
+    nodes = [complexTypeNode nodesForXPath:@"write[1]/element[1]" error: &error];
+    if(error != nil) {
+        if(resultError) *resultError = error;
+        return NO;
+    }
+    if(nodes != nil && nodes.count > 0) {
+        self.writeComplexTypeElementTemplate = [[nodes objectAtIndex: 0] stringValue];
+    }
+    
     //get the array type for complex types
     if(complexTypeNode) {
         self.complexTypeArrayType = [complexTypeNode attributeForName:@"arrayType"].stringValue;
@@ -505,6 +516,28 @@
     if(nodes != nil && nodes.count > 0) {
         self.readerClassTemplateString = [[nodes objectAtIndex: 0] stringValue];
         self.readerClassTemplateExtension = [XMLUtils node:[nodes objectAtIndex: 0] stringAttribute:@"extension"];
+    }
+    
+    /* Fetch the header file that we will use in the implementation section of the file writer */
+    nodes = [complexTypeNode nodesForXPath:self.XPathForTemplateFirstWriterHeaders error: &error];
+    if(error != nil) {
+        if(resultError) *resultError = error;
+        return NO;
+    }
+    if(nodes != nil && nodes.count > 0) {
+        self.writerHeaderTemplateString = [[nodes objectAtIndex: 0] stringValue];
+        self.writerHeaderTemplateExtension = [XMLUtils node:[nodes objectAtIndex: 0] stringAttribute:@"extension"];
+    }
+    
+    /* Fetch the header file that we will use in the implementation section of the file writer */
+    nodes = [complexTypeNode nodesForXPath:self.XPathForTemplateFirstWriterClasses error: &error];
+    if(error != nil) {
+        if(resultError) *resultError = error;
+        return NO;
+    }
+    if(nodes != nil && nodes.count > 0) {
+        self.writerClassTemplateString = [[nodes objectAtIndex: 0] stringValue];
+        self.writerClassTemplateExtension = [XMLUtils node:[nodes objectAtIndex: 0] stringAttribute:@"extension"];
     }
     
     //
@@ -665,7 +698,7 @@
             }
         }
         /* If all is well, start writing the code into the directory we created */
-        if(![self writeCodeInto:srcFolderUrl createSubfolders:self.options & XSDschemaGeneratorOptionSourceCodeWithSubfolders error:error]) {
+        if(![self writeCodeInto:srcFolderUrl createSubfolders:!!(self.options & XSDschemaGeneratorOptionSourceCodeWithSubfolders) error:error]) {
             return NO;
         }
         if(![self formatFilesInFolder:srcFolderUrl error:nil])  {
@@ -743,7 +776,7 @@
                 NSString *result = [engine processTemplate: self.readerHeaderTemplateString
                                              withVariables: type.substitutionDict];
                 
-                NSString* headerFileName = [NSString stringWithFormat: @"%@+File.%@", type.targetClassFileName, self.readerHeaderTemplateExtension];
+                NSString* headerFileName = [NSString stringWithFormat: @"%@+Read.%@", type.targetClassFileName, self.readerHeaderTemplateExtension];
                 NSURL* headerFilePath = [createSubfolders ? [self subfolderForURL:destinationFolder schema:type.schema] : destinationFolder URLByAppendingPathComponent: headerFileName];
                 BOOL br = [result writeToURL: headerFilePath atomically:YES encoding: NSUTF8StringEncoding error: error];
 
@@ -757,7 +790,35 @@
                 NSString *result = [engine processTemplate: self.readerClassTemplateString
                                              withVariables: type.substitutionDict];
                 
-                NSString* classFileName = [NSString stringWithFormat: @"%@+File.%@", type.targetClassFileName, self.readerClassTemplateExtension];
+                NSString* classFileName = [NSString stringWithFormat: @"%@+Read.%@", type.targetClassFileName, self.readerClassTemplateExtension];
+                NSURL* classFilePath = [createSubfolders ? [self subfolderForURL:destinationFolder schema:type.schema] : destinationFolder URLByAppendingPathComponent: classFileName];
+                BOOL br = [result writeToURL: classFilePath atomically:YES encoding: NSUTF8StringEncoding error: error];
+                
+                /* Ensure that there was no errors for writing */
+                if(!br) {
+                    return NO;
+                }
+            }
+            
+            if (self.writerHeaderTemplateString.length) {
+                NSString *result = [engine processTemplate: self.writerHeaderTemplateString
+                                             withVariables: type.substitutionDict];
+                
+                NSString* headerFileName = [NSString stringWithFormat: @"%@+Write.%@", type.targetClassFileName, self.writerHeaderTemplateExtension];
+                NSURL* headerFilePath = [createSubfolders ? [self subfolderForURL:destinationFolder schema:type.schema] : destinationFolder URLByAppendingPathComponent: headerFileName];
+                BOOL br = [result writeToURL: headerFilePath atomically:YES encoding: NSUTF8StringEncoding error: error];
+                
+                /* Ensure that there was no errors for writing */
+                if(!br) {
+                    return NO;
+                }
+            }
+            
+            if (self.writerClassTemplateString.length) {
+                NSString *result = [engine processTemplate: self.writerClassTemplateString
+                                             withVariables: type.substitutionDict];
+                
+                NSString* classFileName = [NSString stringWithFormat: @"%@+Write.%@", type.targetClassFileName, self.writerClassTemplateExtension];
                 NSURL* classFilePath = [createSubfolders ? [self subfolderForURL:destinationFolder schema:type.schema] : destinationFolder URLByAppendingPathComponent: classFileName];
                 BOOL br = [result writeToURL: classFilePath atomically:YES encoding: NSUTF8StringEncoding error: error];
                 
